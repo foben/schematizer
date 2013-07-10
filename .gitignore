@@ -7,5 +7,5 @@ target
 repositories
 all_types_per_graph.nt
 all_types_complete.nt
-repoquery.net
+repoquery.nt
 src/main/resources/graphs.nt
