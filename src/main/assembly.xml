@@ -21,7 +21,6 @@
    </dependencySets>
    <fileSets>
     <fileSet>
-    <useDefaultExcludes>false</useDefaultExcludes>
       <directory>${project.build.outputDirectory}</directory>
       <outputDirectory>/</outputDirectory>
     </fileSet>
