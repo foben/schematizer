@@ -36,7 +36,17 @@ public class TypeMapper {
 			count++;
 			line = line.replace("\"", "");
 			String[] ln = line.split("\t");
-			String dataset = reducer.getPLD(ln[1]);
+			String dataset = "";
+			try{
+				dataset = reducer.getPLD(ln[1]);
+			} catch(IllegalArgumentException e){
+				_log.error("line "+ count +": IAE occurred for " + ln[1]);
+				continue;
+			} catch (ArrayIndexOutOfBoundsException ai){
+				_log.error("line "+ count +": AIOOB occurred for " + line);
+				continue;
+			}
+			
 			String type = ln[0];
 			line = type + " " + dataset;
 			if(!line.equals(oldline)){
@@ -44,9 +54,9 @@ public class TypeMapper {
 				out.newLine();
 			}
 			oldline = line;
-			System.out.println(count);
 			if(count%1000000 == 0) _log.info((count/1000000) + " million lines parsed");
 		}
+		_log.info(count + " total lines processed!");
 		in.close();
 		out.close();
 		System.out.println();
