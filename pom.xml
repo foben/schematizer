@@ -33,6 +33,11 @@
          <artifactId>commons-lang3</artifactId>
          <version>3.1</version>
       </dependency>
+      <dependency>
+              <groupId>org.semanticweb.yars</groupId>
+              <artifactId>nxparser</artifactId>
+              <version>1.2.3</version>
+      </dependency>
       <!-- Sesame -->
       <dependency>
          <groupId>org.openrdf.sesame</groupId>
@@ -55,6 +60,19 @@
          <version>2.7.3</version>
       </dependency>
    </dependencies>
+   
+   <repositories>
+	  <!-- <repository> <id>aduna-repo</id> <name>Aduna Software M2 Repository</name> 
+	          <url>http://repo.aduna-software.org/maven2/releases</url> </repository> -->
+	  <repository>
+	          <id>nxparser-repo</id>
+	          <url>http://nxparser.googlecode.com/svn/repository</url>
+	  </repository>
+	  <!-- <repository> <id>local-repo</id> <name>local-repo</name> <url>file://${project.basedir}/lib/</url> 
+	          </repository> -->
+   </repositories>
+   
+   
    <build>
       <resources>
          <resource>

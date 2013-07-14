@@ -1,11 +1,9 @@
 .settings
 .project
 .classpath
-dsfiles
-dsrepos
 target
 repositories
-all_types_per_graph.nt
-all_types_complete.nt
+alltypes
+typespg
 repoquery.nt
 src/main/resources/graphs.nt

@@ -13,7 +13,9 @@ public class Environment {
 	public static final String URI_DATASET = "http://dws.informatik.uni-mannheim.de/lodschema/types/Dataset";
 	public static final String URI_HASGRAPH = "http://dws.informatik.uni-mannheim.de/lodschema/properties/hasGraph";
 	public static final String URI_HASCLASS = "http://dws.informatik.uni-mannheim.de/lodschema/properties/hasClass";
-	public static final String PR_STATUS = "http://dws.informatik.uni-mannheim.de/lodschema/properties/hasStatus";
+
+	public static final String URI_EXTERNALVOCAB  = "http://dws.informatik.uni-mannheim.de/lodschema/properties/usesExternalVocabulary";
+	public static final String URI_EXTERNALRES  = "http://dws.informatik.uni-mannheim.de/lodschema/properties/usesExternalResource";
 	
 	public static final URIImpl RES_HAS_CLASS = new URIImpl(URI_HASCLASS);
 	
