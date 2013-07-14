@@ -7,3 +7,5 @@ alltypes
 typespg
 repoquery.nt
 src/main/resources/graphs.nt
+src/main/resources/quadtest.nq
+src/main/resources/quadtest_.nq

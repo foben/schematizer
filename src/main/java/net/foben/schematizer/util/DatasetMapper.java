@@ -1,7 +1,6 @@
 package net.foben.schematizer.util;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
@@ -9,8 +8,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-
 
 import org.openrdf.model.Resource;
 import org.openrdf.model.Statement;
@@ -24,7 +21,7 @@ import org.openrdf.repository.sail.SailRepository;
 import org.openrdf.rio.RDFHandler;
 import org.openrdf.rio.RDFHandlerException;
 import org.openrdf.rio.ntriples.NTriplesWriter;
-import org.openrdf.sail.nativerdf.NativeStore;
+import org.openrdf.sail.memory.MemoryStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -106,10 +103,14 @@ public class DatasetMapper {
 		return mappings;
 	}
 	
-	@SuppressWarnings("unused")
-	private static void storeMappings(HashMap<String, List<String>> mappings) throws RepositoryException, RDFHandlerException, FileNotFoundException {
-		File dataDir = new File("repositories/mappingrepo");
-		Repository repo = new SailRepository( new NativeStore(dataDir) );
+	
+	
+	public void exportMappingsInternal(String filename) throws RepositoryException, RDFHandlerException, FileNotFoundException {
+		if(!mappingSuccess){
+			_log.warn("No successful mapping yet!");
+			return;
+		}
+		Repository repo = new SailRepository( new MemoryStore() );
 		repo.initialize();
 		List<Statement> statements = new ArrayList<Statement>();
 		URI pred = new URIImpl(URI_HASGRAPH);
@@ -117,7 +118,7 @@ public class DatasetMapper {
 		URI ds = new URIImpl(URI_DATASET);
 		int count = 0;
 		for(String key : mappings.keySet()){
-			URI subj = new URIImpl(key);
+			URI subj = new URIImpl(URI_IDS + key);
 			List<String> mappedURIs = mappings.get(key);
 			statements.add(new StatementImpl(subj, a, ds));
 			for (String mappedURI : mappedURIs) {
@@ -135,21 +136,9 @@ public class DatasetMapper {
 		RepositoryConnection con = repo.getConnection();
 		con.add(statements, (Resource) null);
 		con.commit();
-		RDFHandler rdfxmlWriter = new NTriplesWriter(new FileOutputStream("foooo"));
+		RDFHandler rdfxmlWriter = new NTriplesWriter(new FileOutputStream(filename));
 		con.export(rdfxmlWriter, (Resource)null);
 		con.close();
 	}
 
-	@SuppressWarnings("unused")
-	private static void printMappings(HashMap<String, List<String>> mappings) {
-		for(String key : mappings.keySet()){
-			List<String> mappedURIs = mappings.get(key);
-			System.out.println(key);
-			System.out.println("----------------------");
-			for (String mappedURI : mappedURIs) {
-				System.out.println("    " + mappedURI);
-			}
-			System.out.println();
-		}
-	}
 }

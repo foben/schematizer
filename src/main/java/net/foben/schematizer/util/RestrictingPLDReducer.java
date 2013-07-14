@@ -4,11 +4,14 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.HashSet;
 import java.util.Set;
 
 
 import org.apache.commons.lang3.StringUtils;
+import org.openrdf.model.URI;
+import org.openrdf.model.impl.URIImpl;
 
 public class RestrictingPLDReducer implements IPLDReducer {
 	Set<String> restrictedSLDs;
@@ -44,26 +47,35 @@ public class RestrictingPLDReducer implements IPLDReducer {
 	
 	public String getPLD(String uri){
 		String result = uri;
+		//String result = uri;
 		int httpoff, domainEnd, dots, domainStart;
 		if      (result.startsWith("http://"))  httpoff = 7;
 		else if (result.startsWith("https://")) httpoff = 8;
 		else throw new IllegalArgumentException("Not a valid URI: " + result);
 		//end of domain
-		domainEnd = result.indexOf("/", httpoff);
+	
+		domainEnd = result.substring(httpoff).contains("/") ? result.indexOf("/", httpoff) : result.length();
 		//no of dots in domain 
+		//System.out.println(domainEnd + "  " + uri);
 		dots = StringUtils.countMatches(result.substring(0, domainEnd), ".");
 		//Only the hostname
 		String hostname = result.substring(0, domainEnd);
 		String restricted;
-		if(dots == 1) domainStart = httpoff;
-		else{
-			restricted = containsRestricted(result.substring(0, domainEnd));
-			//get second-to-last . within hostname
-			if(restricted == null) domainStart = hostname.substring(0, hostname.lastIndexOf('.')).lastIndexOf('.') + 1;
-			else domainStart = Math.max(httpoff, hostname.substring(0, hostname.length() - restricted.length()).lastIndexOf('.') + 1);
-			
+		try{
+			if(dots <= 1) domainStart = httpoff;
+			else{
+				restricted = containsRestricted(result.substring(0, domainEnd));
+				//get second-to-last . within hostname
+				if(restricted == null) domainStart = hostname.substring(0, hostname.lastIndexOf('.')).lastIndexOf('.') + 1;
+				else domainStart = Math.max(httpoff, hostname.substring(0, hostname.length() - restricted.length()).lastIndexOf('.') + 1);
+				
+			}
+			result = result.substring(domainStart, domainEnd);
+		} catch(StringIndexOutOfBoundsException e){
+			throw new IllegalArgumentException("[Not a valid URI: " + result);
 		}
-		result = result.substring(domainStart, domainEnd);
+	
+		
 		return result;
 	}
 	
