@@ -2,15 +2,9 @@ package net.foben.schematizer.app;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,7 +22,6 @@ public class TypeMapper {
 		BufferedWriter out = new BufferedWriter(new FileWriter("foo_"));
 		String line;
 		IPLDReducer reducer = new RestrictingPLDReducer("src/main/resources/TopLevelDomains");
-		HashMap<String, Set<String>> mappings = new HashMap<String, Set<String>>();
 		int count = 0;
 		String oldline = "";
 		in.readLine();

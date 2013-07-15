@@ -4,14 +4,11 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.HashSet;
 import java.util.Set;
 
 
 import org.apache.commons.lang3.StringUtils;
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.URIImpl;
 
 public class RestrictingPLDReducer implements IPLDReducer {
 	Set<String> restrictedSLDs;

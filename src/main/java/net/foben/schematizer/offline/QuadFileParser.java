@@ -4,8 +4,6 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Set;
-
 import net.foben.schematizer.util.CustomHandler;
 
 import org.openrdf.rio.RDFFormat;
@@ -14,8 +12,8 @@ import org.openrdf.rio.RDFHandlerException;
 import org.openrdf.rio.RDFParseException;
 import org.openrdf.rio.RDFParser;
 import org.openrdf.rio.Rio;
-import org.openrdf.rio.RioSetting;
 import org.openrdf.rio.helpers.BasicParserSettings;
+import org.openrdf.rio.helpers.NTriplesParserSettings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,11 +31,12 @@ public class QuadFileParser {
 		this.parser = Rio.createParser(RDFFormat.NQUADS);
 		this.handler = handler;
 		this.fileToParse = filename;
-		parser.setRDFHandler(handler);
+		parser.setRDFHandler(this.handler);
 		configureParser(parser);
 	}
 	
 	private void configureParser(RDFParser parser){
+		_log.trace("Configuring Parser");
 		parser.setPreserveBNodeIDs(true);
 		parser.getParserConfig().set(BasicParserSettings.VERIFY_DATATYPE_VALUES, false);
 		parser.getParserConfig().set(BasicParserSettings.NORMALIZE_DATATYPE_VALUES, false);
@@ -49,6 +48,7 @@ public class QuadFileParser {
 		parser.getParserConfig().set(BasicParserSettings.PRESERVE_BNODE_IDS, true);
 		parser.getParserConfig().addNonFatalError(BasicParserSettings.VERIFY_DATATYPE_VALUES);
 		parser.getParserConfig().addNonFatalError(BasicParserSettings.FAIL_ON_UNKNOWN_DATATYPES);
+		parser.getParserConfig().addNonFatalError(NTriplesParserSettings.FAIL_ON_NTRIPLES_INVALID_LINES);
 	}
 	
 	public void startParsing(){

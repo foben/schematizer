@@ -2,7 +2,6 @@ package net.foben.schematizer.util;
 
 import net.foben.schematizer.offline.MemRepository;
 import static net.foben.schematizer.Environment.*;
-
 import org.openrdf.model.BNode;
 import org.openrdf.model.Literal;
 import org.openrdf.model.Resource;
@@ -16,6 +15,7 @@ import org.openrdf.rio.RDFHandlerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@SuppressWarnings("unused")
 public class CustomHandler implements RDFHandler {
 	private int stcount = 0;
 	private MemRepository repo;
