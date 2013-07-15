@@ -8,6 +8,11 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
    <dependencies>
+   		<dependency>
+   			<groupId>com.google.guava</groupId>
+    		<artifactId>guava</artifactId>
+    		<version>14.0.1</version>
+   		</dependency>
       <dependency>
          <groupId>de.uni_mannheim.informatik.dws</groupId>
          <artifactId>dwslib</artifactId>

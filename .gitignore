@@ -11,3 +11,5 @@ src/main/resources/quadtest.nq
 src/main/resources/quadtest_.nq
 all_types_complete.nt
 all_types_per_graph.nt
+out.csv
+types.ods
