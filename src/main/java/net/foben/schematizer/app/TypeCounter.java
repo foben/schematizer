@@ -20,6 +20,9 @@ public class TypeCounter {
 	 * @throws IOException 
 	 */
 	public static void main(String[] args) throws IOException {
+		for(int j = 0; j < args.length; j++){
+			System.out.println(args[j]);
+		}
 		BufferedReader in = new BufferedReader(new FileReader("src/main/resources/datasets"));
 		String dataset;
 		Map<String, PLDStat> map = new HashMap<String, PLDStat>();

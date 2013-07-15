@@ -24,7 +24,7 @@ public class TypeMapper {
 	 * @throws IOException 
 	 */
 	public static void main(String[] args) throws IOException {
-		BufferedReader in = new BufferedReader(new FileReader("foo"));
+		BufferedReader in = new BufferedReader(new FileReader("/home/ope/code/mastermaven/trunk/all_types_per_graph.nt"));
 		BufferedWriter out = new BufferedWriter(new FileWriter("foo_"));
 		String line;
 		IPLDReducer reducer = new RestrictingPLDReducer("src/main/resources/TopLevelDomains");
