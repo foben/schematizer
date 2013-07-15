@@ -1,7 +1,6 @@
 package net.foben.schematizer.app;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
@@ -9,8 +8,6 @@ import java.util.Map;
 
 import net.foben.schematizer.offline.QuadFileParser;
 import net.foben.schematizer.stats.PLDStat;
-import net.foben.schematizer.util.CustomHandler;
-import net.foben.schematizer.util.RestrictingPLDReducer;
 import net.foben.schematizer.util.TypeCountHandler;
 
 public class TypeCounter {

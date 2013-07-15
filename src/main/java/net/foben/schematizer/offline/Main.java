@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-import org.semanticweb.yars.nx.Node;
 import org.semanticweb.yars.nx.parser.NxParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +24,7 @@ public class Main {
 			int i = 0;
 			while(nx.hasNext()){
 				i++;
-				Node[] quad = nx.next();
+				//Node[] quad = nx.next();
 				//System.out.println(quad);
 				if(i%1000000 == 0) _log.info(i/1000000 + " mio quads parsed");
 			}

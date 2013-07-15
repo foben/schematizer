@@ -5,18 +5,13 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Map;
 
-import net.foben.schematizer.offline.MemRepository;
 import net.foben.schematizer.stats.PLDStat;
 import static net.foben.schematizer.Environment.*;
 
-import org.openrdf.model.BNode;
-import org.openrdf.model.Literal;
 import org.openrdf.model.Resource;
 import org.openrdf.model.Statement;
 import org.openrdf.model.URI;
 import org.openrdf.model.Value;
-import org.openrdf.model.impl.StatementImpl;
-import org.openrdf.model.impl.URIImpl;
 import org.openrdf.rio.RDFHandler;
 import org.openrdf.rio.RDFHandlerException;
 import org.slf4j.Logger;

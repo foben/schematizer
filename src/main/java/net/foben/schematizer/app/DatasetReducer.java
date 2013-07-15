@@ -2,16 +2,12 @@ package net.foben.schematizer.app;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
-import net.foben.schematizer.stats.PLDStat;
 import net.foben.schematizer.util.RestrictingPLDReducer;
 
 public class DatasetReducer {
