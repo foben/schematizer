@@ -20,7 +20,7 @@ public class TypeCounter {
 	public static void main(String[] args) throws IOException {
 		for(int j = 0; j < args.length; j++){
 			System.out.println(args[j]);
-			if(new File(args[j]).exists()){
+			if(!new File(args[j]).exists()){
 				throw new IllegalArgumentException("File " + args[j] + " doesn't exist!");
 			}
 		}
