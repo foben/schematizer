@@ -1,6 +1,7 @@
 package net.foben.schematizer.app;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
@@ -19,6 +20,9 @@ public class TypeCounter {
 	public static void main(String[] args) throws IOException {
 		for(int j = 0; j < args.length; j++){
 			System.out.println(args[j]);
+			if(new File(args[j]).exists()){
+				throw new IllegalArgumentException("File " + args[j] + " doesn't exist!");
+			}
 		}
 		BufferedReader in = new BufferedReader(new FileReader("src/main/resources/datasets"));
 		String dataset;
