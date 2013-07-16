@@ -7,10 +7,23 @@
       <pattern>%d{HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
     </encoder>
   </appender>
+  <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+    <file>unknown_graphs.log</file>
+    <append>true</append>
+    <!-- encoders are assigned the type
+         ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
+    <encoder>
+      <pattern>%msg%n</pattern>
+    </encoder>
+  </appender>
 
   <root level="debug">
     <appender-ref ref="STDOUT" />
   </root>
   <logger name="org.openrdf" level="info"/>
   <logger name="net.foben"   level="debug"/>
+  <logger name="net.foben.schematizer.util.RestrictingPLDReducer.Unknowns" level="all" additivity="false">
+  	<appender-ref ref="FILE" />
+  </logger>
+  
 </configuration>

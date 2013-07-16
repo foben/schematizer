@@ -28,7 +28,7 @@ import org.slf4j.LoggerFactory;
 
 import static net.foben.schematizer.Environment.*;
 
-public class DatasetMapper {
+public class DatasetToGraphsMapper {
 	
 	private String graphsFile;
 	private HashMap<String, List<String>> mappings;
@@ -38,8 +38,8 @@ public class DatasetMapper {
 	private int graphs     = -1;
 	private Logger _log;
 	
-	public DatasetMapper(String graphsFile){
-		_log = LoggerFactory.getLogger(DatasetMapper.class);
+	public DatasetToGraphsMapper(String graphsFile){
+		_log = LoggerFactory.getLogger(DatasetToGraphsMapper.class);
 		this.graphsFile = graphsFile;
 		mappings = new HashMap<String, List<String>>();
 	}
