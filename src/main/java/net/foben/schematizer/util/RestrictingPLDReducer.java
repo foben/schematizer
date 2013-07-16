@@ -12,6 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 
 public class RestrictingPLDReducer implements IPLDReducer {
 	Set<String> restrictedSLDs;
+	Set<String> usedRestrictions;
 	
 	public RestrictingPLDReducer(){
 		this(null);
@@ -19,6 +20,7 @@ public class RestrictingPLDReducer implements IPLDReducer {
 	
 	public RestrictingPLDReducer(String filename){
 		restrictedSLDs = new HashSet<String>();
+		usedRestrictions = new HashSet<String>();
 		if(filename == null) return;
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(filename));
@@ -62,6 +64,7 @@ public class RestrictingPLDReducer implements IPLDReducer {
 			if(dots <= 1) domainStart = httpoff;
 			else{
 				restricted = containsRestricted(result.substring(0, domainEnd));
+				if(restricted != null)usedRestrictions.add(restricted);
 				//get second-to-last . within hostname
 				if(restricted == null) domainStart = hostname.substring(0, hostname.lastIndexOf('.')).lastIndexOf('.') + 1;
 				else domainStart = Math.max(httpoff, hostname.substring(0, hostname.length() - restricted.length()).lastIndexOf('.') + 1);
@@ -74,6 +77,10 @@ public class RestrictingPLDReducer implements IPLDReducer {
 	
 		
 		return result;
+	}
+	
+	public Set<String> getUsedRestrictions(){
+		return usedRestrictions;
 	}
 	
 	private String containsRestricted(String url){
