@@ -3,7 +3,7 @@ package net.foben.schematizer.stats;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PLDStat {
+public class PropertyStat {
 	private String PLDString;
 	private int instanceCount;
 	private Map<String, Integer> typemap;
@@ -12,7 +12,7 @@ public class PLDStat {
 		return instanceCount;
 	}
 	
-	public PLDStat(String pldString){
+	public PropertyStat(String pldString){
 		this.PLDString = pldString;
 		this.instanceCount = 0;
 		typemap = new HashMap<String, Integer>();

@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.foben.schematizer.stats.PLDStat;
+import net.foben.schematizer.stats.PropertyStat;
 import net.foben.schematizer.util.IPLDReducer;
 import net.foben.schematizer.util.RestrictingPLDReducer;
 import static net.foben.schematizer.Environment.*;
@@ -24,14 +24,14 @@ public class TypeCountHandler implements RDFHandler {
 	private int stcount = 0;
 	private IPLDReducer reducer;
 	private Logger _log;
-	Map<String, PLDStat> map;
+	Map<String, PropertyStat> map;
 	String outfile;
 	private int gt = 0;
 	long last, now;
 	
 	public TypeCountHandler(String outfile, IPLDReducer reducer){
 		this._log = LoggerFactory.getLogger(TypeCountHandler.class);
-		this.map = new HashMap<String, PLDStat>(900, 0.9f);
+		this.map = new HashMap<String, PropertyStat>(900, 0.9f);
 		this.reducer = reducer;
 		this.outfile = outfile;
 	}
@@ -46,25 +46,13 @@ public class TypeCountHandler implements RDFHandler {
 	public void endRDF() throws RDFHandlerException {
 		System.out.println(gt);
 		try {
-//			BufferedWriter out = new BufferedWriter(new FileWriter(outfile));
-//			for(String key : map.keySet()){
-//				PLDStat stat = map.get(key);
-//				out.write(stat.toString());
-//				out.flush();
-//			}
-//			out.close();
-			_log.info("Starting write ops");
-			int lines = 0;
-			FileWriter fout = new FileWriter(outfile);
-			int total = map.keySet().size();
+			BufferedWriter out = new BufferedWriter(new FileWriter(outfile), 2097152);
 			for(String key : map.keySet()){
-				
-				if(lines++%10 == 0)_log.info("wrote " + lines + " of " + total);
-				PLDStat stat = map.get(key);
-				fout.write(stat.toString());
-				fout.flush();
+				PropertyStat stat = map.get(key);
+				out.write(stat.toString());
+				out.flush();
 			}
-			fout.close();
+			out.close();
 		} catch (IOException e) {
 			_log.error("Exception occurred while writing statistics!");
 			_log.error(e.getStackTrace().toString());
@@ -94,7 +82,7 @@ public class TypeCountHandler implements RDFHandler {
 			gt++;
 			if(map.containsKey(dataset))map.get(dataset).incr();
 			else{
-				map.put(dataset, new PLDStat(dataset));
+				map.put(dataset, new PropertyStat(dataset));
 				map.get(dataset).incr();
 			}
 			
