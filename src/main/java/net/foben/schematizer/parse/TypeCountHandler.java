@@ -58,7 +58,8 @@ public class TypeCountHandler implements RDFHandler {
 			FileWriter fout = new FileWriter(outfile);
 			int total = map.keySet().size();
 			for(String key : map.keySet()){
-				if(lines++%10 == 0)_log.info("wrote 10 of " + total);
+				
+				if(lines++%10 == 0)_log.info("wrote " + lines + " of " + total);
 				PLDStat stat = map.get(key);
 				fout.write(stat.toString());
 				fout.flush();
