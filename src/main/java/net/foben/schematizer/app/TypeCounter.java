@@ -2,8 +2,9 @@ package net.foben.schematizer.app;
 
 import java.io.File;
 import java.io.IOException;
-import net.foben.schematizer.offline.QuadFileParser;
-import net.foben.schematizer.util.TypeCountHandler;
+
+import net.foben.schematizer.parse.QuadFileParser;
+import net.foben.schematizer.parse.TypeCountHandler;
 
 public class TypeCounter {
 

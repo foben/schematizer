@@ -1,4 +1,4 @@
-package net.foben.schematizer.offline;
+package net.foben.schematizer.util;
 
 import java.io.Closeable;
 import java.io.File;
@@ -25,7 +25,6 @@ import org.openrdf.rio.nquads.NQuadsWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.foben.schematizer.util.IRepo;
 
 public class MemRepository implements IRepo, Closeable {
 	
