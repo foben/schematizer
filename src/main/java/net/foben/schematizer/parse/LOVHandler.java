@@ -1,7 +1,6 @@
 package net.foben.schematizer.parse;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -56,11 +55,10 @@ public class LOVHandler implements RDFHandler {
 	@Override
 	public void endRDF() throws RDFHandlerException {
 		try {
-			BufferedWriter out = new BufferedWriter(new FileWriter(outfile), 2097152);
+			FileWriter out = new FileWriter(outfile);
 			for(String key : map.keySet()){
 				LOVStat stat = map.get(key);
-				out.write(stat.toString());
-				out.flush();
+				stat.write(out);
 			}
 			out.close();
 		} catch (IOException e) {

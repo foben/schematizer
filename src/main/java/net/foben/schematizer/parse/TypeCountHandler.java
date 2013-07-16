@@ -1,6 +1,5 @@
 package net.foben.schematizer.parse;
 
-import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
@@ -50,8 +49,6 @@ public class TypeCountHandler implements RDFHandler {
 			for(String key : map.keySet()){
 				PropertyStat stat = map.get(key);
 				stat.write(out);
-				//out.write(stat.toString());
-				//out.flush();
 			}
 			out.close();
 		} catch (IOException e) {
