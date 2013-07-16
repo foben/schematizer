@@ -1,4 +1,4 @@
-package net.foben.schematizer.util;
+package net.foben.schematizer.parse;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.foben.schematizer.stats.PLDStat;
+import net.foben.schematizer.util.IPLDReducer;
+import net.foben.schematizer.util.RestrictingPLDReducer;
 import static net.foben.schematizer.Environment.*;
 
 import org.openrdf.model.Resource;

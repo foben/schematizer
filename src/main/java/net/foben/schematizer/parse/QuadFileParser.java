@@ -1,10 +1,9 @@
-package net.foben.schematizer.offline;
+package net.foben.schematizer.parse;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import net.foben.schematizer.util.CustomHandler;
 
 import org.openrdf.rio.RDFFormat;
 import org.openrdf.rio.RDFHandler;
@@ -66,13 +65,6 @@ public class QuadFileParser {
 			e.printStackTrace();
 		}
 		
-	}
-	
-	public static void main(String[] args) throws RDFParseException, RDFHandlerException, IOException {
-		QuadFileParser parser = new QuadFileParser(new CustomHandler(),
-				"src/main/resources/quadtest_.nq");
-		parser.startParsing();
-	}
-	
+	}	
 
 }

@@ -1,6 +1,8 @@
-package net.foben.schematizer.util;
+package net.foben.schematizer.parse;
 
-import net.foben.schematizer.offline.MemRepository;
+import net.foben.schematizer.util.IPLDReducer;
+import net.foben.schematizer.util.MemRepository;
+import net.foben.schematizer.util.RestrictingPLDReducer;
 import static net.foben.schematizer.Environment.*;
 import org.openrdf.model.BNode;
 import org.openrdf.model.Literal;
