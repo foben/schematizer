@@ -8,6 +8,10 @@ public class PLDStat {
 	private int instanceCount;
 	private Map<String, Integer> typemap;
 	
+	public int getTotal(){
+		return instanceCount;
+	}
+	
 	public PLDStat(String pldString){
 		this.PLDString = pldString;
 		this.instanceCount = 0;

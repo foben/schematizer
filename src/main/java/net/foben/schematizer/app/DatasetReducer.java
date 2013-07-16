@@ -20,7 +20,7 @@ public class DatasetReducer {
 		BufferedReader in = new BufferedReader(new FileReader("src/main/resources/graphs.nt"));
 		String graph;
 		Set<String> set = new HashSet<String>();
-		RestrictingPLDReducer reducer = new RestrictingPLDReducer("src/main/resources/TopLevelDomains");
+		RestrictingPLDReducer reducer = new RestrictingPLDReducer("src/main/resources/BTCReductions");
 		int grcount = 0;
 		while((graph = in.readLine()) != null){
 			grcount++;
@@ -29,14 +29,22 @@ public class DatasetReducer {
 			if (grcount%1000000 == 0)System.out.print('.');
 		}
 		System.out.println("\nMapsize: " + set.size());
+		Set<String> used = reducer.getUsedRestrictions();
+		for(String u : used){
+			System.out.println(u);
+		}
 		in.close();
+		reducer = null;
+		if(args != null && args.length > 0 && args[0].equals("true")) outputMappings(set);
+	}
+	
+	private static void outputMappings(Set<String> set) throws IOException{
 		BufferedWriter out = new BufferedWriter(new FileWriter("src/main/resources/datasets"));
 		for(String ds : set){
 			out.write(ds);
 			out.newLine();
 		}
 		out.close();
-		reducer = null;
 	}
 
 }

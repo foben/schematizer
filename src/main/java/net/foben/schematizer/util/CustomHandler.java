@@ -27,7 +27,7 @@ public class CustomHandler implements RDFHandler {
 	public CustomHandler(){
 		_log = LoggerFactory.getLogger(CustomHandler.class);
 		repo = new MemRepository();
-		reducer = new RestrictingPLDReducer("src/main/resources/TopLevelDomains");
+		reducer = new RestrictingPLDReducer("src/main/resources/BTCReductions");
 		exVo = new URIImpl(URI_EXTERNALVOCAB);
 		exRes = new URIImpl(URI_EXTERNALRES);
 

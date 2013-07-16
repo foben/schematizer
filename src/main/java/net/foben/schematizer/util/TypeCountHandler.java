@@ -3,6 +3,7 @@ package net.foben.schematizer.util;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 import net.foben.schematizer.stats.PLDStat;
@@ -23,12 +24,13 @@ public class TypeCountHandler implements RDFHandler {
 	private Logger _log;
 	Map<String, PLDStat> map;
 	String outfile;
+	private int gt = 0;
 	
 	
-	public TypeCountHandler(Map<String, PLDStat> map, String outfile){
-		_log = LoggerFactory.getLogger(TypeCountHandler.class);
-		this.map = map;
-		reducer = new RestrictingPLDReducer("src/main/resources/TopLevelDomains");
+	public TypeCountHandler(String outfile){
+		this._log = LoggerFactory.getLogger(TypeCountHandler.class);
+		this.map = new HashMap<String, PLDStat>(900, 0.9f);
+		this.reducer = new RestrictingPLDReducer("src/main/resources/BTCReductions");
 		this.outfile = outfile;
 	}
 	@Override
@@ -36,6 +38,7 @@ public class TypeCountHandler implements RDFHandler {
 	
 	@Override
 	public void endRDF() throws RDFHandlerException {
+		System.out.println(gt);
 		try {
 			BufferedWriter out = new BufferedWriter(new FileWriter(outfile));
 			for(String key : map.keySet()){
@@ -60,6 +63,7 @@ public class TypeCountHandler implements RDFHandler {
 
 	@Override
 	public void handleStatement(Statement arg0) throws RDFHandlerException {
+		
 		try {
 			stcount++;
 			if(stcount%1000000 == 0)_log.info(stcount/1000000 + " million lines parsed");
@@ -67,7 +71,13 @@ public class TypeCountHandler implements RDFHandler {
 			Value obj = arg0.getObject();
 			String dataset = reducer.getPLD(arg0.getContext().stringValue());
 			
-			map.get(dataset).incr();
+			gt++;
+			if(map.containsKey(dataset))map.get(dataset).incr();
+			else{
+				map.put(dataset, new PLDStat(dataset));
+				map.get(dataset).incr();
+			}
+			
 			if(pred.stringValue().equals(RDFTYPE)){
 				if(obj instanceof Resource)	map.get(dataset).incrType(obj.stringValue());
 			}

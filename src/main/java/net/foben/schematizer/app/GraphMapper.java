@@ -19,7 +19,7 @@ public class GraphMapper {
 	public static void main(String[] args) throws RepositoryException, RDFHandlerException, FileNotFoundException {
 		DatasetMapper mapper = new DatasetMapper("src/main/resources/graphs.nt");
 		mapper.printStats();
-		boolean success = mapper.createMappings(new RestrictingPLDReducer("src/main/resources/TopLevelDomains"));
+		boolean success = mapper.createMappings(new RestrictingPLDReducer("src/main/resources/BTCReductions"));
 		if(success){
 			mapper.printStats();
 			mapper.exportMappingsInternal("GraphMappings.nt");
