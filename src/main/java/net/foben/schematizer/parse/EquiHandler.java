@@ -77,7 +77,7 @@ public class EquiHandler implements RDFHandler {
 			URI pred = arg0.getPredicate();
 			
 			//pred.equals(owlsA) || 
-			if(pred.equals(owleC)){
+			if(pred.equals(owlsA)){
 				writecount++;
 				Value obj = arg0.getObject();
 				Resource subj = arg0.getSubject();
