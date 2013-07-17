@@ -27,8 +27,7 @@ public class EquiCounter {
 			System.out.println("***************EQUICOUNTER**************");
 			System.out.println(args[i]);
 			System.out.println("****************************************");
-			//QuadFileParser parser = new QuadFileParser(new EquiHandler(args[i]+"_equis"),	args[i]);
-			QuadFileParser parser = new QuadFileParser(new EquiHandler(args[i]+"_equis", reducer),	args[i]);
+			QuadFileParser parser = new QuadFileParser(new EquiHandler(args[i]+"_sames", reducer),	args[i]);
 			parser.startParsing();
 			System.out.println();
 		}
