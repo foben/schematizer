@@ -6,25 +6,32 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import net.foben.schematizer.stats.TypeStat;
-
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 
-public class StatAggregator {
+import static net.foben.schematizer.Environment.*;
+
+public class TypeStatsAggregator {
+	private static String d = " ";
 	
-	static Table<String, String, TypeStat> stats;
-	static Logger _log;
+	private Table<String, String, TypeStat> stats;
+	private Logger _log;
+	private String[] args;
 	
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		_log = LoggerFactory.getLogger(StatAggregator.class);
+	public TypeStatsAggregator(String[] args){
+		_log = LoggerFactory.getLogger(TypeStatsAggregator.class);
+		this.args = args;
+	}
+	
+	public static void main(String[] args){
+		TypeStatsAggregator.printToFile2(new TypeStatsAggregator(args).parseTypeStats());
+	}
+	
+	public Table<String, String, TypeStat> parseTypeStats(){
+		printArgs(args);
 		stats = HashBasedTable.create();
 		for(int i = 0; i < args.length; i++){
 			String file = args[i];
@@ -38,6 +45,9 @@ public class StatAggregator {
 					dataset = data[0];
 					type = data[1];
 					count = Integer.parseInt(data[2]);
+					if(count <= 0){
+						System.out.println();
+					}
 					if(stats.contains(dataset, type)){
 						stats.get(dataset, type).incr(count);
 					}
@@ -53,9 +63,36 @@ public class StatAggregator {
 			}
 		}
 		_log.info("complete");
-		printToFile(stats);
+		return stats;
+		//printToFile2(stats);
 	}
 	
+	public static void printToFile2(Table<String, String, TypeStat> stats){
+		//stats.
+		
+		try {
+			BufferedWriter out = new BufferedWriter(new FileWriter("out.csv"));
+			out.write("foo ");
+			for(String row : stats.rowKeySet()){
+				out.write(row + d);
+			}
+			out.newLine();
+			
+			for(String col : stats.columnKeySet()){
+				out.write(col + d);
+				for(String row : stats.rowKeySet()){
+					TypeStat stat = stats.get(row, col);
+					if (stat == null) 	out.write("0" + d);
+					else				out.write(stat.getCount() + d);
+				}
+				out.newLine();
+			}
+			
+			out.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 	public static void printToFile(Table<String, String, TypeStat> stats){
 		//stats.
 		

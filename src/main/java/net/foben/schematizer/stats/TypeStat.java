@@ -20,6 +20,9 @@ public class TypeStat {
 	}
 	
 	public void incr(int i){
+		if(count + i < 0){
+			System.out.println();
+		}
 		count += i;
 	}
 

@@ -61,9 +61,6 @@ public class GraphToDatasetMapper {
 				result = false;
 			}
 		}
-		for(String str : uniqDatasets){
-			System.out.println(str);
-		}
 		runtime = result ? (System.nanoTime()- start)/Math.pow(10, 9) : -1;
 		datasets = uniqDatasets.size();
 		processedGraphs = result ? mappings.keySet().size() : -1;

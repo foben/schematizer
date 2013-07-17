@@ -1,6 +1,5 @@
 package net.foben.schematizer;
 
-import org.openrdf.model.impl.URIImpl;
 
 public class Environment {
 	public static final String RDFSCLASS = "http://www.w3.org/2000/01/rdf-schema#Class";
@@ -8,16 +7,20 @@ public class Environment {
 	
 	public static final String RDFTYPE = "http://www.w3.org/1999/02/22-rdf-syntax-ns#type";
 	
+	public static final String XS_DINT = "http://www.w3.org/2001/XMLSchema#integer";
+	
 	public static final String URI_IDS = "http://dws.informatik.uni-mannheim.de/lodschema/ids/";
 	public static final String URI_PROPERTIES = "http://dws.informatik.uni-mannheim.de/lodschema/properties/";
 	public static final String URI_DATASET = "http://dws.informatik.uni-mannheim.de/lodschema/types/Dataset";
-	public static final String URI_HASGRAPH = "http://dws.informatik.uni-mannheim.de/lodschema/properties/hasGraph";
-	public static final String URI_HASCLASS = "http://dws.informatik.uni-mannheim.de/lodschema/properties/hasClass";
-
-	public static final String URI_EXTERNALVOCAB  = "http://dws.informatik.uni-mannheim.de/lodschema/properties/usesExternalVocabulary";
-	public static final String URI_EXTERNALRES  = "http://dws.informatik.uni-mannheim.de/lodschema/properties/usesExternalResource";
+	public static final String URI_TYPESPEC = "http://dws.informatik.uni-mannheim.de/lodschema/types/TypeSpec";
 	
-	public static final URIImpl RES_HAS_CLASS = new URIImpl(URI_HASCLASS);
+	public static final String URI_HASGRAPH = "http://dws.informatik.uni-mannheim.de/lodschema/properties/hasGraph";
+	public static final String URI_HASTYPESPEC = "http://dws.informatik.uni-mannheim.de/lodschema/properties/hasTypeSpec";
+	public static final String URI_DESCTYPE = "http://dws.informatik.uni-mannheim.de/lodschema/properties/describesType";
+	public static final String URI_TYPEOCC = "http://dws.informatik.uni-mannheim.de/lodschema/properties/typeOccurences";
+	
+	public static final String URI_STATEMENTCOUNT = "http://dws.informatik.uni-mannheim.de/lodschema/properties/statementCount";
+
 	
 	
 	public static final String Q_DATASETS = "SELECT ?a WHERE {?a a <http://dws.informatik.uni-mannheim.de/lodschema/types/Dataset> } LIMIT %s ";
@@ -34,5 +37,13 @@ public class Environment {
 			sb.append(ALPHA_NUM.charAt(ndx));
 		}
 		return sb.toString();
+	}
+	
+	public static void printArgs(String[] args){
+		System.out.println("Arguments:");
+		System.out.println("-----------------");
+		for(int i = 0; i < args.length; i++){
+			System.out.println(args[i]);
+		}
 	}
 }

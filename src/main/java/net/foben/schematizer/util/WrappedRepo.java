@@ -5,37 +5,57 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.openrdf.model.Resource;
 import org.openrdf.model.Statement;
 import org.openrdf.model.URI;
 import org.openrdf.model.Value;
+import org.openrdf.model.impl.StatementImpl;
 import org.openrdf.model.impl.URIImpl;
+import org.openrdf.query.GraphQuery;
+import org.openrdf.query.MalformedQueryException;
+import org.openrdf.query.QueryEvaluationException;
+import org.openrdf.query.QueryLanguage;
+import org.openrdf.query.TupleQuery;
+import org.openrdf.query.TupleQueryResult;
 import org.openrdf.repository.Repository;
 import org.openrdf.repository.RepositoryException;
 import org.openrdf.repository.RepositoryResult;
 import org.openrdf.repository.sail.SailRepository;
+import org.openrdf.sail.Sail;
 import org.openrdf.sail.memory.MemoryStore;
+import org.openrdf.sail.nativerdf.NativeStore;
 import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.rio.RDFFormat;
 import org.openrdf.rio.RDFHandlerException;
 import org.openrdf.rio.RDFParseException;
 import org.openrdf.rio.helpers.BasicParserSettings;
 import org.openrdf.rio.nquads.NQuadsWriter;
+import org.openrdf.rio.ntriples.NTriplesWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public class MemRepository implements IRepo, Closeable {
+public class WrappedRepo implements IRepo, Closeable {
 	
 	Repository repo;
 	RepositoryConnection con;
 	boolean working;
 	Logger _log;
+	List<Statement> queue;
+	public WrappedRepo(String str){
+		this(new NativeStore(new File(str)));
+	}
 	
-	public MemRepository(){
-		_log = LoggerFactory.getLogger(MemRepository.class);
-		repo = new SailRepository(new MemoryStore());
+	public WrappedRepo(){
+		this(new MemoryStore());
+	}
+	public WrappedRepo(Sail sail){
+		_log = LoggerFactory.getLogger(WrappedRepo.class);
+		queue = new ArrayList<Statement>();
+		repo = new SailRepository(sail);
 		working = true;
 		try {
 			repo.initialize();
@@ -55,7 +75,39 @@ public class MemRepository implements IRepo, Closeable {
 			e.printStackTrace();
 		}
 	}
-
+	
+	public void queue(Resource subj, URI pred, Value obj) {
+		queue.add(new StatementImpl(subj, pred, obj));
+		if(queue.size() > 100000) flushQueue();
+	}
+	
+	public void flushQueue(){
+		_log.info(String.format("Flushing %s statements into repo!", queue.size()));
+		try {
+			con.add(queue, (Resource) null);
+			queue.clear();
+		} catch (RepositoryException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public TupleQueryResult sparql(String query){
+		try {
+			TupleQuery q = con.prepareTupleQuery(QueryLanguage.SPARQL, query);
+			TupleQueryResult res = q.evaluate();
+			return res;
+			
+		} catch (RepositoryException e) {
+			e.printStackTrace();
+		} catch (MalformedQueryException e) {
+			e.printStackTrace();
+		} catch (QueryEvaluationException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	@Override
 	public boolean add(Statement st) {
 		return add(st, (Resource) null);
@@ -147,10 +199,11 @@ public class MemRepository implements IRepo, Closeable {
 	}
 	
 	public void toFile(String filename){
+		flushQueue();
 		FileOutputStream fout = null;
 		try {
 			fout = new FileOutputStream(filename);
-			con.export(new NQuadsWriter(fout), (Resource)null);
+			con.export(new NTriplesWriter(fout), (Resource)null);
 		} catch (RepositoryException e) {
 		} catch (RDFHandlerException e) {
 		} catch (FileNotFoundException e) {
