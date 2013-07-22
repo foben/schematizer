@@ -1,7 +1,5 @@
 package net.foben.schematizer.parse;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashSet;
@@ -18,19 +16,15 @@ public class GraphExtractHandler implements RDFHandler {
 	private Logger _log;
 	private Set<String> graphs;
 	private double now, last;
-	String outfile;
+	private String outfile_base;
+	private String outfile;
+	private int outcount = 0;
 	
-	
-	public GraphExtractHandler(String outfile) throws IOException{
+	public GraphExtractHandler(String filename) throws IOException{
 		this._log = LoggerFactory.getLogger(GraphExtractHandler.class);
-		this.outfile = outfile;
+		this.outfile_base = filename;
+		this.outfile = filename + "_0";
 		graphs = new HashSet<String>();
-		BufferedReader in = new BufferedReader(new FileReader("src/main/resources/lovvocabs"));
-		String ns;
-		while((ns = in.readLine()) != null){
-			graphs.add(ns);
-		}
-		in.close();
 	}
 	
 	@Override
@@ -38,6 +32,11 @@ public class GraphExtractHandler implements RDFHandler {
 	
 	@Override
 	public void endRDF() throws RDFHandlerException {
+		writeOut();
+		
+	}
+	
+	private void writeOut(){
 		try {
 			String linesep = System.getProperty("line.separator");
 			FileWriter out = new FileWriter(outfile);
@@ -56,7 +55,11 @@ public class GraphExtractHandler implements RDFHandler {
 		} catch (IOException e) {
 			_log.error("Exception occurred while writing statistics!");
 			_log.error(e.getStackTrace().toString());
+			System.exit(-1);
 		}
+		outcount++;
+		graphs = new HashSet<String>();
+		outfile = outfile_base + "_" + outcount;
 		
 	}
 
@@ -75,6 +78,7 @@ public class GraphExtractHandler implements RDFHandler {
 			stcount++;
 			if(stcount%1000000 == 0){
 				_log.info(stcount/1000000 + " million lines parsed. Speed: " + measure());
+				if(stcount%100000000 == 0) writeOut();
 			}
 			graphs.add(arg0.getContext().stringValue());
 			
