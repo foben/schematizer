@@ -2,7 +2,6 @@ package net.foben.schematizer.app;
 
 import org.openrdf.model.URI;
 import org.openrdf.model.impl.LiteralImpl;
-import org.openrdf.model.impl.StatementImpl;
 import org.openrdf.model.impl.URIImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -81,7 +80,7 @@ public class STATRDFizer {
 		}
 		repo.flushQueue();
 		repo.toFile("rep");
-		
+		repo.close();
 	}
 
 }
