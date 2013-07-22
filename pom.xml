@@ -9,6 +9,11 @@
   </properties>
    <dependencies>
    		<dependency>
+   			<groupId>osstech</groupId>
+			  <artifactId>regdom4j</artifactId>
+			  <version>1.0.2</version>
+   		</dependency>
+   		<dependency>
    			<groupId>com.google.guava</groupId>
     		<artifactId>guava</artifactId>
     		<version>14.0.1</version>
@@ -74,6 +79,11 @@
    <repositories>
 	  <!-- <repository> <id>aduna-repo</id> <name>Aduna Software M2 Repository</name> 
 	          <url>http://repo.aduna-software.org/maven2/releases</url> </repository> -->
+	  <repository>
+      <id>peace.osstch.co.jp</id>
+      <name>Hamano's Maven Repository</name>
+      <url>scpexe://peace/srv/osstech/www/www.osstech.co.jp/html/download/hamano/maven</url>
+    </repository>
 	  <repository>
 	          <id>nxparser-repo</id>
 	          <url>http://nxparser.googlecode.com/svn/repository</url>

@@ -1,9 +1,11 @@
 package net.foben.schematizer.util;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -104,7 +106,14 @@ public class DatasetToGraphsMapper {
 		return mappings;
 	}
 	
-	
+	public void exportDatasets(String filename) throws IOException{
+		BufferedWriter br = new BufferedWriter(new FileWriter(filename));
+		for (String ds : mappings.keySet()){
+			br.write(ds);
+			br.newLine();
+		}
+		br.close();
+	}
 	
 	public void exportMappingsInternal(String filename) throws RepositoryException, RDFHandlerException, FileNotFoundException {
 		if(!mappingSuccess){
