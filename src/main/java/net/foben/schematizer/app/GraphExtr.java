@@ -29,7 +29,7 @@ public class GraphExtr {
 		boolean opt = Boolean.parseBoolean(args[0]);
 		System.out.println(opt);
 		HashMap<String, String> foo = null;
-		if(opt) { BufferedReader br = new BufferedReader(new FileReader("graphs.nt"));
+		if(opt) { BufferedReader br = new BufferedReader(new FileReader("src/main/resources/graphs.nt"));
 			foo = new HashMap<String, String>();
 			String line;
 			while ((line = br.readLine()) != null){
