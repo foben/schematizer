@@ -20,26 +20,26 @@ public class GraphExtr {
 	 * @throws IOException 
 	 */
 	public static void main(String[] args) throws IOException {
-		for(int j = 0; j < args.length; j++){
+		for(int j = 1; j < args.length; j++){
 			System.out.println(args[j]);
 			if(!new File(args[j]).exists()){
 				throw new IllegalArgumentException("File " + args[j] + " doesn't exist!");
 			}
 		}
-		
-		
-		
-		BufferedReader br = new BufferedReader(new FileReader("graphs.nt"));
-		HashMap<String, String> foo = new HashMap<String, String>();
-		String line;
-		while ((line = br.readLine()) != null){
-		    foo.put(line, "foo");
+		boolean opt = Boolean.parseBoolean(args[0]);
+		System.out.println(opt);
+		HashMap<String, String> foo = null;
+		if(opt) { BufferedReader br = new BufferedReader(new FileReader("graphs.nt"));
+			foo = new HashMap<String, String>();
+			String line;
+			while ((line = br.readLine()) != null){
+			    foo.put(line, "foo");
+			}
+	//		foo = null;
+			br.close();
 		}
-		foo = null;
-		    br.close();
-		br = null;
 		
-		for(int i = 0; i < args.length; i++){
+		for(int i = 1; i < args.length; i++){
 			System.out.println("****************************************");
 			System.out.println(args[i]);
 			System.out.println("****************************************");
@@ -48,6 +48,7 @@ public class GraphExtr {
 			parser.startParsing();
 			System.out.println();
 		}
+		if(opt)System.out.println(foo.keySet().size());
 	}
 
 }
