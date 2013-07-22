@@ -78,8 +78,8 @@ public class GraphExtractHandler implements RDFHandler {
 			stcount++;
 			if(stcount%1000000 == 0){
 				_log.info(stcount/1000000 + " million lines parsed. Speed: " + measure());
-				if(stcount%100000000 == 0) writeOut();
 			}
+			if(stcount%100000000 == 0) writeOut();
 			graphs.add(arg0.getContext().stringValue());
 			
 		} catch (IllegalArgumentException ia){
