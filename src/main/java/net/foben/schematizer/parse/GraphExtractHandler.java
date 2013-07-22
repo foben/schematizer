@@ -39,10 +39,19 @@ public class GraphExtractHandler implements RDFHandler {
 	@Override
 	public void endRDF() throws RDFHandlerException {
 		try {
+			String linesep = System.getProperty("line.separator");
 			FileWriter out = new FileWriter(outfile);
+			int lines = 0;
 			for(String graph : graphs){
+				lines++;
 				out.write(graph);
+				out.write(linesep);
+				if(lines%10000 == 0){
+					_log.info("Flushing 10,000 lines");
+					out.flush();
+				}
 			}
+			out.flush();
 			out.close();
 		} catch (IOException e) {
 			_log.error("Exception occurred while writing statistics!");
