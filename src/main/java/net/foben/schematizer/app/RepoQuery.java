@@ -27,6 +27,10 @@ public class RepoQuery {
 												 "FILTER (?oc > 10000)" +
 												 "FILTER (?d != <http://dws.informatik.uni-mannheim.de/lodschema/ids/dbpedia.org>)" +
 												 "} ";
+	static String getStsPerDS = "SELECT * WHERE {?d a <http://dws.informatik.uni-mannheim.de/lodschema/types/Dataset> ." +
+												 "?d <http://dws.informatik.uni-mannheim.de/lodschema/properties/statementCount> ?c." +
+												 "} ORDER BY desc( ?c) LIMIT 15"; 
+
 	
 	
 	/**
@@ -36,7 +40,7 @@ public class RepoQuery {
 	public static void main(String[] args) throws QueryEvaluationException {
 		WrappedRepo repo = new WrappedRepo("repooo");
 		String actquery;
-		if(args.length < 1) actquery = getHighVals;
+		if(args.length < 1) actquery = getStsPerDS;
 		else actquery = args[0];
 		TupleQueryResult res = repo.sparql(actquery);
 		while(res.hasNext()){
