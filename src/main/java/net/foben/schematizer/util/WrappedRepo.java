@@ -14,7 +14,6 @@ import org.openrdf.model.URI;
 import org.openrdf.model.Value;
 import org.openrdf.model.impl.StatementImpl;
 import org.openrdf.model.impl.URIImpl;
-import org.openrdf.query.GraphQuery;
 import org.openrdf.query.MalformedQueryException;
 import org.openrdf.query.QueryEvaluationException;
 import org.openrdf.query.QueryLanguage;
@@ -32,7 +31,6 @@ import org.openrdf.rio.RDFFormat;
 import org.openrdf.rio.RDFHandlerException;
 import org.openrdf.rio.RDFParseException;
 import org.openrdf.rio.helpers.BasicParserSettings;
-import org.openrdf.rio.nquads.NQuadsWriter;
 import org.openrdf.rio.ntriples.NTriplesWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -87,7 +85,6 @@ public class WrappedRepo implements IRepo, Closeable {
 			con.add(queue, (Resource) null);
 			queue.clear();
 		} catch (RepositoryException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

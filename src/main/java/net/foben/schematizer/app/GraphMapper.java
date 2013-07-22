@@ -1,6 +1,5 @@
 package net.foben.schematizer.app;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.openrdf.repository.RepositoryException;
@@ -8,7 +7,6 @@ import org.openrdf.rio.RDFHandlerException;
 
 import net.foben.schematizer.util.DatasetToGraphsMapper;
 import net.foben.schematizer.util.PublicSuffixReducer;
-import net.foben.schematizer.util.RestrictingPLDReducer;
 
 public class GraphMapper {
 
@@ -21,11 +19,14 @@ public class GraphMapper {
 	public static void main(String[] args) throws RepositoryException, RDFHandlerException, IOException {
 		DatasetToGraphsMapper mapper = new DatasetToGraphsMapper("src/main/resources/graphs.nt");
 		mapper.printStats();
+		PublicSuffixReducer reducer = new PublicSuffixReducer();
 		//boolean success = mapper.createMappings(new RestrictingPLDReducer("src/main/resources/BTCReductions"));
-		boolean success = mapper.createMappings(new PublicSuffixReducer());
+		boolean success = mapper.createMappings(reducer);
 		if(success){
 			mapper.printStats();
-			mapper.exportMappingsInternal("GraphMappings.nt");
+			mapper.exportDatasets("GraphMappings");
+			reducer.printBench();
+			//mapper.exportMappingsInternal("GraphMappings.nt");
 		}
 	}
 

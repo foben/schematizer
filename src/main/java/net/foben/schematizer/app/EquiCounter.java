@@ -5,7 +5,6 @@ import java.io.IOException;
 
 import net.foben.schematizer.parse.EquiHandler;
 import net.foben.schematizer.parse.QuadFileParser;
-import net.foben.schematizer.parse.TypeCountHandler;
 import net.foben.schematizer.util.IPLDReducer;
 import net.foben.schematizer.util.LookupPLDReducer;
 
