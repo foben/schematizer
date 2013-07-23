@@ -44,11 +44,6 @@
          <version>3.1</version>
       </dependency>
       <dependency>
-              <groupId>org.semanticweb.yars</groupId>
-              <artifactId>nxparser</artifactId>
-              <version>1.2.3</version>
-      </dependency>
-      <dependency>
 		<groupId>org.hectorclient</groupId>
 		<artifactId>hector-core</artifactId>
 		<version>1.1-4</version>
@@ -74,24 +69,7 @@
          <artifactId>sesame-rio-nquads</artifactId>
          <version>2.7.3</version>
       </dependency>
-   </dependencies>
-   
-   <repositories>
-	  <!-- <repository> <id>aduna-repo</id> <name>Aduna Software M2 Repository</name> 
-	          <url>http://repo.aduna-software.org/maven2/releases</url> </repository> -->
-	  <repository>
-      <id>peace.osstch.co.jp</id>
-      <name>Hamano's Maven Repository</name>
-      <url>scpexe://peace/srv/osstech/www/www.osstech.co.jp/html/download/hamano/maven</url>
-    </repository>
-	  <repository>
-	          <id>nxparser-repo</id>
-	          <url>http://nxparser.googlecode.com/svn/repository</url>
-	  </repository>
-	  <!-- <repository> <id>local-repo</id> <name>local-repo</name> <url>file://${project.basedir}/lib/</url> 
-	          </repository> -->
-   </repositories>
-   
+   </dependencies>   
    
    <build>
       <resources>

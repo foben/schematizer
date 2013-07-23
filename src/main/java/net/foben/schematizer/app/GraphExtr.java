@@ -15,14 +15,13 @@ public class GraphExtr {
 	 * @throws IOException 
 	 */
 	public static void main(String[] args) throws IOException {
-		for(int j = 1; j < args.length; j++){
+		for(int j = 0; j < args.length; j++){
 			System.out.println(args[j]);
 			if(!new File(args[j]).exists()){
 				throw new IllegalArgumentException("File " + args[j] + " doesn't exist!");
 			}
 		}
-		boolean opt = Boolean.parseBoolean(args[0]);
-		opt = true;
+		boolean opt = true;
 		HashMap<String, String> foo = null;
 		if(opt) {
 			System.out.println("\"optimizing\"");
@@ -36,7 +35,7 @@ public class GraphExtr {
 			
 		}
 		
-		for(int i = 1; i < args.length; i++){
+		for(int i = 0; i < args.length; i++){
 			System.out.println("****************************************");
 			System.out.println(args[i]);
 			System.out.println("****************************************");
