@@ -35,8 +35,8 @@ public class Benchmarker {
 			    foo.put(line, "foo");
 			}
 			br.close();
-			
 		}
+		foo = null;
 		
 		for(int i = 0; i < args.length; i++){
 			System.out.println("****************************************");
@@ -46,7 +46,6 @@ public class Benchmarker {
 			parser.startParsing();
 			System.out.println();
 		}
-		if(opt)System.out.println(foo.keySet().size());
 	}
 
 }
