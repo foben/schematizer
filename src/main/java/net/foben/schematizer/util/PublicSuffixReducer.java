@@ -38,8 +38,12 @@ public class PublicSuffixReducer implements IPLDReducer {
 		domainEnd = result.substring(httpoff).contains("/") ? result.indexOf("/", httpoff) : result.length();
 		
 		String trimmed = result.substring(httpoff, domainEnd);
-		
-		
+		if(trimmed.contains(":")){
+			trimmed = trimmed.substring(0, trimmed.indexOf(":"));
+		}
+		if(isIp(trimmed)){
+			return trimmed;
+		}
 		long start = System.nanoTime();
 		String res = regdom.getRegisteredDomain(trimmed);
 		long dur = System.nanoTime() - start;
@@ -48,6 +52,19 @@ public class PublicSuffixReducer implements IPLDReducer {
 		return res;
 	}
 	
+	private boolean isIp(String trimmed) {
+		if(!trimmed.contains(".")) return false;
+		String[] parts = trimmed.split("\\.");
+		for(String str : parts){
+			try{
+				Integer.parseInt(str);
+			} catch(NumberFormatException e){
+				return false;
+			}
+		}
+		return true;
+	}
+
 	public void printBench(){
 		double avg = time / invocs;
 		double avgsec = avg / 1000000000d;
