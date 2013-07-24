@@ -5,10 +5,12 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
+import org.openrdf.rio.RDFFormat;
 import org.openrdf.rio.RDFHandler;
 import org.openrdf.rio.RDFHandlerException;
 import org.openrdf.rio.RDFParseException;
 import org.openrdf.rio.RDFParser;
+import org.openrdf.rio.Rio;
 import org.openrdf.rio.helpers.BasicParserSettings;
 import org.openrdf.rio.helpers.NTriplesParserSettings;
 import org.slf4j.Logger;
@@ -18,20 +20,22 @@ import static net.foben.schematizer.Environment.*;
 
 public class QuadFileParser {
 	
-	//private RDFParser parser;
-	private CustomQuadsParser parser;
+	private RDFParser parser;
 	private RDFHandler handler;
 	private String fileToParse;
 	private Logger _log;
 	
-	public QuadFileParser(RDFHandler handler, String filename){
+	public QuadFileParser(RDFHandler handler, String filename, RDFParser parser){
 		_log = LoggerFactory.getLogger(QuadFileParser.class);
-		//this.parser = Rio.createParser(RDFFormat.NQUADS);
-		this.parser = new CustomQuadsParser();
+		this.parser = parser;
 		this.handler = handler;
 		this.fileToParse = filename;
 		parser.setRDFHandler(this.handler);
 		configureParser(parser);
+	}
+	
+	public QuadFileParser(RDFHandler handler, String filename){
+		this(handler, filename, Rio.createParser(RDFFormat.NQUADS));
 	}
 	
 	private void configureParser(RDFParser parser){

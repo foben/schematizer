@@ -1,12 +1,15 @@
 package net.foben.schematizer.util;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 
 import org.slf4j.Logger;
@@ -21,18 +24,18 @@ public class GraphToDatasetMapper {
 	private int datasets   = -1;
 	private int processedGraphs     = -1;
 	private Logger _log, _logu;
-	private RestrictingPLDReducer reducer;
+	IPLDReducer reducer;
 	
-	public GraphToDatasetMapper(String graphsFile){
+	public GraphToDatasetMapper(String graphsFile, IPLDReducer reducer){
 		_log = LoggerFactory.getLogger(GraphToDatasetMapper.class);
 		_logu = LoggerFactory.getLogger("net.foben.schematizer.util.RestrictingPLDReducer.Unknowns");
 		this.graphsFile = graphsFile;
-		mappings = new HashMap<String, String>();
+		this.reducer = reducer;
+		this.mappings = new HashMap<String, String>();
 	}
 	
 	
 	public boolean createMappings(){
-		reducer = new RestrictingPLDReducer("src/main/resources/BTCReductions");
 		long start = System.nanoTime();
 		boolean result = true;
 		BufferedReader br = null;
@@ -109,6 +112,16 @@ public class GraphToDatasetMapper {
 			System.exit(-1);
 		}
 		return result;
+	}
+	
+	public void exportGraphs(String filename) throws IOException{
+		BufferedWriter br = new BufferedWriter(new FileWriter(filename));
+		TreeSet<String> ts = new TreeSet<String>(mappings.keySet());
+		for (String ds : ts){
+			br.write(ds);
+			br.newLine();
+		}
+		br.close();
 	}
 
 }

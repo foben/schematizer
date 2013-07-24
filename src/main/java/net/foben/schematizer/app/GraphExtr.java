@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
+
+import net.foben.schematizer.parse.CustomQuadsParser;
 import net.foben.schematizer.parse.GraphExtractHandler;
 import net.foben.schematizer.parse.QuadFileParser;
 
@@ -39,7 +41,7 @@ public class GraphExtr {
 			System.out.println("****************************************");
 			System.out.println(args[i]);
 			System.out.println("****************************************");
-			QuadFileParser parser = new QuadFileParser(new GraphExtractHandler(args[i]+"_graphs"),	args[i]);
+			QuadFileParser parser = new QuadFileParser(new GraphExtractHandler(args[i]+"_graphs"),	args[i], new CustomQuadsParser());
 			parser.startParsing();
 			System.out.println();
 		}

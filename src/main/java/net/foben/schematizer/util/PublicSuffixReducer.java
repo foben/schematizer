@@ -11,19 +11,16 @@ public class PublicSuffixReducer implements IPLDReducer {
 	RegDomain regdom;
 	private long time;
 	private int invocs;
+	
 	public PublicSuffixReducer() throws IOException{
-		/*
-		BufferedReader in = new BufferedReader(new FileReader("src/main/resources/publicsuffix_clean.txt"));
-		String line;
-		while((line = in.readLine()) != null){
-			System.out.println(line);
+		try{
+			regdom = new RegDomain();
+		} catch (IOException ioe) {
+			regdom = null;
+			throw new IOException("Creating RegDom element failed.");
 		}
-		in.close();
-		*/
-		regdom = new RegDomain();
 		time = 0;
 		invocs = 0;
-		//String result = regdom.getRegisteredDomain("www.example.com");
 	}
 	
 	@Override
