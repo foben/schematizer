@@ -1,2 +1,0 @@
-echo "java -Xmx6000m -Xms6000m $2 -cp target/foobar-0.0.1-SNAPSHOT-jar-with-dependencies.jar net.foben.schematizer.app.GraphExtr $1 data-2.nq"
-java -Xmx6000m -Xms6000m $2 -cp target/foobar-0.0.1-SNAPSHOT-jar-with-dependencies.jar net.foben.schematizer.app.GraphExtr $1 data-2.nq 

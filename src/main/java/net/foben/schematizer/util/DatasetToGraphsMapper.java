@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.TreeSet;
 
 
 import org.openrdf.model.Resource;
@@ -108,7 +109,8 @@ public class DatasetToGraphsMapper {
 	
 	public void exportDatasets(String filename) throws IOException{
 		BufferedWriter br = new BufferedWriter(new FileWriter(filename));
-		for (String ds : mappings.keySet()){
+		TreeSet<String> ts = new TreeSet<String>(mappings.keySet());
+		for (String ds : ts){
 			br.write(ds);
 			br.newLine();
 		}
