@@ -20,14 +20,16 @@ import static net.foben.schematizer.Environment.*;
 
 public class QuadFileParser {
 	
-	private RDFParser parser;
+	//private RDFParser parser;
+	private CustomQuadsParser parser;
 	private RDFHandler handler;
 	private String fileToParse;
 	private Logger _log;
 	
 	public QuadFileParser(RDFHandler handler, String filename){
 		_log = LoggerFactory.getLogger(QuadFileParser.class);
-		this.parser = Rio.createParser(RDFFormat.NQUADS);
+		//this.parser = Rio.createParser(RDFFormat.NQUADS);
+		this.parser = new CustomQuadsParser();
 		this.handler = handler;
 		this.fileToParse = filename;
 		parser.setRDFHandler(this.handler);

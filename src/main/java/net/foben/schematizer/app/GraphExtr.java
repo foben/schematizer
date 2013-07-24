@@ -21,7 +21,7 @@ public class GraphExtr {
 				throw new IllegalArgumentException("File " + args[j] + " doesn't exist!");
 			}
 		}
-		boolean opt = true;
+		boolean opt = false;
 		HashMap<String, String> foo = null;
 		if(opt) {
 			System.out.println("\"optimizing\"");
