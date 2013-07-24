@@ -49,6 +49,7 @@ public abstract class AbstractHandler implements RDFHandler {
 		if(timings.keySet().size() > 0){
 			_log.info("Timings:");
 			for(String key : timings.keySet()){
+				timings.get(key).reset();
 				_log.info(" " + key + " - " + timings.get(key).getTime());
 			}
 		}
@@ -106,6 +107,10 @@ public abstract class AbstractHandler implements RDFHandler {
 		
 		public double getTime(){
 			return total / 1000000000d;
+		}
+		
+		public void reset(){
+			total = 0;
 		}
 		
 	}
