@@ -3,6 +3,7 @@ package net.foben.schematizer.app;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
+import java.util.Set;
 
 import net.foben.schematizer.parse.DataRewriteHandler;
 import net.foben.schematizer.parse.QuadFileParser;
@@ -25,6 +26,7 @@ public class DataRewriter {
 		mapper.createMappings();
 		//mapper.exportGraphs("mappedgraphs");
 		Map<String, String> mappings = mapper.getMappings();
+		Set<String> datasets = mapper.getUniqueDatasets();
 		File targetFile;
 		File targetDir;
 		File currentFile;
@@ -38,7 +40,7 @@ public class DataRewriter {
 			System.out.println("****************************************");
 			System.out.println(args[i]);
 			System.out.println("****************************************");
-			QuadFileParser parser = new QuadFileParser(new DataRewriteHandler(targetFile, mappings),	args[i]);
+			QuadFileParser parser = new QuadFileParser(new DataRewriteHandler(targetFile, mappings, datasets),	args[i]);
 			parser.startParsing();
 			System.out.println();
 			

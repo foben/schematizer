@@ -48,10 +48,15 @@ public abstract class AbstractHandler implements RDFHandler {
 		_log.info(stcount/1000000 + " million lines parsed. Speed: " + measure());
 		if(timings.keySet().size() > 0){
 			_log.info("Timings:");
+			double total = 0;
 			for(String key : timings.keySet()){
+				double current = timings.get(key).getTime();
+				_log.info(" " + String.format("%-12s", key) + " - " + current);
+				total += current;
 				timings.get(key).reset();
-				_log.info(" " + key + " - " + timings.get(key).getTime());
 			}
+			_log.info(" --------");
+			_log.info(" " + String.format("%-12s", "total") + " - " + total);
 		}
 	}
 	protected void everyHundredMillion() {}
