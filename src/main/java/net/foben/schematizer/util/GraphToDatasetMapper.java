@@ -19,6 +19,7 @@ public class GraphToDatasetMapper {
 	
 	private String graphsFile;
 	private HashMap<String, String> mappings;
+	Set<String> uniqDatasets;
 	private boolean mappingSuccess = false;
 	private double runtime = -1;
 	private int datasets   = -1;
@@ -40,7 +41,7 @@ public class GraphToDatasetMapper {
 		boolean result = true;
 		BufferedReader br = null;
 		int count = 0;
-		Set<String> uniqDatasets = new HashSet<String>();
+		uniqDatasets = new HashSet<String>();
 		try {
 			br = new BufferedReader(new FileReader(graphsFile));
 			String line;
@@ -68,7 +69,6 @@ public class GraphToDatasetMapper {
 		datasets = uniqDatasets.size();
 		processedGraphs = result ? mappings.keySet().size() : -1;
 		mappingSuccess = result;
-		uniqDatasets = null;
 		return result;
 	}
 	
@@ -122,6 +122,10 @@ public class GraphToDatasetMapper {
 			br.newLine();
 		}
 		br.close();
+	}
+	
+	public Set<String> getUniqueDatasets(){
+		return uniqDatasets;
 	}
 
 }

@@ -4,6 +4,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Map;
+import java.util.Set;
+
+import net.foben.schematizer.util.IPLDReducer;
+import net.foben.schematizer.util.PublicSuffixReducer;
 
 import org.openrdf.model.Statement;
 import org.openrdf.model.impl.ContextStatementImpl;
@@ -17,15 +21,19 @@ public class DataRewriteHandler extends AbstractHandler {
 	NQuadsWriter writer;
 	FileOutputStream fout;
 	Map<String, String> mappings;
+	Set<String> datasets;
 	int failures;
+	IPLDReducer backupreducer;
 	
-	public DataRewriteHandler(File outputFile, Map<String, String> mappings){
+	public DataRewriteHandler(File outputFile, Map<String, String> mappings, Set<String> datasets){
 		super();
 		this.outputFile = outputFile;
 		this.failures = 0;
 		this.mappings = mappings;
+		this.datasets = datasets;
 		outputFile.delete();
 		try {
+			this.backupreducer = new PublicSuffixReducer();
 			fout = new FileOutputStream(outputFile, true);
 			writer = new NQuadsWriter(fout);
 			writer.startRDF();
@@ -34,10 +42,11 @@ public class DataRewriteHandler extends AbstractHandler {
 		} catch (RDFHandlerException e) {
 			e.printStackTrace();
 		}
+		timingStart("between");
 	}
 	
-	public DataRewriteHandler(String outputFile, Map<String, String> mappings){
-		this(new File(outputFile), mappings);
+	public DataRewriteHandler(String outputFile, Map<String, String> mappings, Set<String> datasets){
+		this(new File(outputFile), mappings, datasets);
 	}
 	
 	@Override
@@ -53,12 +62,17 @@ public class DataRewriteHandler extends AbstractHandler {
 	
 	@Override
 	public void handleStatementInternal(Statement st) {
+		timingEnd("between");
 		timingStart("newContext");
-		String dataset = mappings.get(st.getContext().stringValue());
+		String oriContext = st.getContext().stringValue();
+		String dataset = mappings.get(oriContext);
 		if(dataset == null){
-			_log.warn("Unknown graph: " + st.getContext().stringValue());
-			failures++;
-			return;
+			dataset = backupreducer.getPLD(oriContext);
+			if(!datasets.contains(dataset)){
+				_log.warn("Unprocessable graph: " + st.getContext().stringValue());
+				failures++;
+				return;
+			}
 		}
 		String newContext = "http://" + dataset;
 		timingEnd("newContext");
@@ -70,5 +84,6 @@ public class DataRewriteHandler extends AbstractHandler {
 			e.printStackTrace();
 			failures++;
 		}
+		timingStart("between");
 	}
 }
