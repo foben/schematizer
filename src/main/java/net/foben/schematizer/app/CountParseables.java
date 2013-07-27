@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 import net.foben.schematizer.parse.CountParseablesHandler;
+import net.foben.schematizer.parse.NonNodeStoringNQuadsParser;
 import net.foben.schematizer.parse.QuadFileParser;
 
 public class CountParseables {
@@ -23,7 +24,7 @@ public class CountParseables {
 			System.out.println("****************************************");
 			System.out.println(args[i]);
 			System.out.println("****************************************");
-			QuadFileParser parser = new QuadFileParser(new CountParseablesHandler(), args[i]);
+			QuadFileParser parser = new QuadFileParser(new CountParseablesHandler(), args[i], new NonNodeStoringNQuadsParser());
 			parser.startParsing(true);
 			System.out.println();
 		}
