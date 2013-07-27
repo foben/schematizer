@@ -2,17 +2,19 @@ package net.foben.schematizer.parse;
 
 import org.openrdf.model.Statement;
 
-public class IdleHandler extends AbstractHandler {
-
+public class CountParseablesHandler extends AbstractHandler {
+	
+	
+	int parseable = 0;
 	@Override
 	public void handleStatementInternal(Statement st) {
-		// TODO Auto-generated method stub
+		parseable++;
 
 	}
 
 	@Override
 	protected void parseEnd() {
-		// TODO Auto-generated method stub
+		_log.info(parseable + " parseable lines in file");
 		
 	}
 
