@@ -18,6 +18,10 @@ public class DataRewriter {
 	 * @throws IOException 
 	 */
 	public static void main(String[] args) throws IOException {
+		for(String str : args){
+			System.out.println(str);
+		}
+		
 		File targetRoot = new File(args[0]);
 		if(!targetRoot.exists() || targetRoot.isFile() || !targetRoot.canWrite()){
 			throw new IllegalArgumentException("Target directory either does not exist, is a file or is not writable (by you).");
