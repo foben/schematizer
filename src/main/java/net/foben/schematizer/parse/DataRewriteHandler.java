@@ -50,17 +50,6 @@ public class DataRewriteHandler extends AbstractHandler {
 	}
 	
 	@Override
-	public void endRDF() throws RDFHandlerException {
-		_log.info("Number of failures: " + failures);
-		try {
-			writer.endRDF();
-			fout.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	@Override
 	public void handleStatementInternal(Statement st) {
 		timingEnd("between");
 		timingStart("newContext");
@@ -85,5 +74,18 @@ public class DataRewriteHandler extends AbstractHandler {
 			failures++;
 		}
 		timingStart("between");
+	}
+
+	@Override
+	protected void parseEnd() {
+		_log.info("Number of failures: " + failures);
+		try {
+			writer.endRDF();
+			fout.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (RDFHandlerException e) {
+			e.printStackTrace();
+		}
 	}
 }

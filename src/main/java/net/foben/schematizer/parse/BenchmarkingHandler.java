@@ -30,7 +30,7 @@ public class BenchmarkingHandler extends AbstractHandler {
 	}
 	
 	@Override
-	public void endRDF() throws RDFHandlerException {
+	protected void parseEnd() {
 		_log.info("Averages");
 		for(Integer key : avgs.keySet()){
 			_log.info(" " + key + " : " + avgs.get(key));

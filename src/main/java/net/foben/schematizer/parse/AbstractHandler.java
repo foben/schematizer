@@ -13,18 +13,30 @@ public abstract class AbstractHandler implements RDFHandler {
 	protected Logger _log;
 	protected long last, now;
 	private HashMap<String, Timing> timings;
+	private int chunks;
 	
 	public AbstractHandler(){
+		this(1);
+	}
+	public AbstractHandler(int chunks){
 		this._log = LoggerFactory.getLogger(this.getClass());
+		this.chunks = chunks;
 		last = System.nanoTime();
 		timings = new HashMap<String, Timing>();
 	}
+	
 	
 	@Override
 	public void startRDF() throws RDFHandlerException {}
 	
 	@Override
-	public void endRDF() throws RDFHandlerException {}
+	public void endRDF() throws RDFHandlerException {
+		chunks -= 1;
+		if(chunks < 0) throw new NumberFormatException("WRONG SHOULDNT HAPPEN!!");
+		if(chunks == 0) parseEnd();
+	}
+	
+	protected abstract void parseEnd();
 
 	@Override
 	public void handleComment(String arg0) throws RDFHandlerException {	}

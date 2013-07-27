@@ -68,7 +68,26 @@ public class QuadFileParser {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+	}
+	
+	public void startParsing(boolean split){
+		if(!split){
+			startParsing();
+			return;
+		}
+		BufferedReader in;
+		try {
+			in = new BufferedReader(new FileReader(fileToParse));
+			parser.parse(in, URI_IDS);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (RDFParseException e) {
+			e.printStackTrace();
+		} catch (RDFHandlerException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}	
 
 }
