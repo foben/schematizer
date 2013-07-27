@@ -1,18 +1,12 @@
 package net.foben.schematizer.app;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashMap;
 
-import net.foben.schematizer.parse.CustomQuadsParser;
-import net.foben.schematizer.parse.GraphExtractHandler;
-import net.foben.schematizer.parse.IdleHandler;
+import net.foben.schematizer.parse.CountParseablesHandler;
 import net.foben.schematizer.parse.QuadFileParser;
 
-public class IdleReader {
+public class CountParseables {
 
 	/**
 	 * @param args
@@ -25,12 +19,11 @@ public class IdleReader {
 				throw new IllegalArgumentException("File " + args[j] + " doesn't exist!");
 			}
 		}
-		
 		for(int i = 0; i < args.length; i++){
 			System.out.println("****************************************");
 			System.out.println(args[i]);
 			System.out.println("****************************************");
-			QuadFileParser parser = new QuadFileParser(new IdleHandler(), args[i]);
+			QuadFileParser parser = new QuadFileParser(new CountParseablesHandler(), args[i]);
 			parser.startParsing(true);
 			System.out.println();
 		}
