@@ -5,8 +5,8 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
 
-import net.foben.schematizer.parse.CustomQuadsParser;
 import net.foben.schematizer.parse.DataRewriteHandler;
+import net.foben.schematizer.parse.NonNodeStoringNQuadsParser;
 import net.foben.schematizer.parse.QuadFileParser;
 import net.foben.schematizer.util.GraphToDatasetMapper;
 import net.foben.schematizer.util.PublicSuffixReducer;
@@ -45,7 +45,7 @@ public class DataRewriter {
 			System.out.println("****************************************");
 			System.out.println(args[i]);
 			System.out.println("****************************************");
-			QuadFileParser parser = new QuadFileParser(new DataRewriteHandler(targetFile, mappings, datasets),	args[i], new CustomQuadsParser());
+			QuadFileParser parser = new QuadFileParser(new DataRewriteHandler(targetFile, mappings, datasets),	args[i], new NonNodeStoringNQuadsParser());
 			parser.startParsing();
 			System.out.println();
 			
