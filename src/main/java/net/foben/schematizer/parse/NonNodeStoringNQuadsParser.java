@@ -12,9 +12,7 @@ public class NonNodeStoringNQuadsParser extends NQuadsParser {
 	protected BNode createBNode(String nodeID)
 		throws RDFParseException
 	{
-		// Maybe the node ID has been used before:
-		BNode result;
-		
+		BNode result;	
 		if (preserveBNodeIDs()) {
 			result = valueFactory.createBNode(nodeID);
 		}

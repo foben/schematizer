@@ -47,12 +47,7 @@ public class DatasetToGraphsMapper {
 		mappings = new HashMap<String, List<String>>();
 	}
 	
-	public boolean createMappings(){
-		return createMappings(null);
-	}
-	
 	public boolean createMappings(IPLDReducer reducer){
-		if(reducer == null) reducer = new RestrictingPLDReducer();
 		long start = System.nanoTime();
 		boolean result = true;
 		BufferedReader br = null;
