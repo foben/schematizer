@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.openrdf.model.Statement;
-import org.openrdf.rio.RDFHandlerException;
 
 public class BenchmarkingHandler extends AbstractHandler {
 	
