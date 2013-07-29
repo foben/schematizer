@@ -1,5 +1,8 @@
 package net.foben.schematizer.parse;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 
 import org.openrdf.model.Statement;
@@ -12,6 +15,7 @@ public abstract class AbstractHandler implements RDFHandler {
 	protected int stcount = 0;
 	protected Logger _log;
 	protected long last, now;
+	protected boolean started = false;
 	private HashMap<String, Timing> timings;
 	private int chunks;
 	
@@ -23,20 +27,35 @@ public abstract class AbstractHandler implements RDFHandler {
 		this.chunks = chunks;
 		last = System.nanoTime();
 		timings = new HashMap<String, Timing>();
+		_log.info("Called abstract constructor");
 	}
 	
+	public void setChunks(int chunks){
+		if(started) throw new IllegalArgumentException("Parsing already started!");
+		else{
+			this.chunks = chunks;
+		}
+	}
+	@Override
+	public final void startRDF() throws RDFHandlerException {
+		if(!started){
+			started = true;
+			parseStart();
+		}
+		fileStart();
+	}
 	
 	@Override
-	public void startRDF() throws RDFHandlerException {}
-	
-	@Override
-	public void endRDF() throws RDFHandlerException {
+	public final void endRDF() throws RDFHandlerException {
+		fileEnd();
 		chunks -= 1;
 		if(chunks < 0) throw new NumberFormatException("WRONG SHOULDNT HAPPEN!!");
 		if(chunks == 0) parseEnd();
 	}
-	
-	protected abstract void parseEnd();
+	protected void parseStart(){ }
+	protected void fileStart(){ }
+	protected void fileEnd(){ }
+	protected void parseEnd(){ }
 
 	@Override
 	public void handleComment(String arg0) throws RDFHandlerException {	}
@@ -50,10 +69,11 @@ public abstract class AbstractHandler implements RDFHandler {
 		stcount++;
 		if(stcount%1000000 == 0){
 			everyMillion();
+			if(stcount%100000000 == 0){
+				everyHundredMillion();
+			}
 		}
-		if(stcount%100000000 == 0){
-			everyHundredMillion();
-		}
+		
 		handleStatementInternal(arg0);
 	}
 	protected void everyMillion() {
@@ -81,9 +101,7 @@ public abstract class AbstractHandler implements RDFHandler {
 		String result = ("" + dur);
 		last = now;
 		return result;
-	}
-	
-	
+	}	
 	
 	protected void timingStart(String str){
 		Timing t = timings.get(str);
@@ -130,6 +148,20 @@ public abstract class AbstractHandler implements RDFHandler {
 			total = 0;
 		}
 		
+	}
+	
+	protected void writeToFile(Iterable<?> i, String filename){
+		_log.info("Serializing " + i);
+		try {
+			BufferedWriter br = new BufferedWriter(new FileWriter("ExtractTypesHandlerOutput"));
+			for(Object o : i){
+				br.write(o.toString());
+				br.newLine();
+			}
+			br.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 }

@@ -11,7 +11,7 @@ public class CountParseablesHandler extends AbstractHandler {
 		parseable++;
 
 	}
-
+	
 	@Override
 	protected void parseEnd() {
 		_log.info(parseable + " parseable lines in file");

@@ -26,7 +26,6 @@ public class DataRewriteHandler extends AbstractHandler {
 	IPLDReducer backupreducer;
 	
 	public DataRewriteHandler(File outputFile, Map<String, String> mappings, Set<String> datasets){
-		super();
 		this.outputFile = outputFile;
 		this.failures = 0;
 		this.mappings = mappings;
