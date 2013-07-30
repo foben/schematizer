@@ -9,7 +9,6 @@ public class CountParseablesHandler extends AbstractHandler {
 	@Override
 	public void handleStatementInternal(Statement st) {
 		parseable++;
-
 	}
 	
 	@Override
