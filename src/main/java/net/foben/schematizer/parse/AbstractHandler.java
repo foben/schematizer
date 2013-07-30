@@ -133,7 +133,7 @@ public abstract class AbstractHandler implements RDFHandler {
 		}
 		
 		public void tickStart() {
-			lastTick = System.nanoTime();			
+			lastTick = System.nanoTime();
 		}
 		
 		public void tickEnd(){
@@ -151,9 +151,9 @@ public abstract class AbstractHandler implements RDFHandler {
 	}
 	
 	protected void writeToFile(Iterable<?> i, String filename){
-		_log.info("Serializing " + i);
+		_log.info("Serializing to " + filename);
 		try {
-			BufferedWriter br = new BufferedWriter(new FileWriter("ExtractTypesHandlerOutput"));
+			BufferedWriter br = new BufferedWriter(new FileWriter(filename));
 			for(Object o : i){
 				br.write(o.toString());
 				br.newLine();
