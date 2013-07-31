@@ -22,8 +22,5 @@
   </root>
   <logger name="org.openrdf" level="warn"/>
   <logger name="net.foben"   level="debug"/>
-  <logger name="net.foben.schematizer.util.RestrictingPLDReducer.Unknowns" level="all" additivity="false">
-  	<appender-ref ref="FILE" />
-  </logger>
   
 </configuration>

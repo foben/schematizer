@@ -1,8 +1,6 @@
 package net.foben.schematizer.parse;
 
 import java.util.HashMap;
-import java.util.HashSet;
-
 import org.openrdf.model.Statement;
 
 import static net.foben.schematizer.Environment.*;
@@ -10,7 +8,6 @@ import static net.foben.schematizer.Environment.*;
 public class ExtractTypesHandler extends AbstractHandler {
 	
 	HashMap<String, TypeStat> types;
-	int rdfsc, owlc, subcl;
 	
 	public ExtractTypesHandler(){
 		types = new HashMap<String, TypeStat>();
@@ -20,33 +17,17 @@ public class ExtractTypesHandler extends AbstractHandler {
 	public void handleStatementInternal(Statement st) {
 		if(st.getPredicate().stringValue().equals(RDFTYPE)){
 			String obj = st.getObject().stringValue();
-			if (obj.equals(RDFSCLASS)){
-				//rdfsc = types.add(st.getSubject().stringValue()) ? rdfsc + 1 : rdfsc;
-			}
-			else if(obj.equals(OWLCLASS)){
-				//owlc = types.add(st.getSubject().stringValue()) ? owlc + 1 : owlc;
+			if(types.containsKey(obj)){
+				types.get(obj).incr(st.getContext().stringValue());
 			}
 			else{
-				if(types.containsKey(obj)){
-					types.get(obj).incr(st.getContext().stringValue());
-				}
-				else{
-					types.put(obj, new TypeStat(obj, st.getContext().stringValue()));
-				}
+				types.put(obj, new TypeStat(obj, st.getContext().stringValue()));
 			}
 		}
-		else if (st.getPredicate().stringValue().equals(RDFSUBCLASSOF)){
-//			subcl = types.add(st.getSubject().stringValue()) ? subcl + 1 : subcl;
-//			subcl = types.add(st.getObject().stringValue()) ? subcl + 1 : subcl;
-		}
-
 	}
 
 	@Override
 	protected void parseEnd() {
-		_log.info(rdfsc + " added via RDFSCLASS");
-		_log.info(owlc + " added via OWLCLASS");
-		_log.info(subcl + " added via RDFSUBCLASSOF");
 		if(true){
 			writeToFile(types.values(), "ExtractTypesHandlerOutputNew");
 			return;
