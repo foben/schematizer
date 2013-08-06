@@ -31,6 +31,7 @@ import org.openrdf.rio.RDFFormat;
 import org.openrdf.rio.RDFHandlerException;
 import org.openrdf.rio.RDFParseException;
 import org.openrdf.rio.helpers.BasicParserSettings;
+import org.openrdf.rio.helpers.NTriplesParserSettings;
 import org.openrdf.rio.ntriples.NTriplesWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,6 +59,17 @@ public class WrappedRepo implements IRepo, Closeable {
 		try {
 			repo.initialize();
 			con = repo.getConnection();
+			con.getParserConfig().set(BasicParserSettings.VERIFY_DATATYPE_VALUES, false);
+			con.getParserConfig().set(BasicParserSettings.NORMALIZE_DATATYPE_VALUES, false);
+			con.getParserConfig().set(BasicParserSettings.FAIL_ON_UNKNOWN_DATATYPES, false);
+			con.getParserConfig().set(BasicParserSettings.VERIFY_LANGUAGE_TAGS, false);
+			con.getParserConfig().set(BasicParserSettings.NORMALIZE_LANGUAGE_TAGS, false);
+			con.getParserConfig().set(BasicParserSettings.FAIL_ON_UNKNOWN_LANGUAGES, false);
+			con.getParserConfig().set(BasicParserSettings.VERIFY_RELATIVE_URIS, false);
+			con.getParserConfig().set(BasicParserSettings.PRESERVE_BNODE_IDS, true);
+			con.getParserConfig().addNonFatalError(BasicParserSettings.VERIFY_DATATYPE_VALUES);
+			con.getParserConfig().addNonFatalError(BasicParserSettings.FAIL_ON_UNKNOWN_DATATYPES);
+			con.getParserConfig().addNonFatalError(NTriplesParserSettings.FAIL_ON_NTRIPLES_INVALID_LINES);
 		} catch (RepositoryException e) {
 			working = false;
 			_log.error("Failed to create repository!");
@@ -210,6 +222,10 @@ public class WrappedRepo implements IRepo, Closeable {
 			} catch (IOException e) {
 			}
 		}
+	}
+	
+	public RepositoryConnection getConnection(){
+		return con;
 	}
 
 }

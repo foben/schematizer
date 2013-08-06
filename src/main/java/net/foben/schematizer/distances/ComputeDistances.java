@@ -1,60 +1,94 @@
 package net.foben.schematizer.distances;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.TreeSet;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.URIImpl;
+import net.foben.schematizer.cassandra.CassandraDAO;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.common.collect.TreeMultiset;
 
 public class ComputeDistances {
 
+	static List<ResDescriptor> candidates;
+	static Logger _log = LoggerFactory.getLogger(ComputeDistances.class);
+	static String del = ";";
+	
 	public static void main(String[] args) throws IOException {
+		int top = Integer.parseInt(args[0]);
+		ISimmilarityMeasure sim = new NormalizedLevenstheinSim();
+		String filename = "src/main/resources/stats/sorted_types";
+		candidates = getCandidates(top, filename);
+		ResDescriptor[] candArray = candidates.toArray(new ResDescriptor[0]);
 		
+		CassandraDAO cass = new CassandraDAO("levnorm");
 		
-		URI foo = new URIImpl("akt:Person");
-		System.out.println(foo.getNamespace());
-		
-		NormalizedLevensthein lev = new NormalizedLevensthein();
-		
-		BufferedReader in = new BufferedReader(new FileReader("ExtractTypesHandlerOutput"));
+		for(int rowi = 0;  rowi < candArray.length; rowi++){
+			HashMap<String, Float> map = new HashMap<String, Float>();
+			ResDescriptor row = candArray[rowi];
+			for(int coli = rowi; coli < candArray.length; coli ++){
+				ResDescriptor column = candArray[coli];
+				double simil = sim.getSim(row, column);
+				map.put(column.getType(), (float)simil);
+				//System.out.println(String.format("%s - %s   : %s", row, column, simil));
+			}
+			cass.addData(row.getType(), map);
+			_log.info((rowi*100d/(candArray.length)) + " %    " + rowi +"  " + candArray.length);
+		}
+		cass.shutdown();
+	}
+	
+//	private static void createCSV(Table<ResDescriptor, ResDescriptor, Double> table, String file) throws IOException{
+//		BufferedWriter out = new BufferedWriter(new FileWriter(file));
+//		out.write(del);
+//		for(Object o : table.columnKeySet()){
+//			out.write(o + del);
+//		}
+//		out.newLine();
+//		for(Object row : table.rowKeySet()){
+//			out.write(row.toString());
+//			for(Object col : table.columnKeySet()){
+//				out.write(del + table.get(row, col));
+//			}
+//			out.newLine();
+//		}
+//		out.close();
+//	}
+	
+	private static LinkedList<ResDescriptor> getCandidates(int top, String filename) throws IOException {
+		_log.info("Reading candidates from " + filename);
+		TreeMultiset<ResDescriptor> s = TreeMultiset.create();
+		BufferedReader in = new BufferedReader(new FileReader(filename));
 		String line;
-		TreeSet<String> xax = new TreeSet<String>();
-		TreeSet<String> yax = new TreeSet<String>();
+		
 		while((line = in.readLine()) != null){
-			xax.add(line);
-			yax.add(line);
+			ResDescriptor t = null;
+			try{
+				String[] fields = line.split(" ");
+				t = new ResDescriptor(fields[0], Integer.parseInt(fields[1]), Integer.parseInt(fields[2]));
+			} catch (Exception e){
+				e.printStackTrace();
+			}
+			if(t != null){
+				s.add(t);
+			}
 		}
 		in.close();
-		System.out.println("read complete");
-		int i = 0;
-		for(String x : xax){
-			
-			try{
-				URI xuri = new URIImpl(x);
-			} catch (Exception e){
-				System.out.println(++i + ": " + e.getMessage());
-			}
-			/*
-			for(String y : yax){
-				double val;
-				try{
-					URI xuri = new URIImpl(x);
-					URI yuri = new URIImpl(y);
-					val = lev.getDistance(xuri.getLocalName(), yuri.getLocalName());
-					if(val <= 0.15 && val > 0){
-						System.out.println();
-						System.out.println(xuri.getLocalName() + " <> " + yuri.getLocalName() + "  : " + val);
-						System.out.println(x + " <> " + y + "  : " + val);
-					}
-				} catch(Exception e){
-					val = 1;
-					//System.out.println(e.getMessage());
-				}
-			}*/
+		
+		Iterator<ResDescriptor> iter = s.descendingMultiset().iterator();
+		LinkedList<ResDescriptor> candidates = new LinkedList<ResDescriptor>();
+		int count = 0;
+		while(iter.hasNext() && ++count <= top){
+			candidates.add(iter.next());
 		}
+		_log.info("Created candidate list");
+		return candidates;
 	}
-
 }

@@ -1,0 +1,13 @@
+types:
+http://lexvo.org/ontology#Term (lvont:Term)
+http://lexvo.org/ontology#Language (lvont:Language)
+http://lexvo.org/ontology#GeographicRegion (lvont:GeographicRegion)
+http://lexvo.org/ontology#Script (lvont:Script)
+http://openlylocal.com/info/vocab#meeting (openlylocal:meeting)
+http://openlylocal.com/info/vocab#LocalAuthorityMember (openlylocal:LocalAuthorityMember)
+http://openlylocal.com/info/vocab#LocalAuthorityCommittee (openlylocal:LocalAuthorityCommittee)
+http://openlylocal.com/info/vocab#DistrictAuthority (openlylocal:DistrictAuthority)
+http://openlylocal.com/info/vocab#CountyAuthority (openlylocal:CountyAuthority)
+http://vocab.org/bio/0.1/Birth (bio:Birth)
+http://data.semanticweb.org/ns/swc/ontology#Presenter (swc:Presenter)
+
