@@ -27,6 +27,7 @@ public class CassandraDAO {
 	
 	public void init(){
 		cluster = HFactory.getOrCreateCluster("test-cluster","localhost:9160");
+		cluster.getConnectionManager().setCassandraHostRetryDelay(25);
 		KeyspaceDefinition keyspaceDef = cluster.describeKeyspace(KEYSPACE_NAME);
 		if (keyspaceDef == null) {
 		    createSchema();

@@ -5,3 +5,5 @@ target
 unknown_graphs.log
 data-0.nq
 data-2.nq
+src/main/resources/vocabularies.nq
+obj

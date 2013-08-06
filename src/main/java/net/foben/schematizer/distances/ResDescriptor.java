@@ -1,11 +1,15 @@
 package net.foben.schematizer.distances;
 
+import java.io.Serializable;
+
 import org.openrdf.model.URI;
 import org.openrdf.model.impl.URIImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ResDescriptor implements Comparable<ResDescriptor>{
+import com.google.common.collect.Ordering;
+
+public class ResDescriptor implements Comparable<ResDescriptor>, Serializable{
 	
 	private int total;
 	private int datasets;
@@ -77,6 +81,12 @@ public class ResDescriptor implements Comparable<ResDescriptor>{
 	public String getLocalName() {
 		return localName;
 	}
-
+	
+	public static class ResDescriptorReverseOrdering extends Ordering<ResDescriptor> implements Serializable{
+		@Override
+		public int compare(ResDescriptor left, ResDescriptor right) {
+			return left.compareTo(right) * -1;
+		}
+	}
 
 }

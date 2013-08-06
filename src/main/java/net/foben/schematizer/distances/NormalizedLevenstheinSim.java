@@ -2,7 +2,7 @@ package net.foben.schematizer.distances;
 
 import com.wcohen.ss.ScaledLevenstein;
 
-public class NormalizedLevenstheinSim implements ISimmilarityMeasure {
+public class NormalizedLevenstheinSim implements ISimmilarityMeasure<ResDescriptor> {
 	
 	ScaledLevenstein lev;
 	
@@ -13,7 +13,8 @@ public class NormalizedLevenstheinSim implements ISimmilarityMeasure {
 	
 	@Override
 	public double getSim(ResDescriptor a, ResDescriptor b) {
-		return lev.score(a.getLocalName(), b.getLocalName());
+		double score = lev.score(a.getLocalName(), b.getLocalName());
+		return score;
 	}
 
 

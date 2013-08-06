@@ -23,28 +23,29 @@ public class ComputeDistances {
 	
 	public static void main(String[] args) throws IOException {
 		int top = Integer.parseInt(args[0]);
-		ISimmilarityMeasure sim = new NormalizedLevenstheinSim();
+		ISimmilarityMeasure<ResDescriptor> sim = new NormalizedLevenstheinSim();
 		String filename = "src/main/resources/stats/sorted_types";
 		candidates = getCandidates(top, filename);
 		ResDescriptor[] candArray = candidates.toArray(new ResDescriptor[0]);
 		
 		CassandraDAO cass = new CassandraDAO("levnorm");
-		
+				
 		for(int rowi = 0;  rowi < candArray.length; rowi++){
 			HashMap<String, Float> map = new HashMap<String, Float>();
 			ResDescriptor row = candArray[rowi];
 			for(int coli = rowi; coli < candArray.length; coli ++){
 				ResDescriptor column = candArray[coli];
+				
 				double simil = sim.getSim(row, column);
-				map.put(column.getType(), (float)simil);
+				//map.put(column.getType(), (float)simil);
 				if(map.keySet().size() > 5000){
-					cass.addData(row.getType(), map);
+					//cass.addData(row.getType(), map);
 					map.clear();
 				}
 				//System.out.println(String.format("%s - %s   : %s", row, column, simil));
 			}
-			cass.addData(row.getType(), map);
-			_log.info((rowi*100d/(candArray.length)) + " %    " + rowi +"  " + candArray.length);
+			//cass.addData(row.getType(), map);
+			//_log.info((rowi*100d/(candArray.length)) + " %    " + rowi +"  " + candArray.length);
 		}
 		cass.shutdown();
 	}
