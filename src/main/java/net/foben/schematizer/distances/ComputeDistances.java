@@ -37,6 +37,10 @@ public class ComputeDistances {
 				ResDescriptor column = candArray[coli];
 				double simil = sim.getSim(row, column);
 				map.put(column.getType(), (float)simil);
+				if(map.keySet().size() > 5000){
+					cass.addData(row.getType(), map);
+					map.clear();
+				}
 				//System.out.println(String.format("%s - %s   : %s", row, column, simil));
 			}
 			cass.addData(row.getType(), map);
