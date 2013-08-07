@@ -10,16 +10,20 @@ import java.io.ObjectOutputStream;
 import java.util.HashMap;
 
 import net.foben.schematizer.cassandra.CassandraDAO;
+import net.foben.schematizer.distances.ComputeDistances;
 import net.foben.schematizer.distances.JaccardCommentsSim;
 import net.foben.schematizer.distances.LabeledResDescriptor;
 import net.foben.schematizer.distances.ResDescriptor;
 import net.foben.schematizer.util.WrappedRepo;
 
 import org.openrdf.repository.RepositoryConnection;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.TreeMultiset;
 
 public class LabeledTest {
+	static Logger _log = LoggerFactory.getLogger(LabeledTest.class);
 
 	public static void main(String[] args) throws IOException {
 		boolean serialize = Boolean.parseBoolean(args[0]);
@@ -39,21 +43,22 @@ public class LabeledTest {
 		CassandraDAO cass = new CassandraDAO("JaccardTop30Types");
 		LabeledResDescriptor[] candArray = list.toArray(new LabeledResDescriptor[0]);
 		JaccardCommentsSim sim = new JaccardCommentsSim();
-		int total = 0;
+		long total = candArray.length * (candArray.length + 1) / 2;
+		long count = 0;
 		for(int rowi = 0;  rowi < candArray.length; rowi++){
 			HashMap<String, Float> map = new HashMap<String, Float>();
 			LabeledResDescriptor row = candArray[rowi];
 			for(int coli = rowi; coli < candArray.length; coli ++){
-				total++;
 				LabeledResDescriptor column = candArray[coli];
 				double simil = sim.getSim(row, column);
 				map.put(column.getType(), (float)simil);
 				if(map.keySet().size() > 5000){
-					//cass.addData(row.getType(), map);
+					cass.addData(row.getType(), map);
 					map.clear();
 				}
+				if(++count%100000 == 0) _log.info(((int)(count*10000d/total))/100d + "%");
 			}
-			//cass.addData(row.getType(), map);
+			cass.addData(row.getType(), map);
 		}
 		System.out.println(total);
 		cass.shutdown();
