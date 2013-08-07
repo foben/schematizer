@@ -30,8 +30,16 @@ public class CassandraDAO {
 		cluster.getConnectionManager().setCassandraHostRetryDelay(25);
 		KeyspaceDefinition keyspaceDef = cluster.describeKeyspace(KEYSPACE_NAME);
 		if (keyspaceDef == null) {
-		    createSchema();
+		    createKSDef();
 		}
+		boolean cfExists = false;
+		for(ColumnFamilyDefinition cf : keyspaceDef.getCfDefs()){
+			if(CF_NAME.equals(cf.getName())) cfExists = true;
+		}
+		if(!cfExists){
+			createCFDef();
+		}
+		
 		keyspace = HFactory.createKeyspace(KEYSPACE_NAME, cluster);
 		template = new ThriftColumnFamilyTemplate<String, String>(keyspace, CF_NAME, StringSerializer.get(), StringSerializer.get());
 	}
@@ -44,22 +52,17 @@ public class CassandraDAO {
 		template.update(upd);
 	}	
 	
-	public void createSchema(){
-		
+	private void createKSDef(){
 		KeyspaceDefinition kspdef = HFactory.createKeyspaceDefinition(KEYSPACE_NAME);
-		
+		cluster.addKeyspace(kspdef, true);
+	}
+	
+	private void createCFDef(){
 		ColumnFamilyDefinition cfdef = HFactory.createColumnFamilyDefinition(KEYSPACE_NAME, CF_NAME, ComparatorType.UTF8TYPE);
 		cfdef.setKeyValidationClass(ComparatorType.UTF8TYPE.getClassName());
 		cfdef.setDefaultValidationClass(ComparatorType.FLOATTYPE.getClassName());
-		
-		cluster.addKeyspace(kspdef, true);
 		cluster.addColumnFamily(cfdef, true);
-		
-		
-		
-	}
-	
-	
+	}	
 	
 	public void shutdown(){
 		cluster.getConnectionManager().shutdown();		

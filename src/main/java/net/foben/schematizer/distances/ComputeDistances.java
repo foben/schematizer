@@ -29,23 +29,22 @@ public class ComputeDistances {
 		ResDescriptor[] candArray = candidates.toArray(new ResDescriptor[0]);
 		
 		CassandraDAO cass = new CassandraDAO("LevTop30");
-				
+		long total = candArray.length * (candArray.length + 1) / 2;
+		long count = 0;
 		for(int rowi = 0;  rowi < candArray.length; rowi++){
 			HashMap<String, Float> map = new HashMap<String, Float>();
 			ResDescriptor row = candArray[rowi];
 			for(int coli = rowi; coli < candArray.length; coli ++){
 				ResDescriptor column = candArray[coli];
-				
 				double simil = sim.getSim(row, column);
-				//map.put(column.getType(), (float)simil);
+				map.put(column.getType(), (float)simil);
 				if(map.keySet().size() > 5000){
-					//cass.addData(row.getType(), map);
+					cass.addData(row.getType(), map);
 					map.clear();
 				}
-				//System.out.println(String.format("%s - %s   : %s", row, column, simil));
+				if(++count%100000 == 0) _log.info(((int)(count*10000d/total))/100d + "%");
 			}
-			//cass.addData(row.getType(), map);
-			//_log.info((rowi*100d/(candArray.length)) + " %    " + rowi +"  " + candArray.length);
+			cass.addData(row.getType(), map);
 		}
 		cass.shutdown();
 	}
