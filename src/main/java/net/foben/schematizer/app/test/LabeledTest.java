@@ -22,12 +22,13 @@ import com.google.common.collect.TreeMultiset;
 public class LabeledTest {
 
 	public static void main(String[] args) throws IOException {
-		boolean serialize = false;
+		boolean serialize = Boolean.parseBoolean(args[0]);
+		int top = Integer.parseInt(args[1]);
 		TreeMultiset<LabeledResDescriptor> list;
 		if(serialize){
 			WrappedRepo repo = new WrappedRepo();
 			repo.addFile("src/main/resources/vocabularies.nq");
-			list = getCandidates(10000, "src/main/resources/stats/sorted_types", repo.getConnection());
+			list = getCandidates(top, "src/main/resources/stats/sorted_types", repo.getConnection());
 			serialize(list);
 			repo.close();
 			System.exit(0);
@@ -35,7 +36,7 @@ public class LabeledTest {
 		else{
 			list = deSerialize();
 		}
-		CassandraDAO cass = new CassandraDAO("test");
+		CassandraDAO cass = new CassandraDAO("JaccardTop30Types");
 		LabeledResDescriptor[] candArray = list.toArray(new LabeledResDescriptor[0]);
 		JaccardCommentsSim sim = new JaccardCommentsSim();
 		int total = 0;
