@@ -28,7 +28,7 @@ public class ComputeDistances {
 		candidates = getCandidates(top, filename);
 		ResDescriptor[] candArray = candidates.toArray(new ResDescriptor[0]);
 		
-		CassandraDAO cass = new CassandraDAO("levnorm");
+		CassandraDAO cass = new CassandraDAO("LevTop30");
 				
 		for(int rowi = 0;  rowi < candArray.length; rowi++){
 			HashMap<String, Float> map = new HashMap<String, Float>();
