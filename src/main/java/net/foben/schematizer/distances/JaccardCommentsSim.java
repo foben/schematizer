@@ -34,7 +34,7 @@ public class JaccardCommentsSim implements ISimmilarityMeasure<LabeledResDescrip
 		}
 		
 		double res = jacc.score(jacc.prepare(sCommStr), jacc.prepare(tCommStr));
-		
+		if(Double.isNaN(res)) return -1;
 		return res;
 	}
 

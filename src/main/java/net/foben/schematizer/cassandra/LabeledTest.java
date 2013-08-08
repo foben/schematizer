@@ -1,4 +1,4 @@
-package net.foben.schematizer.app.test;
+package net.foben.schematizer.cassandra;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -9,11 +9,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.HashMap;
 
-import net.foben.schematizer.cassandra.CassandraDAO;
-import net.foben.schematizer.distances.ComputeDistances;
 import net.foben.schematizer.distances.JaccardCommentsSim;
 import net.foben.schematizer.distances.LabeledResDescriptor;
 import net.foben.schematizer.distances.ResDescriptor;
+import net.foben.schematizer.distances.app.ComputeDistances;
 import net.foben.schematizer.util.WrappedRepo;
 
 import org.openrdf.repository.RepositoryConnection;

@@ -1,4 +1,4 @@
-package net.foben.schematizer.distances;
+package net.foben.schematizer.mysql;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -9,26 +9,29 @@ import java.util.LinkedList;
 import java.util.List;
 
 import net.foben.schematizer.cassandra.CassandraDAO;
+import net.foben.schematizer.distances.ISimmilarityMeasure;
+import net.foben.schematizer.distances.NormalizedLevenstheinSim;
+import net.foben.schematizer.distances.ResDescriptor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.TreeMultiset;
 
-public class ComputeDistances {
+public class MySQLDistTest {
 
 	static List<ResDescriptor> candidates;
-	static Logger _log = LoggerFactory.getLogger(ComputeDistances.class);
+	static Logger _log = LoggerFactory.getLogger(MySQLDistTest.class);
 	static String del = ";";
 	
 	public static void main(String[] args) throws IOException {
-		int top = Integer.parseInt(args[0]);
+		int top = 500;
 		ISimmilarityMeasure<ResDescriptor> sim = new NormalizedLevenstheinSim();
 		String filename = "src/main/resources/stats/sorted_types";
 		candidates = getCandidates(top, filename);
 		ResDescriptor[] candArray = candidates.toArray(new ResDescriptor[0]);
 		
-		CassandraDAO cass = new CassandraDAO("LevTop30");
+		MySQLDAO dao = new MySQLDAO("JaccTop30Types");
 		long total = candArray.length * (candArray.length + 1) / 2;
 		long count = 0;
 		for(int rowi = 0;  rowi < candArray.length; rowi++){
@@ -37,16 +40,11 @@ public class ComputeDistances {
 			for(int coli = rowi; coli < candArray.length; coli ++){
 				ResDescriptor column = candArray[coli];
 				double simil = sim.getSim(row, column);
-				map.put(column.getType(), (float)simil);
-				if(map.keySet().size() > 5000){
-					cass.addData(row.getType(), map);
-					map.clear();
-				}
+				dao.queue(row, column, simil);
 				if(++count%100000 == 0) _log.info(((int)(count*10000d/total))/100d + "%");
 			}
-			cass.addData(row.getType(), map);
 		}
-		cass.shutdown();
+		dao.terminate();
 	}
 	
 //	private static void createCSV(Table<ResDescriptor, ResDescriptor, Double> table, String file) throws IOException{
