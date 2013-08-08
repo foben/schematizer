@@ -41,7 +41,7 @@ public class ComputeDistances {
 				LabeledResDescriptor column = candArray[coli];
 				double simil = sim.getSim(row, column);
 				dao.queue(row, column, simil);
-				if(++count%10000 == 0) _log.info(((int)(count*10000d/total))/100d + "%");
+				if(++count%1000000 == 0) _log.info(((int)(count*10000d/total))/100d + "%");
 			}
 		}
 		dao.terminate();

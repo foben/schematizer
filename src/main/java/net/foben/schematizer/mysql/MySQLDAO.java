@@ -20,7 +20,7 @@ public class MySQLDAO {
 	private int batchCount = 0;
 	private int duplicateCount = 0;
 	private int updateCount = 0;
-	private final int maxBatch = 1000;
+	private final int maxBatch = 10000;
 	private String dbName = "schematizer";
 	private String tableName;
 	private boolean operational = true;
