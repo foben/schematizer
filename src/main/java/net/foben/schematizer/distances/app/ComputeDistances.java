@@ -5,11 +5,14 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.HashSet;
 import java.util.Set;
 
+import net.foben.schematizer.distances.DistanceSelector;
+import net.foben.schematizer.distances.ISimmilarityMeasure;
 import net.foben.schematizer.distances.JaccardCommentsSim;
 import net.foben.schematizer.distances.LabeledResDescriptor;
 import net.foben.schematizer.distances.ResDescriptor;
@@ -27,40 +30,62 @@ import com.google.common.collect.TreeMultiset;
 public class ComputeDistances {
 
 	static Logger _log = LoggerFactory.getLogger(ComputeDistances.class);
-	static String del = ";";
 	static long last;
 	
 	public static void main(String[] args) throws IOException {
-		int top = Integer.parseInt(args[0]);
+		int typesprops = -1;
+		int top = -1;
+		try {
+			System.out.println("Types(1) or Props(2) ??");
+			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+			typesprops = Integer.parseInt(br.readLine());
+			
+			System.out.println("How much ???");
+			top = Integer.parseInt(br.readLine());
+			
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		
-		JaccardCommentsSim sim = new JaccardCommentsSim();
+		//JaccardCommentsSim sim = new JaccardCommentsSim();
 		
-//		WrappedRepo repo = new WrappedRepo();
-//		repo.addFile("src/main/resources/vocabularies.nq");
-//		LabeledResDescriptor[] candArray = getCandidates(top, "src/main/resources/stats/sorted_types", repo.getConnection());
-//		repo.close();
+		ISimmilarityMeasure<LabeledResDescriptor> sim = DistanceSelector.getMeasure();
+
+		WrappedRepo repo = new WrappedRepo();
+		repo.addFile("src/main/resources/vocabularies.nq");
+		LabeledResDescriptor[] candArray;
+		if(typesprops == 1) candArray = getCandidates(top, "src/main/resources/stats/sorted_types", repo.getConnection());
+		else if(typesprops == 2) candArray = getCandidates(top, "src/main/resources/stats/sorted_props", repo.getConnection());
+		else {
+			repo.close();
+			throw new IllegalArgumentException("You fool");
+		}
+		repo.close();
 		
-		LabeledResDescriptor[] candArray = deSerialize();
 		
-		MySQLDAO dao = new MySQLDAO("JaccardCommentTop30Types");
+//		serialize(candArray);
+//		System.exit(0);
+//		LabeledResDescriptor[] candArray = deSerialize();
 		
-		Set<String> uniq = new HashSet<String>();
+		String tablename = sim.getMeasureName() + "Top" + top;
+		tablename += typesprops == 1 ? "Types" : "Props" ;
+		
+		MySQLDAO dao = new MySQLDAO(tablename);
+		
 		
 		long total = candArray.length * (candArray.length + 1) / 2;
+		long oneP = Math.max(((long) (total * 0.01)),1);
 		long count = 0;
 		last = System.nanoTime();
 		for(int rowi = 0;  rowi < candArray.length; rowi++){
 			LabeledResDescriptor row = candArray[rowi];
 			for(int coli = rowi; coli < candArray.length; coli ++){
 				LabeledResDescriptor column = candArray[coli];
-				boolean news = uniq.add(row.getType()+column.getType());
-				if(!news){
-					System.out.println("!!!!!!!");
-				}
 				double simil = sim.getSim(row, column);
 				dao.queue(row, column, simil);
-				if(++count%100000 == 0){
-					_log.info(((int)(count*10000d/total))/100d + "% + took " + measure());
+				if(++count%oneP == 0){
+					_log.info(((int)(count*10000d/total))/100d + "%  took " + measure());
 				}
 			}
 		}

@@ -1,5 +1,6 @@
 package net.foben.schematizer.mysql;
 
+import java.math.BigDecimal;
 import java.sql.BatchUpdateException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -7,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.SQLWarning;
 import java.sql.Statement;
+
 import net.foben.schematizer.distances.ResDescriptor;
 
 import org.slf4j.Logger;
@@ -19,30 +21,13 @@ public class MySQLDAO {
 	private int batchCount = 0;
 	private int duplicateCount = 0;
 	private int updateCount = 0;
-	private final int maxBatch = 1000000;
+	private int commitCount;
+	private final int maxBatch = 100000;
 	private String dbName = "schematizer";
 	private String tableName;
 	private boolean operational = true;
-	Logger _log;
 	
-	public static void main(String[] args){
-		MySQLDAO inst = new MySQLDAO("testta");
-		
-		ResDescriptor r1 = new ResDescriptor("http://xmlns.com/foaf/0.1/Document", 0, 0);
-		ResDescriptor r2 = new ResDescriptor("http://xmlns.com/foaf/0.1/Doc", 25, 5);
-		ResDescriptor r3 = new ResDescriptor("http://xmlns.com/foaf/0.1/Document2", 0, 0);
-		ResDescriptor r4 = new ResDescriptor("http://xmlns.com/foaf/0.1/Doc2", 25, 5);
-		ResDescriptor r5 = new ResDescriptor("http://xmlns.com/foaf/0.1/Document3", 0, 0);
-		ResDescriptor r6 = new ResDescriptor("http://xmlns.com/foaf/0.1/Doc3", 25, 5);
-		
-		inst.queue(r2, r1, 0.2);
-		//inst.executeBatch();
-		inst.queue(r4, r3, 0.2);
-		//inst.executeBatch();
-		inst.queue(r5, r6, 0.2);
-		
-		inst.terminate();
-	}
+	Logger _log;
 	
 	public MySQLDAO(String tableName){
 		this.tableName = tableName;
@@ -52,9 +37,8 @@ public class MySQLDAO {
 			conn = DriverManager.getConnection("jdbc:mysql://localhost/schematizer?useServerPrepStmts=true&rewriteBatchedStatements=true",
 					"root","dbpass");
 			
-			pst = conn.prepareStatement(String.format("INSERT INTO %s.%s values ( ?, ?, ?)", dbName, tableName));
+			pst = conn.prepareStatement(String.format("INSERT INTO %s.%s values ( default, ?, ?, ?)", dbName, tableName));
 			createTable();
-			conn.setAutoCommit(false);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -65,13 +49,12 @@ public class MySQLDAO {
 			java.sql.Statement createSt = conn.createStatement();
 
 			createSt.executeUpdate(String.format ("CREATE TABLE IF NOT EXISTS %s.%s("
-												+ "res1 VARCHAR(255) NOT NULL ,"
-												+ "res2 VARCHAR(255) NOT NULL ,"
-												+ "similarity DOUBLE NULL ,"
-												+ "PRIMARY KEY (res1, res2),"
-												+ "INDEX (similarity) )"
-												+ "DEFAULT CHARACTER SET utf8 COLLATE utf8_bin,"
-												+ "ENGINE = MYISAM", dbName, tableName));
+					+ "id int not null auto_increment,"
+					+ "res1 VARCHAR(255) NOT NULL ,"
+					+ "res2 VARCHAR(255) NOT NULL ,"
+					+ "similarity DOUBLE NULL ,"
+					+ "PRIMARY KEY (id) )"
+					+ "DEFAULT CHARACTER SET utf8 COLLATE utf8_bin", dbName, tableName));
 			
 			SQLWarning w = createSt.getWarnings();
 			if(w == null) _log.info("Table {} successfully created", tableName);
@@ -91,6 +74,7 @@ public class MySQLDAO {
 		try {
 			String uri1 = row.getType();
 			String uri2 = column.getType();
+
 			pst.setString(1, uri1);
 			pst.setString(2, uri2);
 			pst.setDouble(3, simil);
@@ -105,8 +89,9 @@ public class MySQLDAO {
 	}
 	
 	public void executeBatch(){
+		long start = System.nanoTime();
 		if(!operational()) return;
-		_log.info("Executing batch");
+		//_log.info("Executing batch of {}", maxBatch);
 		try {
 			int res[] = pst.executeBatch();
 			for(int i : res){
@@ -135,13 +120,9 @@ public class MySQLDAO {
 			}
 			batchCount = 0;
 		}
-		try {
-			conn.commit();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		_log.info("batch execution complete");
+		BigDecimal bd = new BigDecimal((System.nanoTime() - start)/1000000000d);
+		bd.setScale(2, BigDecimal.ROUND_HALF_UP);
+		_log.info("{} batch execution complete in {}",++commitCount, bd.doubleValue());
 	}
 	
 	public void terminate(){
