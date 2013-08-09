@@ -38,6 +38,12 @@ public class JaccardCommentsSim implements ISimmilarityMeasure<LabeledResDescrip
 		return res;
 	}
 
+	@Override
+	public String getMeasureName() {
+		return "JaccardComments";
+	}
+
+
 
 
 }
