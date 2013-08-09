@@ -7,7 +7,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.SQLWarning;
 import java.sql.Statement;
-
 import net.foben.schematizer.distances.ResDescriptor;
 
 import org.slf4j.Logger;
@@ -20,55 +19,60 @@ public class MySQLDAO {
 	private int batchCount = 0;
 	private int duplicateCount = 0;
 	private int updateCount = 0;
-	private final int maxBatch = 10000;
+	private final int maxBatch = 1000000;
 	private String dbName = "schematizer";
 	private String tableName;
 	private boolean operational = true;
 	Logger _log;
 	
-//	public static void main(String[] args){
-//		MySQLDAO inst = new MySQLDAO("testta");
-//		ResDescriptor r1 = new ResDescriptor("http://xmlns.com/foaf/0.1/Document", 0, 0);
-//		ResDescriptor r2 = new ResDescriptor("http://xmlns.com/foaf/0.1/Doc", 25, 5);
-//		ResDescriptor r3 = new ResDescriptor("http://xmlns.com/foaf/0.1/Document2", 0, 0);
-//		ResDescriptor r4 = new ResDescriptor("http://xmlns.com/foaf/0.1/Doc2", 25, 5);
-//		ResDescriptor r5 = new ResDescriptor("http://xmlns.com/foaf/0.1/Document3", 0, 0);
-//		ResDescriptor r6 = new ResDescriptor("http://xmlns.com/foaf/0.1/Doc3", 25, 5);
-//		
-//		inst.queue(r2, r1, 0.2);
-//		inst.executeBatch();
-//		inst.queue(r4, r3, 0.2);
-//		inst.executeBatch();
-//		inst.queue(r5, r6, 0.2);
-//		
-//		inst.terminate();
-//	}
+	public static void main(String[] args){
+		MySQLDAO inst = new MySQLDAO("testta");
+		
+		ResDescriptor r1 = new ResDescriptor("http://xmlns.com/foaf/0.1/Document", 0, 0);
+		ResDescriptor r2 = new ResDescriptor("http://xmlns.com/foaf/0.1/Doc", 25, 5);
+		ResDescriptor r3 = new ResDescriptor("http://xmlns.com/foaf/0.1/Document2", 0, 0);
+		ResDescriptor r4 = new ResDescriptor("http://xmlns.com/foaf/0.1/Doc2", 25, 5);
+		ResDescriptor r5 = new ResDescriptor("http://xmlns.com/foaf/0.1/Document3", 0, 0);
+		ResDescriptor r6 = new ResDescriptor("http://xmlns.com/foaf/0.1/Doc3", 25, 5);
+		
+		inst.queue(r2, r1, 0.2);
+		//inst.executeBatch();
+		inst.queue(r4, r3, 0.2);
+		//inst.executeBatch();
+		inst.queue(r5, r6, 0.2);
+		
+		inst.terminate();
+	}
 	
 	public MySQLDAO(String tableName){
 		this.tableName = tableName;
 		this._log = LoggerFactory.getLogger(this.getClass().getName());
 		
 		try {
-			conn = DriverManager.getConnection("jdbc:mysql://localhost/schematizer?useServerPrepStmts=false&rewriteBatchedStatements=true",
+			conn = DriverManager.getConnection("jdbc:mysql://localhost/schematizer?useServerPrepStmts=true&rewriteBatchedStatements=true",
 					"root","dbpass");
-			pst = conn.prepareStatement(String.format("INSERT INTO %s.%s values (?, ?, ?)", dbName, tableName));
-			//checkSchema();
+			
+			pst = conn.prepareStatement(String.format("INSERT INTO %s.%s values ( ?, ?, ?)", dbName, tableName));
 			createTable();
+			conn.setAutoCommit(false);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
 	}
 	
 	private void createTable(){
 		try {
 			java.sql.Statement createSt = conn.createStatement();
-			createSt.executeUpdate(String.format("CREATE  TABLE IF NOT EXISTS %s.%s( "
-					+ "res1 VARCHAR(255) NOT NULL ,"
-					+ "res2 VARCHAR(255) NOT NULL ,"
-					+ "similarity DOUBLE NULL ,"
-					+ "PRIMARY KEY (res1, res2),"
-					+ "INDEX (similarity) )", dbName, tableName));
+
+			createSt.executeUpdate(String.format ("CREATE TABLE IF NOT EXISTS %s.%s("
+												+ "res1 VARCHAR(255) NOT NULL ,"
+												+ "res2 VARCHAR(255) NOT NULL ,"
+												+ "similarity DOUBLE NULL ,"
+												+ "PRIMARY KEY (res1, res2),"
+												+ "INDEX (similarity) )"
+												+ "DEFAULT CHARACTER SET utf8 COLLATE utf8_bin,"
+												+ "ENGINE = MYISAM", dbName, tableName));
+			
 			SQLWarning w = createSt.getWarnings();
 			if(w == null) _log.info("Table {} successfully created", tableName);
 			else _log.warn("There were warnings: {}", w.getMessage());
@@ -85,9 +89,11 @@ public class MySQLDAO {
 	public void queue(ResDescriptor row, ResDescriptor column, double simil) {
 		if(!operational()) return;
 		try {
-			pst.setString(1, row.getType());
-			pst.setString(2, column.getType());
-			pst.setDouble(3, simil);			
+			String uri1 = row.getType();
+			String uri2 = column.getType();
+			pst.setString(1, uri1);
+			pst.setString(2, uri2);
+			pst.setDouble(3, simil);
 			pst.addBatch();
 			
 			if(++batchCount%maxBatch == 0){
@@ -100,6 +106,7 @@ public class MySQLDAO {
 	
 	public void executeBatch(){
 		if(!operational()) return;
+		_log.info("Executing batch");
 		try {
 			int res[] = pst.executeBatch();
 			for(int i : res){
@@ -109,6 +116,7 @@ public class MySQLDAO {
 
 		} catch(BatchUpdateException be){
 			if(be.getMessage().startsWith("Duplicate entry")) {
+				_log.error(be.getMessage());
 				int[] cts = be.getUpdateCounts();
 				for(int i :cts) {
 					if(i == Statement.EXECUTE_FAILED) duplicateCount++;
@@ -127,6 +135,13 @@ public class MySQLDAO {
 			}
 			batchCount = 0;
 		}
+		try {
+			conn.commit();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		_log.info("batch execution complete");
 	}
 	
 	public void terminate(){
