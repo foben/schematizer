@@ -15,6 +15,7 @@ import org.openrdf.repository.RepositoryException;
 
 public class LabeledResDescriptor extends ResDescriptor {
 	
+	private static final long serialVersionUID = 1337L;
 	private Set<Literal> comments;
 	private Set<Literal> labels;
 	private static String queryComments = "SELECT ?c WHERE {<%s> <http://www.w3.org/2000/01/rdf-schema#comment> ?c . }";

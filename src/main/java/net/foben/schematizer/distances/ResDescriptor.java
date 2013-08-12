@@ -11,6 +11,7 @@ import com.google.common.collect.Ordering;
 
 public class ResDescriptor implements Comparable<ResDescriptor>, Serializable{
 	
+	private static final long serialVersionUID = 1336L;
 	private int total;
 	private int datasets;
 	private String type;
@@ -83,6 +84,11 @@ public class ResDescriptor implements Comparable<ResDescriptor>, Serializable{
 	}
 	
 	public static class ResDescriptorReverseOrdering extends Ordering<ResDescriptor> implements Serializable{
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 24L;
+
 		@Override
 		public int compare(ResDescriptor left, ResDescriptor right) {
 			return left.compareTo(right) * -1;
