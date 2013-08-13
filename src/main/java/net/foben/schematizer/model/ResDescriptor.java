@@ -1,4 +1,4 @@
-package net.foben.schematizer.distances;
+package net.foben.schematizer.model;
 
 import java.io.Serializable;
 

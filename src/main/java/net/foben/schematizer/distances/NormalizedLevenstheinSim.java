@@ -1,5 +1,7 @@
 package net.foben.schematizer.distances;
 
+import net.foben.schematizer.model.LabeledResDescriptor;
+
 import com.wcohen.ss.ScaledLevenstein;
 
 public class NormalizedLevenstheinSim implements ISimmilarityMeasure<LabeledResDescriptor> {

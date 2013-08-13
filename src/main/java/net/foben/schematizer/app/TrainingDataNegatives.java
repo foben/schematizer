@@ -1,40 +1,35 @@
-package net.foben.schematizer.distances.app;
+package net.foben.schematizer.app;
 
 import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.HashSet;
-import java.util.Set;
 
-import net.foben.schematizer.da.DAO;
-import net.foben.schematizer.da.cassandra.CassandraDAO;
-import net.foben.schematizer.da.mysql.MySQLDAO;
-import net.foben.schematizer.distances.DistanceSelector;
-import net.foben.schematizer.distances.ISimmilarityMeasure;
 import net.foben.schematizer.distances.JaccardCommentsSim;
+import net.foben.schematizer.distances.NormalizedLevenstheinSim;
+import net.foben.schematizer.distances.app.ComputeDistances;
 import net.foben.schematizer.model.LabeledResDescriptor;
 import net.foben.schematizer.model.ResDescriptor;
 import net.foben.schematizer.util.WrappedRepo;
 
 import org.openrdf.repository.RepositoryConnection;
+import org.openrdf.repository.RepositoryException;
+import org.openrdf.rio.RDFParseException;
+import org.openrdf.rio.helpers.BasicParserSettings;
+import org.openrdf.rio.helpers.NTriplesParserSettings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.TreeMultiset;
 
-
-@SuppressWarnings("unused")
-public class ComputeDistances {
-
+public class TrainingDataNegatives {
+	
 	static Logger _log = LoggerFactory.getLogger(ComputeDistances.class);
 	static long last;
-	
-	public static void main(String[] args) throws IOException {
+
+	public static void main(String[] args) throws RDFParseException, RepositoryException, IOException {
 		int typesprops = -1;
 		int top = -1;
 		try {
@@ -50,11 +45,9 @@ public class ComputeDistances {
 			e.printStackTrace();
 		}
 		
-		//JaccardCommentsSim sim = new JaccardCommentsSim();
-		
-		ISimmilarityMeasure<LabeledResDescriptor> sim = DistanceSelector.getMeasure();
 
 		WrappedRepo repo = new WrappedRepo();
+		configureParser(repo.getConnection());
 		repo.addFile("src/main/resources/vocabularies.nq");
 		repo.addFile("src/main/resources/all_equis");
 		LabeledResDescriptor[] candArray;
@@ -66,61 +59,43 @@ public class ComputeDistances {
 		}
 		repo.close();
 		
-		String tablename = sim.getMeasureName() + "Top" + top;
-		tablename += typesprops == 1 ? "Types" : "Props" ;
-		
-		//DAO dao = new MySQLDAO(tablename);
-		DAO dao = new CassandraDAO(tablename);
-		
 		long total = candArray.length * (candArray.length + 1) / 2;
 		long oneP = Math.max(((long) (total * 0.01)),1);
 		long count = 0;
-		last = System.nanoTime();
+		JaccardCommentsSim jac = new JaccardCommentsSim();
+		NormalizedLevenstheinSim lev = new NormalizedLevenstheinSim();
+		
+		BufferedReader rd = new BufferedReader(new InputStreamReader(System.in));
+		BufferedWriter out = new BufferedWriter(new FileWriter("temp/training_neg"));
+		
 		for(int rowi = 0;  rowi < candArray.length; rowi++){
 			LabeledResDescriptor row = candArray[rowi];
 			for(int coli = rowi; coli < candArray.length; coli ++){
 				LabeledResDescriptor column = candArray[coli];
-				double simil = sim.getSim(row, column);
-				dao.queue(row, column, simil);
+//				System.out.println(row.getType() + " <> " + column.getType() + "  ??");
+//				String ans = rd.readLine().trim().replace("\n", "");
+//				System.out.println(ans);
+				
+//				if(ans.equals("n") || ans.equals("N")){
+				if(!row.getType().equals(column.getType())) {
+					
+					double jacv = jac.getSim(row, column);
+					double levv = lev.getSim(row, column);
+					out.write(String.format("%s<>%s;%s;%s;0", row.getType(), column.getType(), jacv, levv));
+					out.newLine();
+					out.write(String.format("%s<>%s;%s;%s;0", column.getType(), row.getType(), jacv, levv));
+					out.newLine();
+					out.flush();
+				}
 				if(++count%oneP == 0){
-					_log.info(((int)(count*10000d/total))/100d + "%  took " + measure());
+					_log.info(((int)(count*10000d/total))/100d + "%");
 				}
 			}
 		}
-		dao.terminate();
+		out.close();
+		rd.close();
 		
-	}
-	
-	
-	private static String measure() {
-		long dur = System.nanoTime() - last;
-		last = System.nanoTime();
-		return Math.round((dur/1000000000d)*100)/100 + " s";
-	}
 
-	private static <T> T deSerialize(){
-		try {
-			ObjectInputStream obin = new ObjectInputStream(new FileInputStream("obj"));
-			@SuppressWarnings("unchecked")
-			T obj = (T) obin.readObject();
-			obin.close();
-			return obj;
-		} catch(ClassCastException e){
-			e.printStackTrace();			
-		} catch (Exception e) {
-			e.printStackTrace();
-		} 
-		return null;
-	}
-	
-	private static <T> void serialize(T obj){
-		try {
-			ObjectOutputStream obout = new ObjectOutputStream(new FileOutputStream("obj"));
-			obout.writeObject(obj);
-			obout.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 	
 	private static LabeledResDescriptor[] getCandidates(int top, String filename, RepositoryConnection con) throws IOException {
@@ -143,4 +118,21 @@ public class ComputeDistances {
 		in.close();
 		return s.toArray(new LabeledResDescriptor[0]);
 	}
+	
+	
+	private static void configureParser(RepositoryConnection con) {
+		con.getParserConfig().set(BasicParserSettings.VERIFY_DATATYPE_VALUES, false);
+		con.getParserConfig().set(BasicParserSettings.NORMALIZE_DATATYPE_VALUES, false);
+		con.getParserConfig().set(BasicParserSettings.FAIL_ON_UNKNOWN_DATATYPES, false);
+		con.getParserConfig().set(BasicParserSettings.VERIFY_LANGUAGE_TAGS, false);
+		con.getParserConfig().set(BasicParserSettings.NORMALIZE_LANGUAGE_TAGS, false);
+		con.getParserConfig().set(BasicParserSettings.FAIL_ON_UNKNOWN_LANGUAGES, false);
+		con.getParserConfig().set(BasicParserSettings.VERIFY_RELATIVE_URIS, false);
+		con.getParserConfig().set(BasicParserSettings.PRESERVE_BNODE_IDS, true);
+		con.getParserConfig().addNonFatalError(BasicParserSettings.VERIFY_DATATYPE_VALUES);
+		con.getParserConfig().addNonFatalError(BasicParserSettings.FAIL_ON_UNKNOWN_DATATYPES);
+		con.getParserConfig().addNonFatalError(NTriplesParserSettings.FAIL_ON_NTRIPLES_INVALID_LINES);
+		
+	}
+
 }

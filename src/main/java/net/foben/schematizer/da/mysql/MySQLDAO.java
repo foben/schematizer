@@ -1,4 +1,4 @@
-package net.foben.schematizer.mysql;
+package net.foben.schematizer.da.mysql;
 
 import java.math.BigDecimal;
 import java.sql.BatchUpdateException;
@@ -9,12 +9,13 @@ import java.sql.SQLException;
 import java.sql.SQLWarning;
 import java.sql.Statement;
 
-import net.foben.schematizer.distances.ResDescriptor;
+import net.foben.schematizer.da.DAO;
+import net.foben.schematizer.model.ResDescriptor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class MySQLDAO {
+public class MySQLDAO implements DAO{
 	
 	private Connection conn = null;
 	private PreparedStatement pst = null;

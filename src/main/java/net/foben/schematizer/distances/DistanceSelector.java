@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import net.foben.schematizer.model.LabeledResDescriptor;
+
 public class DistanceSelector {
 	
 	public static ISimmilarityMeasure<LabeledResDescriptor> getMeasure(){

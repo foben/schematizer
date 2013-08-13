@@ -2,6 +2,8 @@ package net.foben.schematizer.distances;
 
 import java.util.Set;
 
+import net.foben.schematizer.model.LabeledResDescriptor;
+
 import org.openrdf.model.Literal;
 
 import com.wcohen.ss.Jaccard;

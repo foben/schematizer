@@ -1,4 +1,4 @@
-package net.foben.schematizer.distances;
+package net.foben.schematizer.model;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -45,6 +45,7 @@ public class LabeledResDescriptor extends ResDescriptor {
 				if(v instanceof Literal) labels.add((Literal) v);
 				else _log.warn("Literal expected. Received: " + v.toString());
 			}
+			System.out.print("");
 		}
 		catch (RepositoryException e) {e.printStackTrace();}
 		catch (MalformedQueryException e) {e.printStackTrace();}
