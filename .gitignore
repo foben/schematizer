@@ -5,3 +5,4 @@ target
 temp
 unknown_graphs.log
 src/main/resources/vocabularies.nq
+src/main/resources/schemadata

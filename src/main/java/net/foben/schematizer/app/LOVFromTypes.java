@@ -20,6 +20,8 @@ import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
 import org.openrdf.repository.http.HTTPRepository;
 
+import static net.foben.schematizer.Environment.DataFiles.*;
+
 public class LOVFromTypes {
 	
 	static HTTPRepository rep = null;
@@ -29,7 +31,7 @@ public class LOVFromTypes {
 		int top = 500;
 		
 		Set<String> lovnss = ModelAccess.getLOVNamespaces();
-		BufferedReader br = new BufferedReader(new FileReader("src/main/resources/stats/sorted_types"));
+		BufferedReader br = new BufferedReader(new FileReader(FILE_PROPERTIES));
 		HashMap<String, Set<String>> mappings = new HashMap<String, Set<String>>();
 		String line = null;
 		int count = 0;

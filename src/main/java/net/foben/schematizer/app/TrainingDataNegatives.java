@@ -24,6 +24,8 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.TreeMultiset;
 
+import static net.foben.schematizer.Environment.DataFiles.*;
+
 public class TrainingDataNegatives {
 	
 	static Logger _log = LoggerFactory.getLogger(ComputeDistances.class);
@@ -48,11 +50,11 @@ public class TrainingDataNegatives {
 
 		WrappedRepo repo = new WrappedRepo();
 		configureParser(repo.getConnection());
-		repo.addFile("src/main/resources/vocabularies.nq");
-		repo.addFile("src/main/resources/all_equis");
+		repo.addFile(FILE_SCHEMADATA_LDSPIDER);
+		repo.addFile(FILE_ALL_EQUIVALENCES);
 		LabelsCommentsResourceDescriptor[] candArray;
-		if(typesprops == 1) candArray = getCandidates(top, "src/main/resources/stats/sorted_types", repo.getConnection());
-		else if(typesprops == 2) candArray = getCandidates(top, "src/main/resources/stats/sorted_props", repo.getConnection());
+		if(typesprops == 1) candArray = getCandidates(top, FILE_CLASSES, repo.getConnection());
+		else if(typesprops == 2) candArray = getCandidates(top, FILE_PROPERTIES, repo.getConnection());
 		else {
 			repo.close();
 			throw new IllegalArgumentException("You fool");

@@ -21,8 +21,8 @@
     <appender-ref ref="STDOUT" />
   </root>
   <logger name="org.openrdf" level="warn"/>
-  <logger name="org.openrdf.rio" level="error"/>
+  <logger name="org.openrdf.rio" level="off"/>
   <logger name="net.foben"   level="debug"/>
-  <logger name="org.xml.sax" level="warn"/>
+  <logger name="org.xml.sax" level="off"/>
   
 </configuration>

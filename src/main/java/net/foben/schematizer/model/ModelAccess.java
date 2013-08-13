@@ -4,7 +4,9 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import net.foben.schematizer.util.WrappedRepo;
@@ -15,13 +17,10 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.TreeMultiset;
 
+import static net.foben.schematizer.Environment.DataFiles.*;
+
 public class ModelAccess {
-	
-	private static final String lovfile = "src/main/resources/lov/vocabularies.csv";
-	private static final String schemaRDFile = "src/main/resources/vocabularies.nq";
-	private static final String typesFile = "src/main/resources/stats/sorted_types"; 
-	
-	
+		
 	private static Logger _log = LoggerFactory.getLogger(ModelAccess.class);
 	
 	
@@ -29,7 +28,7 @@ public class ModelAccess {
 		Set<LOVVocab> result = new HashSet<LOVVocab>(400);
 		String line = null;
 		try {
-			BufferedReader in = new BufferedReader(new FileReader(lovfile));
+			BufferedReader in = new BufferedReader(new FileReader(FILE_LOV_VOCABULARIES));
 			while((line = in.readLine()) != null){
 				String[] arr = line.split(";");
 				result.add(new LOVVocab(arr[0], arr[1], arr[0]));
@@ -49,7 +48,7 @@ public class ModelAccess {
 		Set<String> result = new HashSet<String>(400);
 		String line = null;
 		try {
-			BufferedReader in = new BufferedReader(new FileReader(lovfile));
+			BufferedReader in = new BufferedReader(new FileReader(FILE_LOV_VOCABULARIES));
 			while((line = in.readLine()) != null){
 				String[] arr = line.split(";");
 				result.add(arr[1]);
@@ -64,13 +63,35 @@ public class ModelAccess {
 		}
 		return result;
 	}
+	
+	public static List<String> getTopTypes(int top){
+		List<String> result = new ArrayList<String>();
+		try {
+			
+			BufferedReader br = new BufferedReader(new FileReader(FILE_CLASSES));
+			String line = "";
+			int count = 0;
+			while((line = br.readLine()) != null){
+				result.add(line.split(" ")[0]);
+				count++;
+				if(count >= top) break;
+			}
+			br.close();
+			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
 
 
 	public static ComparableResourceDescriptor[] getCandidates(Class<?> expected, int top) {
 		if(expected.equals(SimpleResourceDescriptor.class)){
 			try{				
 				TreeMultiset<SimpleResourceDescriptor> s = TreeMultiset.create(new SimpleResourceDescriptor.ResDescriptorReverseOrdering());
-				BufferedReader in = new BufferedReader(new FileReader(typesFile));
+				BufferedReader in = new BufferedReader(new FileReader(FILE_CLASSES));
 				String line;
 				int count = 0;
 				while((line = in.readLine()) != null && ++count <= top){
@@ -92,14 +113,14 @@ public class ModelAccess {
 			}
 		}
 		else if (expected.equals(LabelsCommentsResourceDescriptor.class)){
-			try{
+			try {
 				WrappedRepo repo = new WrappedRepo();
-				repo.addFile("src/main/resources/vocabularies.nq");
-				repo.addFile("src/main/resources/all_equis");
+				repo.addFile(FILE_SCHEMADATA_LDSPIDER);
+				repo.addFile(FILE_ALL_EQUIVALENCES);
 				RepositoryConnection con = repo.getConnection();
 				
 				TreeMultiset<LabelsCommentsResourceDescriptor> s = TreeMultiset.create(new SimpleResourceDescriptor.ResDescriptorReverseOrdering());
-				BufferedReader in = new BufferedReader(new FileReader(typesFile));
+				BufferedReader in = new BufferedReader(new FileReader(FILE_CLASSES));
 				String line;
 				int count = 0;
 				while((line = in.readLine()) != null && ++count <= top){
