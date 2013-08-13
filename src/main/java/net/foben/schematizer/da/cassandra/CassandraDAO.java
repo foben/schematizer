@@ -16,7 +16,7 @@ import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.query.QueryResult;
 import me.prettyprint.hector.api.query.SliceQuery;
 import net.foben.schematizer.da.DAO;
-import net.foben.schematizer.model.SimpleResourceDescriptor;
+import net.foben.schematizer.model.ResourceDescriptor;
 
 public class CassandraDAO implements DAO {
 	Cluster cluster;
@@ -50,7 +50,7 @@ public class CassandraDAO implements DAO {
 		template = new ThriftColumnFamilyTemplate<String, Float>(keyspace, CF_NAME, StringSerializer.get(), FloatSerializer.get());
 	}
 	
-	public void queue(SimpleResourceDescriptor row, SimpleResourceDescriptor column, double simil) {
+	public void queue(ResourceDescriptor row, ResourceDescriptor column, double simil) {
 		ColumnFamilyUpdater<String, Float> upd = template.createUpdater(row.getURI() + " " + column.getURI());
 		upd.setString((float)simil, "");
 		template.update(upd);

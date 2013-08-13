@@ -4,8 +4,6 @@ import java.util.Set;
 
 import net.foben.schematizer.model.ComparableResourceDescriptor;
 import net.foben.schematizer.model.LabelsCommentsResourceDescriptor;
-import net.foben.schematizer.model.SimpleResourceDescriptor;
-
 import org.openrdf.model.Literal;
 
 import com.wcohen.ss.Jaccard;

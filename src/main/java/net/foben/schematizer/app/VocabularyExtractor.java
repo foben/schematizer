@@ -8,10 +8,12 @@ import java.util.HashSet;
 import org.openrdf.model.URI;
 import org.openrdf.model.impl.URIImpl;
 
+import static net.foben.schematizer.Environment.DataFiles.*;
+
 public class VocabularyExtractor {
 
 	public static void main(String[] args) throws IOException {
-		BufferedReader in = new BufferedReader(new FileReader("src/main/resources/stats/sorted_types"));
+		BufferedReader in = new BufferedReader(new FileReader(FILE_CLASSES));
 		String line;
 		HashSet<String> vocabs = new HashSet<String>();
 		while((line = in.readLine()) != null){
@@ -21,7 +23,7 @@ public class VocabularyExtractor {
 			vocabs.add(uri.getNamespace());
 		}
 		in.close();
-		in = new BufferedReader(new FileReader("src/main/resources/stats/sorted_props"));
+		in = new BufferedReader(new FileReader(FILE_PROPERTIES));
 		while((line = in.readLine()) != null){
 			String[] fields = line.split(" ");
 			URI uri = new URIImpl(fields[0]);

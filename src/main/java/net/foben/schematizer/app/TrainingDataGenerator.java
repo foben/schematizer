@@ -26,6 +26,8 @@ import org.openrdf.rio.helpers.BasicParserSettings;
 import org.openrdf.rio.helpers.NTriplesParserSettings;
 import org.openrdf.sail.memory.MemoryStore;
 
+import static net.foben.schematizer.Environment.DataFiles.*;
+
 public class TrainingDataGenerator {
 
 	public static void main(String[] args) throws RepositoryException, RDFParseException, IOException {
@@ -34,8 +36,8 @@ public class TrainingDataGenerator {
 		repo.initialize();
 		RepositoryConnection con = repo.getConnection();
 		configureParser(con);
-		con.add(new File("src/main/resources/all_equis"), null, RDFFormat.NQUADS, (Resource)null);
-		con.add(new File("src/main/resources/vocabularies.nq"), null, RDFFormat.NQUADS, (Resource)null);
+		con.add(new File(FILE_ALL_EQUIVALENCES), null, RDFFormat.NQUADS, (Resource)null);
+		con.add(new File(FILE_SCHEMADATA_LDSPIDER), null, RDFFormat.NQUADS, (Resource)null);
 		RepositoryResult<Statement> res = con.getStatements((Resource)null, new URIImpl(equi), (Value)null, false, (Resource)null);
 		
 		BufferedWriter br = new BufferedWriter(new FileWriter("temp/training"));
@@ -64,7 +66,6 @@ public class TrainingDataGenerator {
 				System.out.println(++failcount);
 				continue;
 			}
-			
 		}
 		br.close();
 		

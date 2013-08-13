@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import net.foben.schematizer.model.ComparableResourceDescriptor;
 import net.foben.schematizer.model.ResourceDescriptor;
 
 public class DistanceSelector {
