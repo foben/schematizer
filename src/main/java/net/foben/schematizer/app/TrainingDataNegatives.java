@@ -10,8 +10,8 @@ import java.io.InputStreamReader;
 import net.foben.schematizer.distances.JaccardCommentsSim;
 import net.foben.schematizer.distances.NormalizedLevenstheinSim;
 import net.foben.schematizer.distances.app.ComputeDistances;
-import net.foben.schematizer.model.LabeledResDescriptor;
-import net.foben.schematizer.model.ResDescriptor;
+import net.foben.schematizer.model.LabelsCommentsResourceDescriptor;
+import net.foben.schematizer.model.SimpleResourceDescriptor;
 import net.foben.schematizer.util.WrappedRepo;
 
 import org.openrdf.repository.RepositoryConnection;
@@ -50,7 +50,7 @@ public class TrainingDataNegatives {
 		configureParser(repo.getConnection());
 		repo.addFile("src/main/resources/vocabularies.nq");
 		repo.addFile("src/main/resources/all_equis");
-		LabeledResDescriptor[] candArray;
+		LabelsCommentsResourceDescriptor[] candArray;
 		if(typesprops == 1) candArray = getCandidates(top, "src/main/resources/stats/sorted_types", repo.getConnection());
 		else if(typesprops == 2) candArray = getCandidates(top, "src/main/resources/stats/sorted_props", repo.getConnection());
 		else {
@@ -69,21 +69,21 @@ public class TrainingDataNegatives {
 		BufferedWriter out = new BufferedWriter(new FileWriter("temp/training_neg"));
 		
 		for(int rowi = 0;  rowi < candArray.length; rowi++){
-			LabeledResDescriptor row = candArray[rowi];
+			LabelsCommentsResourceDescriptor row = candArray[rowi];
 			for(int coli = rowi; coli < candArray.length; coli ++){
-				LabeledResDescriptor column = candArray[coli];
+				LabelsCommentsResourceDescriptor column = candArray[coli];
 //				System.out.println(row.getType() + " <> " + column.getType() + "  ??");
 //				String ans = rd.readLine().trim().replace("\n", "");
 //				System.out.println(ans);
 				
 //				if(ans.equals("n") || ans.equals("N")){
-				if(!row.getType().equals(column.getType())) {
+				if(!row.getURI().equals(column.getURI())) {
 					
 					double jacv = jac.getSim(row, column);
 					double levv = lev.getSim(row, column);
-					out.write(String.format("%s<>%s;%s;%s;0", row.getType(), column.getType(), jacv, levv));
+					out.write(String.format("%s<>%s;%s;%s;0", row.getURI(), column.getURI(), jacv, levv));
 					out.newLine();
-					out.write(String.format("%s<>%s;%s;%s;0", column.getType(), row.getType(), jacv, levv));
+					out.write(String.format("%s<>%s;%s;%s;0", column.getURI(), row.getURI(), jacv, levv));
 					out.newLine();
 					out.flush();
 				}
@@ -98,16 +98,16 @@ public class TrainingDataNegatives {
 
 	}
 	
-	private static LabeledResDescriptor[] getCandidates(int top, String filename, RepositoryConnection con) throws IOException {
-		TreeMultiset<LabeledResDescriptor> s = TreeMultiset.create(new ResDescriptor.ResDescriptorReverseOrdering());
+	private static LabelsCommentsResourceDescriptor[] getCandidates(int top, String filename, RepositoryConnection con) throws IOException {
+		TreeMultiset<LabelsCommentsResourceDescriptor> s = TreeMultiset.create(new SimpleResourceDescriptor.ResDescriptorReverseOrdering());
 		BufferedReader in = new BufferedReader(new FileReader(filename));
 		String line;
 		int count = 0;
 		while((line = in.readLine()) != null && ++count <= top){
-			LabeledResDescriptor t = null;
+			LabelsCommentsResourceDescriptor t = null;
 			try{
 				String[] fields = line.split(" ");
-				t = new LabeledResDescriptor(fields[0], Integer.parseInt(fields[1]), Integer.parseInt(fields[2]), con);
+				t = new LabelsCommentsResourceDescriptor(fields[0], Integer.parseInt(fields[1]), Integer.parseInt(fields[2]), con);
 			} catch (Exception e){
 				e.printStackTrace();
 			}
@@ -116,7 +116,7 @@ public class TrainingDataNegatives {
 			}
 		}
 		in.close();
-		return s.toArray(new LabeledResDescriptor[0]);
+		return s.toArray(new LabelsCommentsResourceDescriptor[0]);
 	}
 	
 	

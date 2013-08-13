@@ -10,7 +10,7 @@ import java.sql.SQLWarning;
 import java.sql.Statement;
 
 import net.foben.schematizer.da.DAO;
-import net.foben.schematizer.model.ResDescriptor;
+import net.foben.schematizer.model.SimpleResourceDescriptor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -70,11 +70,11 @@ public class MySQLDAO implements DAO{
 		}
 	}
 
-	public void queue(ResDescriptor row, ResDescriptor column, double simil) {
+	public void queue(SimpleResourceDescriptor row, SimpleResourceDescriptor column, double simil) {
 		if(!operational()) return;
 		try {
-			String uri1 = row.getType();
-			String uri2 = column.getType();
+			String uri1 = row.getURI();
+			String uri2 = column.getURI();
 
 			pst.setString(1, uri1);
 			pst.setString(2, uri2);

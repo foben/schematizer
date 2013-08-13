@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.lang.reflect.Array;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,8 +18,11 @@ import net.foben.schematizer.da.mysql.MySQLDAO;
 import net.foben.schematizer.distances.DistanceSelector;
 import net.foben.schematizer.distances.ISimmilarityMeasure;
 import net.foben.schematizer.distances.JaccardCommentsSim;
-import net.foben.schematizer.model.LabeledResDescriptor;
-import net.foben.schematizer.model.ResDescriptor;
+import net.foben.schematizer.model.ComparableResourceDescriptor;
+import net.foben.schematizer.model.LabelsCommentsResourceDescriptor;
+import net.foben.schematizer.model.ModelAccess;
+import net.foben.schematizer.model.ResourceDescriptor;
+import net.foben.schematizer.model.SimpleResourceDescriptor;
 import net.foben.schematizer.util.WrappedRepo;
 
 import org.openrdf.repository.RepositoryConnection;
@@ -52,19 +56,26 @@ public class ComputeDistances {
 		
 		//JaccardCommentsSim sim = new JaccardCommentsSim();
 		
-		ISimmilarityMeasure<LabeledResDescriptor> sim = DistanceSelector.getMeasure();
-
-		WrappedRepo repo = new WrappedRepo();
-		repo.addFile("src/main/resources/vocabularies.nq");
-		repo.addFile("src/main/resources/all_equis");
-		LabeledResDescriptor[] candArray;
-		if(typesprops == 1) candArray = getCandidates(top, "src/main/resources/stats/sorted_types", repo.getConnection());
-		else if(typesprops == 2) candArray = getCandidates(top, "src/main/resources/stats/sorted_props", repo.getConnection());
-		else {
-			repo.close();
-			throw new IllegalArgumentException("You fool");
-		}
-		repo.close();
+		ISimmilarityMeasure<? extends ResourceDescriptor> sim = DistanceSelector.getMeasure();
+		
+//		WrappedRepo repo = new WrappedRepo();
+//		repo.addFile("src/main/resources/vocabularies.nq");
+//		repo.addFile("src/main/resources/all_equis");
+		
+		
+		Class<?> exp = sim.getExpected();
+		ComparableResourceDescriptor[] candArray = null;
+		
+		Array.newInstance(exp, 5);
+		candArray = ModelAccess.getCandidates(exp, top);
+		
+//		if(typesprops == 1) candArray = getCandidates(top, "src/main/resources/stats/sorted_types", repo.getConnection());
+//		else if(typesprops == 2) candArray = getCandidates(top, "src/main/resources/stats/sorted_props", repo.getConnection());
+//		else {
+//			repo.close();
+//			throw new IllegalArgumentException("You fool");
+//		}
+//		repo.close();
 		
 		String tablename = sim.getMeasureName() + "Top" + top;
 		tablename += typesprops == 1 ? "Types" : "Props" ;
@@ -77,11 +88,12 @@ public class ComputeDistances {
 		long count = 0;
 		last = System.nanoTime();
 		for(int rowi = 0;  rowi < candArray.length; rowi++){
-			LabeledResDescriptor row = candArray[rowi];
+			ComparableResourceDescriptor row = candArray[rowi];
 			for(int coli = rowi; coli < candArray.length; coli ++){
-				LabeledResDescriptor column = candArray[coli];
+				ComparableResourceDescriptor column = candArray[coli];
 				double simil = sim.getSim(row, column);
-				dao.queue(row, column, simil);
+				System.out.println(simil);
+				//dao.queue(row, column, simil);
 				if(++count%oneP == 0){
 					_log.info(((int)(count*10000d/total))/100d + "%  took " + measure());
 				}
@@ -123,16 +135,16 @@ public class ComputeDistances {
 		}
 	}
 	
-	private static LabeledResDescriptor[] getCandidates(int top, String filename, RepositoryConnection con) throws IOException {
-		TreeMultiset<LabeledResDescriptor> s = TreeMultiset.create(new ResDescriptor.ResDescriptorReverseOrdering());
+	private static ResourceDescriptor[] getCandidates(int top, String filename, RepositoryConnection con) throws IOException {
+		TreeMultiset<LabelsCommentsResourceDescriptor> s = TreeMultiset.create(new SimpleResourceDescriptor.ResDescriptorReverseOrdering());
 		BufferedReader in = new BufferedReader(new FileReader(filename));
 		String line;
 		int count = 0;
 		while((line = in.readLine()) != null && ++count <= top){
-			LabeledResDescriptor t = null;
+			LabelsCommentsResourceDescriptor t = null;
 			try{
 				String[] fields = line.split(" ");
-				t = new LabeledResDescriptor(fields[0], Integer.parseInt(fields[1]), Integer.parseInt(fields[2]), con);
+				t = new LabelsCommentsResourceDescriptor(fields[0], Integer.parseInt(fields[1]), Integer.parseInt(fields[2]), con);
 			} catch (Exception e){
 				e.printStackTrace();
 			}
@@ -141,6 +153,6 @@ public class ComputeDistances {
 			}
 		}
 		in.close();
-		return s.toArray(new LabeledResDescriptor[0]);
+		return s.toArray(new LabelsCommentsResourceDescriptor[0]);
 	}
 }

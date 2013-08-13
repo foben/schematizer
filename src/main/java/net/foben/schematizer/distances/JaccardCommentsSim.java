@@ -2,14 +2,16 @@ package net.foben.schematizer.distances;
 
 import java.util.Set;
 
-import net.foben.schematizer.model.LabeledResDescriptor;
+import net.foben.schematizer.model.ComparableResourceDescriptor;
+import net.foben.schematizer.model.LabelsCommentsResourceDescriptor;
+import net.foben.schematizer.model.SimpleResourceDescriptor;
 
 import org.openrdf.model.Literal;
 
 import com.wcohen.ss.Jaccard;
 import com.wcohen.ss.tokens.SimpleTokenizer;
 
-public class JaccardCommentsSim implements ISimmilarityMeasure<LabeledResDescriptor> {
+public class JaccardCommentsSim implements ISimmilarityMeasure<LabelsCommentsResourceDescriptor> {
 	
 	private Jaccard jacc;
 	
@@ -18,7 +20,7 @@ public class JaccardCommentsSim implements ISimmilarityMeasure<LabeledResDescrip
 	}
 	
 	@Override
-	public double getSim(LabeledResDescriptor s, LabeledResDescriptor t) {		
+	public double getSim(LabelsCommentsResourceDescriptor s, LabelsCommentsResourceDescriptor t) {		
 		Set<Literal> sComms = s.getComments();
 		Set<Literal> tComms = t.getComments();
 		String sCommStr = "";
@@ -45,7 +47,19 @@ public class JaccardCommentsSim implements ISimmilarityMeasure<LabeledResDescrip
 		return "JaccardComments";
 	}
 
+	@Override
+	public double getSim(ComparableResourceDescriptor s, ComparableResourceDescriptor t) {
+		if(s instanceof LabelsCommentsResourceDescriptor && t instanceof LabelsCommentsResourceDescriptor){
+			return getSim((LabelsCommentsResourceDescriptor)s, (LabelsCommentsResourceDescriptor)t);
+		}
+		throw new IllegalArgumentException("WAAAAAAAA");
+	}
 
+	@Override
+	public Class<?> getExpected() {
+		return LabelsCommentsResourceDescriptor.class;
+	}
+	
 
 
 }

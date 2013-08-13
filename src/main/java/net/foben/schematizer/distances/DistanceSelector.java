@@ -4,11 +4,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import net.foben.schematizer.model.LabeledResDescriptor;
+import net.foben.schematizer.model.ComparableResourceDescriptor;
+import net.foben.schematizer.model.ResourceDescriptor;
 
 public class DistanceSelector {
 	
-	public static ISimmilarityMeasure<LabeledResDescriptor> getMeasure(){
+	public static ISimmilarityMeasure<? extends ResourceDescriptor> getMeasure(){
 		System.out.println("Select instance:");
 		for(DISTANCEMEASURE d : DISTANCEMEASURE.values()){
 			System.out.println(d.getMeasureName() + " : " + d.index);
@@ -30,9 +31,9 @@ public class DistanceSelector {
 		JACCARDCOMMENTS (2, JaccardCommentsSim.class);
 		
 		public final int index;
-		public final Class<? extends ISimmilarityMeasure<LabeledResDescriptor>> clazz;
+		public final Class<? extends ISimmilarityMeasure<? extends ResourceDescriptor>> clazz;
 		
-		private DISTANCEMEASURE(int index, Class<? extends ISimmilarityMeasure<LabeledResDescriptor>> clazz){
+		private DISTANCEMEASURE(int index, Class<? extends ISimmilarityMeasure<? extends ResourceDescriptor>> clazz){
 			this.index = index;
 			this.clazz = clazz;
 		}
@@ -41,7 +42,7 @@ public class DistanceSelector {
 			return clazz.getName();
 		}
 		
-		public ISimmilarityMeasure<LabeledResDescriptor> getInst(){
+		public ISimmilarityMeasure<? extends ResourceDescriptor> getInst(){
 			try {
 				return clazz.newInstance();
 			} catch (InstantiationException e) {
@@ -52,7 +53,7 @@ public class DistanceSelector {
 			return null;
 		}
 		
-		public static ISimmilarityMeasure<LabeledResDescriptor> createInstance(int i){
+		public static ISimmilarityMeasure<? extends ResourceDescriptor> createInstance(int i){
 			for(DISTANCEMEASURE d : DISTANCEMEASURE.values()){
 				if (i == d.index) return d.getInst();
 			}

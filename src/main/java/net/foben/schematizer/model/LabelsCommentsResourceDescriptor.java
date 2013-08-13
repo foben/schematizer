@@ -13,7 +13,7 @@ import org.openrdf.query.TupleQueryResult;
 import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
 
-public class LabeledResDescriptor extends ResDescriptor {
+public class LabelsCommentsResourceDescriptor extends SimpleResourceDescriptor {
 	
 	private static final long serialVersionUID = 1337L;
 	private Set<Literal> comments;
@@ -24,7 +24,7 @@ public class LabeledResDescriptor extends ResDescriptor {
 	/**
 	 * Create Resource descriptor that extracts additional information from the supplied RepositoryConnection.
 	 */
-	public LabeledResDescriptor(String type, int total, int datasets, RepositoryConnection con) {
+	public LabelsCommentsResourceDescriptor(String type, int total, int datasets, RepositoryConnection con) {
 		super(type, total, datasets);
 		this.comments = null;
 		this.labels = null;

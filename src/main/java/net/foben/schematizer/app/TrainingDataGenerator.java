@@ -9,7 +9,7 @@ import java.io.IOException;
 
 import net.foben.schematizer.distances.JaccardCommentsSim;
 import net.foben.schematizer.distances.NormalizedLevenstheinSim;
-import net.foben.schematizer.model.LabeledResDescriptor;
+import net.foben.schematizer.model.LabelsCommentsResourceDescriptor;
 
 import org.openrdf.model.Resource;
 import org.openrdf.model.Statement;
@@ -50,8 +50,8 @@ public class TrainingDataGenerator {
 			String s = st.getSubject().stringValue();
 			String o = st.getObject().stringValue();
 			try{
-				LabeledResDescriptor sr = new LabeledResDescriptor(s, 0, 0, con);
-				LabeledResDescriptor or = new LabeledResDescriptor(o, 0, 0, con);
+				LabelsCommentsResourceDescriptor sr = new LabelsCommentsResourceDescriptor(s, 0, 0, con);
+				LabelsCommentsResourceDescriptor or = new LabelsCommentsResourceDescriptor(o, 0, 0, con);
 				double jacv = jac.getSim(sr, or);
 				double levv = lev.getSim(sr, or);
 				
