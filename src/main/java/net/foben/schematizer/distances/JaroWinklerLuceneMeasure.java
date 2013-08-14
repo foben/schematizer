@@ -20,7 +20,7 @@ public class JaroWinklerLuceneMeasure implements ISimmilarityMeasure<SimpleResou
 
 	@Override
 	public String getMeasureName() {
-		return "NGramLucene";
+		return "JaroWinkler";
 	}
 
 	@Override
