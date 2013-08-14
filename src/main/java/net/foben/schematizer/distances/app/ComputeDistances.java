@@ -4,13 +4,16 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Array;
+
 import net.foben.schematizer.da.DAO;
 import net.foben.schematizer.da.cassandra.CassandraDAO;
+import net.foben.schematizer.da.mysql.MySQLDAO;
 import net.foben.schematizer.distances.DistanceSelector;
 import net.foben.schematizer.distances.ISimmilarityMeasure;
 import net.foben.schematizer.model.ComparableResourceDescriptor;
 import net.foben.schematizer.model.ModelAccess;
 import net.foben.schematizer.model.ResourceDescriptor;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,8 +50,8 @@ public class ComputeDistances {
 		String tablename = sim.getMeasureName() + "Top" + top;
 		tablename += typesprops == 1 ? "Types" : "Props" ;
 		
-		//DAO dao = new MySQLDAO(tablename);
-		DAO dao = new CassandraDAO(tablename);
+		DAO dao = new MySQLDAO(tablename);
+		//DAO dao = new CassandraDAO(tablename);
 		
 		long total = candArray.length * (candArray.length + 1) / 2;
 		long oneP = Math.max(((long) (total * 0.01)),1);

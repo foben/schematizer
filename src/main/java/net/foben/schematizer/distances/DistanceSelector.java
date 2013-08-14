@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import net.foben.schematizer.distances.app.NGramLuceneMeasure;
 import net.foben.schematizer.model.ResourceDescriptor;
 
 public class DistanceSelector {
@@ -27,7 +28,8 @@ public class DistanceSelector {
 	
 	public enum DISTANCEMEASURE {
 		LEVENSTHEINNORM (1, NormalizedLevenstheinSim.class),
-		JACCARDCOMMENTS (2, JaccardCommentsSim.class);
+		JACCARDCOMMENTS (2, JaccardCommentsSim.class),
+		NGRAMLUCENE (3, NGramLuceneMeasure.class);
 		
 		public final int index;
 		public final Class<? extends ISimmilarityMeasure<? extends ResourceDescriptor>> clazz;
