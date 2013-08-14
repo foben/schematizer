@@ -29,7 +29,8 @@ public class DistanceSelector {
 	public enum DISTANCEMEASURE {
 		LEVENSTHEINNORM (1, NormalizedLevenstheinSim.class),
 		JACCARDCOMMENTS (2, JaccardCommentsSim.class),
-		NGRAMLUCENE (3, NGramLuceneMeasure.class);
+		NGRAMLUCENE (3, NGramLuceneMeasure.class),
+		JARAWINKLERLUCENE (4, JaroWinklerLuceneMeasure.class);
 		
 		public final int index;
 		public final Class<? extends ISimmilarityMeasure<? extends ResourceDescriptor>> clazz;

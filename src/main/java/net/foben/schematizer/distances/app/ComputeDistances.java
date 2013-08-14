@@ -62,7 +62,6 @@ public class ComputeDistances {
 			for(int coli = rowi; coli < candArray.length; coli ++){
 				ComparableResourceDescriptor column = candArray[coli];
 				double simil = sim.getSim(row, column);
-				System.out.println(simil);
 				dao.queue(row, column, simil);
 				if(++count%oneP == 0){
 					_log.info(((int)(count*10000d/total))/100d + "%  took " + measure());
