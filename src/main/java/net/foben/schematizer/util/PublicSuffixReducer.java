@@ -6,14 +6,14 @@ import java.io.IOException;
 import jp.co.osstech.regdom4j.RegDomain;
 
 public class PublicSuffixReducer implements IPLDReducer {
-	
-	//Set<String> suffixes
+
+	// Set<String> suffixes
 	RegDomain regdom;
 	private long time;
 	private int invocs;
-	
-	public PublicSuffixReducer() throws IOException{
-		try{
+
+	public PublicSuffixReducer() throws IOException {
+		try {
 			regdom = new RegDomain();
 		} catch (IOException ioe) {
 			regdom = null;
@@ -22,23 +22,27 @@ public class PublicSuffixReducer implements IPLDReducer {
 		time = 0;
 		invocs = 0;
 	}
-	
+
 	@Override
 	public String getPLD(String uri) {
 		String result = uri;
 		int httpoff, domainEnd;
-		if      (result.startsWith("http://"))  httpoff = 7;
-		else if (result.startsWith("https://")) httpoff = 8;
-		else throw new IllegalArgumentException("Not a valid URI: " + result);
-		//end of domain
-	
-		domainEnd = result.substring(httpoff).contains("/") ? result.indexOf("/", httpoff) : result.length();
-		
+		if (result.startsWith("http://"))
+			httpoff = 7;
+		else if (result.startsWith("https://"))
+			httpoff = 8;
+		else
+			throw new IllegalArgumentException("Not a valid URI: " + result);
+		// end of domain
+
+		domainEnd = result.substring(httpoff).contains("/") ? result.indexOf(
+				"/", httpoff) : result.length();
+
 		String trimmed = result.substring(httpoff, domainEnd);
-		if(trimmed.contains(":")){
+		if (trimmed.contains(":")) {
 			trimmed = trimmed.substring(0, trimmed.indexOf(":"));
 		}
-		if(isIp(trimmed)){
+		if (isIp(trimmed)) {
 			return trimmed;
 		}
 		long start = System.nanoTime();
@@ -48,25 +52,26 @@ public class PublicSuffixReducer implements IPLDReducer {
 		invocs++;
 		return res;
 	}
-	
+
 	private boolean isIp(String trimmed) {
-		if(!trimmed.contains(".")) return false;
+		if (!trimmed.contains("."))
+			return false;
 		String[] parts = trimmed.split("\\.");
-		for(String str : parts){
-			try{
+		for (String str : parts) {
+			try {
 				Integer.parseInt(str);
-			} catch(NumberFormatException e){
+			} catch (NumberFormatException e) {
 				return false;
 			}
 		}
 		return true;
 	}
 
-	public void printBench(){
+	public void printBench() {
 		double avg = time / invocs;
 		double avgsec = avg / 1000000000d;
 		System.out.println("Average: " + avgsec);
-		System.out.println("Per Mil: " + avgsec * 1000000 );
+		System.out.println("Per Mil: " + avgsec * 1000000);
 	}
 
 }

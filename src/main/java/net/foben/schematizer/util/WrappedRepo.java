@@ -20,38 +20,39 @@ import org.openrdf.query.QueryLanguage;
 import org.openrdf.query.TupleQuery;
 import org.openrdf.query.TupleQueryResult;
 import org.openrdf.repository.Repository;
+import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
 import org.openrdf.repository.RepositoryResult;
 import org.openrdf.repository.sail.SailRepository;
-import org.openrdf.sail.Sail;
-import org.openrdf.sail.memory.MemoryStore;
-import org.openrdf.sail.nativerdf.NativeStore;
-import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.rio.RDFFormat;
 import org.openrdf.rio.RDFHandlerException;
 import org.openrdf.rio.RDFParseException;
 import org.openrdf.rio.helpers.BasicParserSettings;
 import org.openrdf.rio.helpers.NTriplesParserSettings;
 import org.openrdf.rio.ntriples.NTriplesWriter;
+import org.openrdf.sail.Sail;
+import org.openrdf.sail.memory.MemoryStore;
+import org.openrdf.sail.nativerdf.NativeStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 public class WrappedRepo implements IRepo, Closeable {
-	
+
 	Repository repo;
 	RepositoryConnection con;
 	boolean working;
 	Logger _log;
 	List<Statement> queue;
-	public WrappedRepo(String str){
+
+	public WrappedRepo(String str) {
 		this(new NativeStore(new File(str)));
 	}
-	
-	public WrappedRepo(){
+
+	public WrappedRepo() {
 		this(new MemoryStore());
 	}
-	public WrappedRepo(Sail sail){
+
+	public WrappedRepo(Sail sail) {
 		_log = LoggerFactory.getLogger(WrappedRepo.class);
 		queue = new ArrayList<Statement>();
 		repo = new SailRepository(sail);
@@ -59,23 +60,35 @@ public class WrappedRepo implements IRepo, Closeable {
 		try {
 			repo.initialize();
 			con = repo.getConnection();
-			con.getParserConfig().set(BasicParserSettings.VERIFY_DATATYPE_VALUES, false);
-			con.getParserConfig().set(BasicParserSettings.NORMALIZE_DATATYPE_VALUES, false);
-			con.getParserConfig().set(BasicParserSettings.FAIL_ON_UNKNOWN_DATATYPES, false);
-			con.getParserConfig().set(BasicParserSettings.VERIFY_LANGUAGE_TAGS, false);
-			con.getParserConfig().set(BasicParserSettings.NORMALIZE_LANGUAGE_TAGS, false);
-			con.getParserConfig().set(BasicParserSettings.FAIL_ON_UNKNOWN_LANGUAGES, false);
-			con.getParserConfig().set(BasicParserSettings.VERIFY_RELATIVE_URIS, false);
-			con.getParserConfig().set(BasicParserSettings.PRESERVE_BNODE_IDS, true);
-			con.getParserConfig().addNonFatalError(BasicParserSettings.VERIFY_DATATYPE_VALUES);
-			con.getParserConfig().addNonFatalError(BasicParserSettings.FAIL_ON_UNKNOWN_DATATYPES);
-			con.getParserConfig().addNonFatalError(NTriplesParserSettings.FAIL_ON_NTRIPLES_INVALID_LINES);
+			con.getParserConfig().set(
+					BasicParserSettings.VERIFY_DATATYPE_VALUES, false);
+			con.getParserConfig().set(
+					BasicParserSettings.NORMALIZE_DATATYPE_VALUES, false);
+			con.getParserConfig().set(
+					BasicParserSettings.FAIL_ON_UNKNOWN_DATATYPES, false);
+			con.getParserConfig().set(BasicParserSettings.VERIFY_LANGUAGE_TAGS,
+					false);
+			con.getParserConfig().set(
+					BasicParserSettings.NORMALIZE_LANGUAGE_TAGS, false);
+			con.getParserConfig().set(
+					BasicParserSettings.FAIL_ON_UNKNOWN_LANGUAGES, false);
+			con.getParserConfig().set(BasicParserSettings.VERIFY_RELATIVE_URIS,
+					false);
+			con.getParserConfig().set(BasicParserSettings.PRESERVE_BNODE_IDS,
+					true);
+			con.getParserConfig().addNonFatalError(
+					BasicParserSettings.VERIFY_DATATYPE_VALUES);
+			con.getParserConfig().addNonFatalError(
+					BasicParserSettings.FAIL_ON_UNKNOWN_DATATYPES);
+			con.getParserConfig().addNonFatalError(
+					NTriplesParserSettings.FAIL_ON_NTRIPLES_INVALID_LINES);
 		} catch (RepositoryException e) {
 			working = false;
 			_log.error("Failed to create repository!");
 		}
 		_log.debug("Repository successfully created");
 	}
+
 	@Override
 	public void close() {
 		try {
@@ -85,14 +98,16 @@ public class WrappedRepo implements IRepo, Closeable {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void queue(Resource subj, URI pred, Value obj) {
 		queue.add(new StatementImpl(subj, pred, obj));
-		if(queue.size() > 100000) flushQueue();
+		if (queue.size() > 100000)
+			flushQueue();
 	}
-	
-	public void flushQueue(){
-		_log.info(String.format("Flushing %s statements into repo!", queue.size()));
+
+	public void flushQueue() {
+		_log.info(String.format("Flushing %s statements into repo!",
+				queue.size()));
 		try {
 			con.add(queue, (Resource) null);
 			queue.clear();
@@ -100,13 +115,13 @@ public class WrappedRepo implements IRepo, Closeable {
 			e.printStackTrace();
 		}
 	}
-	
-	public TupleQueryResult sparql(String query){
+
+	public TupleQueryResult sparql(String query) {
 		try {
 			TupleQuery q = con.prepareTupleQuery(QueryLanguage.SPARQL, query);
 			TupleQueryResult res = q.evaluate();
 			return res;
-			
+
 		} catch (RepositoryException e) {
 			e.printStackTrace();
 		} catch (MalformedQueryException e) {
@@ -116,21 +131,23 @@ public class WrappedRepo implements IRepo, Closeable {
 		}
 		return null;
 	}
-	
+
 	@Override
 	public boolean add(Statement st) {
 		return add(st, (Resource) null);
 	}
-	
+
 	public boolean add(Statement st, Resource context) {
 		boolean result = true;
-		if(!working){
+		if (!working) {
 			_log.warn("Repository not operable");
 			return false;
 		}
 		try {
-			con.getParserConfig().addNonFatalError(BasicParserSettings.VERIFY_DATATYPE_VALUES);
-			con.getParserConfig().addNonFatalError(BasicParserSettings.FAIL_ON_UNKNOWN_DATATYPES);
+			con.getParserConfig().addNonFatalError(
+					BasicParserSettings.VERIFY_DATATYPE_VALUES);
+			con.getParserConfig().addNonFatalError(
+					BasicParserSettings.FAIL_ON_UNKNOWN_DATATYPES);
 			con.add(st, context);
 		} catch (RepositoryException e) {
 			_log.error("Exception while adding statement");
@@ -138,15 +155,15 @@ public class WrappedRepo implements IRepo, Closeable {
 		}
 		return result;
 	}
-	
+
 	@Override
 	public boolean remove(Statement st) {
 		return remove(st, (Resource) null);
 	}
-	
+
 	public boolean remove(Statement st, Resource context) {
 		boolean result = true;
-		if(!working){
+		if (!working) {
 			_log.warn("Repository not operable");
 			return false;
 		}
@@ -158,11 +175,11 @@ public class WrappedRepo implements IRepo, Closeable {
 		}
 		return result;
 	}
-	
-	public boolean addFile(String filename){
+
+	public boolean addFile(String filename) {
 		boolean result = true;
 		File file = new File(filename);
-		if(!file.exists()){
+		if (!file.exists()) {
 			_log.error("File does not exist!");
 			return false;
 		}
@@ -178,41 +195,42 @@ public class WrappedRepo implements IRepo, Closeable {
 			_log.error("IOException occured while processing file");
 			result = false;
 		}
-		return result;		
+		return result;
 	}
-	
-	public RepositoryResult<Statement> getStatements(String subj, String pred, String obj, String... contexts){
+
+	public RepositoryResult<Statement> getStatements(String subj, String pred,
+			String obj, String... contexts) {
 		URIImpl _subj = subj == null ? null : new URIImpl(subj);
 		URIImpl _pred = pred == null ? null : new URIImpl(pred);
-		URIImpl _obj  = obj  == null ? null : new URIImpl(obj);
-		if(contexts.length > 0 && contexts[0] != null) {
+		URIImpl _obj = obj == null ? null : new URIImpl(obj);
+		if (contexts.length > 0 && contexts[0] != null) {
 			Resource[] _contexts = new URIImpl[contexts.length];
-			for(int i = 0; i < contexts.length; i++){
-				_contexts[i] = new URIImpl(contexts[i]);				
+			for (int i = 0; i < contexts.length; i++) {
+				_contexts[i] = new URIImpl(contexts[i]);
 			}
 			return getStatements(_subj, _pred, _obj, _contexts);
-		}
-		else{
+		} else {
 			return getStatements(_subj, _pred, _obj, (Resource) null);
 		}
-		
+
 	}
-	
-	public RepositoryResult<Statement> getStatements(Resource subj, URI pred, Value obj, Resource... contexts){
+
+	public RepositoryResult<Statement> getStatements(Resource subj, URI pred,
+			Value obj, Resource... contexts) {
 		RepositoryResult<Statement> result = null;
 		try {
 			result = con.getStatements(subj, pred, obj, false, contexts);
 		} catch (RepositoryException e) {
-		}		
+		}
 		return result;
 	}
-	
-	public void toFile(String filename){
+
+	public void toFile(String filename) {
 		flushQueue();
 		FileOutputStream fout = null;
 		try {
 			fout = new FileOutputStream(filename);
-			con.export(new NTriplesWriter(fout), (Resource)null);
+			con.export(new NTriplesWriter(fout), (Resource) null);
 		} catch (RepositoryException e) {
 		} catch (RDFHandlerException e) {
 		} catch (FileNotFoundException e) {
@@ -223,8 +241,8 @@ public class WrappedRepo implements IRepo, Closeable {
 			}
 		}
 	}
-	
-	public RepositoryConnection getConnection(){
+
+	public RepositoryConnection getConnection() {
 		return con;
 	}
 

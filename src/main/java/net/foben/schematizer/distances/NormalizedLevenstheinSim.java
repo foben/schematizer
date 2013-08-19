@@ -5,15 +5,16 @@ import net.foben.schematizer.model.SimpleResourceDescriptor;
 
 import com.wcohen.ss.ScaledLevenstein;
 
-public class NormalizedLevenstheinSim implements ISimmilarityMeasure<SimpleResourceDescriptor> {
-	
+public class NormalizedLevenstheinSim implements
+		ISimmilarityMeasure<SimpleResourceDescriptor> {
+
 	ScaledLevenstein lev;
-	
-	public NormalizedLevenstheinSim(){
+
+	public NormalizedLevenstheinSim() {
 		lev = new ScaledLevenstein();
-		
+
 	}
-	
+
 	@Override
 	public double getSim(SimpleResourceDescriptor a, SimpleResourceDescriptor b) {
 		double score = lev.score(a.getLocalName(), b.getLocalName());
@@ -26,9 +27,12 @@ public class NormalizedLevenstheinSim implements ISimmilarityMeasure<SimpleResou
 	}
 
 	@Override
-	public double getSim(ComparableResourceDescriptor s, ComparableResourceDescriptor t) {
-		if(s instanceof SimpleResourceDescriptor && t instanceof SimpleResourceDescriptor){
-			return getSim((SimpleResourceDescriptor)s, (SimpleResourceDescriptor)t);
+	public double getSim(ComparableResourceDescriptor s,
+			ComparableResourceDescriptor t) {
+		if (s instanceof SimpleResourceDescriptor
+				&& t instanceof SimpleResourceDescriptor) {
+			return getSim((SimpleResourceDescriptor) s,
+					(SimpleResourceDescriptor) t);
 		}
 		throw new IllegalArgumentException("WAAAAAAAA");
 	}

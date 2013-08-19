@@ -13,56 +13,55 @@ import org.openrdf.model.URI;
 import com.google.common.collect.HashBasedTable;
 
 public class LOVStatisticExtractHandler extends AbstractHandler {
-	
+
 	Set<String> lovnamespaces;
 	HashBasedTable<String, String, Integer> datatable;
-	
-	
-	public LOVStatisticExtractHandler(int i){
+
+	public LOVStatisticExtractHandler(int i) {
 		super(i);
 		this.lovnamespaces = ModelAccess.getLOVNamespaces();
 		this.datatable = HashBasedTable.create(840, this.lovnamespaces.size());
 	}
-	
+
 	@Override
 	public void handleStatementInternal(Statement st) {
 		String context = st.getContext().stringValue();
 		increase(context, "TOTAL");
 		String predNs = st.getPredicate().getNamespace();
-		if(lovnamespaces.contains(predNs)){
+		if (lovnamespaces.contains(predNs)) {
 			increase(context, predNs);
 		}
-		if(st.getObject() instanceof URI){
-			String objNs  = ((URI)st.getObject()).getNamespace();
-			if(lovnamespaces.contains(objNs)){
+		if (st.getObject() instanceof URI) {
+			String objNs = ((URI) st.getObject()).getNamespace();
+			if (lovnamespaces.contains(objNs)) {
 				increase(context, objNs);
 			}
 		}
 	}
-	
-	private void increase(String context, String column){
-		if(datatable.contains(context, column)){
+
+	private void increase(String context, String column) {
+		if (datatable.contains(context, column)) {
 			int val = datatable.get(context, column);
 			val++;
 			datatable.put(context, column, val);
-		}
-		else{
+		} else {
 			datatable.put(context, column, 1);
 		}
 	}
-	
-	protected void parseEnd(){
+
+	protected void parseEnd() {
 		String del = ";";
 		try {
-			BufferedWriter br = new BufferedWriter(new FileWriter("temp/lovoccurencetable.csv"));
-			
-			for(String col : datatable.columnKeySet()){
+			BufferedWriter br = new BufferedWriter(new FileWriter(
+					"temp/lovoccurencetable.csv"));
+
+			for (String col : datatable.columnKeySet()) {
 				br.write(del + col);
 			}
 			br.newLine();
-			for(String row : datatable.rowKeySet()){
+			for (String row : datatable.rowKeySet()) {
 				br.write(row);
-				for(String col : datatable.columnKeySet()){
+				for (String col : datatable.columnKeySet()) {
 					Integer value = datatable.get(row, col);
 					br.write(del + (value == null ? 0 : value));
 				}
@@ -72,7 +71,7 @@ public class LOVStatisticExtractHandler extends AbstractHandler {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 
 }

@@ -21,32 +21,34 @@ import org.openrdf.sail.memory.MemoryStore;
 
 public class Vocabularizer {
 
-	public static void main(String[] args) throws RepositoryException, IOException, RDFParseException, RDFHandlerException {
+	public static void main(String[] args) throws RepositoryException,
+			IOException, RDFParseException, RDFHandlerException {
 		Repository repo = new SailRepository(new MemoryStore());
 		repo.initialize();
 		RepositoryConnection con = repo.getConnection();
 		configureParser(con);
 		int count = 0;
-		
+
 		Set<String> fails = new HashSet<String>();
-		for(String arg : args){
-			System.out.println(arg + String.format(" (%s of %s)", ++count, args.length));
-			if(arg.endsWith("media")|| arg.endsWith("moac") || arg.endsWith("odrs") || arg.endsWith("opmo") 
-					|| arg.endsWith("sim") || arg.endsWith("teach") || arg.endsWith("tisc")
-					|| arg.endsWith("cold")){
-				try{
+		for (String arg : args) {
+			System.out.println(arg
+					+ String.format(" (%s of %s)", ++count, args.length));
+			if (arg.endsWith("media") || arg.endsWith("moac")
+					|| arg.endsWith("odrs") || arg.endsWith("opmo")
+					|| arg.endsWith("sim") || arg.endsWith("teach")
+					|| arg.endsWith("tisc") || arg.endsWith("cold")) {
+				try {
 					con.add(new File(arg), null, RDFFormat.RDFA);
 					continue;
-				} catch (RDFParseException e3){
+				} catch (RDFParseException e3) {
 					fails.add(arg);
 					continue;
 				}
 			}
-			
-			
-			try{
+
+			try {
 				con.add(new File(arg), null, RDFFormat.RDFXML);
-			} catch (RDFParseException e0){
+			} catch (RDFParseException e0) {
 				try {
 					con.add(new File(arg), null, RDFFormat.N3);
 					System.out.println("Worked with n3");
@@ -55,41 +57,51 @@ public class Vocabularizer {
 						con.add(new File(arg), null, RDFFormat.TURTLE);
 						System.out.println("Worked with Turtles");
 					} catch (RDFParseException e2) {
-						try{
+						try {
 							con.add(new File(arg), null, RDFFormat.RDFA);
 							continue;
-						} catch (RDFParseException e3){
+						} catch (RDFParseException e3) {
 							fails.add(arg);
 							e3.printStackTrace();
 						}
 					}
 				}
 			}
-			
+
 		}
-		
+
 		con.export(new NQuadsWriter(new FileWriter("repoout")), (Resource) null);
-		
+
 		System.out.println("done");
 		System.out.println();
-		for(String s : fails){
+		for (String s : fails) {
 			System.out.println(s);
 		}
 	}
 
 	private static void configureParser(RepositoryConnection con) {
-		con.getParserConfig().set(BasicParserSettings.VERIFY_DATATYPE_VALUES, false);
-		con.getParserConfig().set(BasicParserSettings.NORMALIZE_DATATYPE_VALUES, false);
-		con.getParserConfig().set(BasicParserSettings.FAIL_ON_UNKNOWN_DATATYPES, false);
-		con.getParserConfig().set(BasicParserSettings.VERIFY_LANGUAGE_TAGS, false);
-		con.getParserConfig().set(BasicParserSettings.NORMALIZE_LANGUAGE_TAGS, false);
-		con.getParserConfig().set(BasicParserSettings.FAIL_ON_UNKNOWN_LANGUAGES, false);
-		con.getParserConfig().set(BasicParserSettings.VERIFY_RELATIVE_URIS, false);
+		con.getParserConfig().set(BasicParserSettings.VERIFY_DATATYPE_VALUES,
+				false);
+		con.getParserConfig().set(
+				BasicParserSettings.NORMALIZE_DATATYPE_VALUES, false);
+		con.getParserConfig().set(
+				BasicParserSettings.FAIL_ON_UNKNOWN_DATATYPES, false);
+		con.getParserConfig().set(BasicParserSettings.VERIFY_LANGUAGE_TAGS,
+				false);
+		con.getParserConfig().set(BasicParserSettings.NORMALIZE_LANGUAGE_TAGS,
+				false);
+		con.getParserConfig().set(
+				BasicParserSettings.FAIL_ON_UNKNOWN_LANGUAGES, false);
+		con.getParserConfig().set(BasicParserSettings.VERIFY_RELATIVE_URIS,
+				false);
 		con.getParserConfig().set(BasicParserSettings.PRESERVE_BNODE_IDS, true);
-		con.getParserConfig().addNonFatalError(BasicParserSettings.VERIFY_DATATYPE_VALUES);
-		con.getParserConfig().addNonFatalError(BasicParserSettings.FAIL_ON_UNKNOWN_DATATYPES);
-		con.getParserConfig().addNonFatalError(NTriplesParserSettings.FAIL_ON_NTRIPLES_INVALID_LINES);
-		
+		con.getParserConfig().addNonFatalError(
+				BasicParserSettings.VERIFY_DATATYPE_VALUES);
+		con.getParserConfig().addNonFatalError(
+				BasicParserSettings.FAIL_ON_UNKNOWN_DATATYPES);
+		con.getParserConfig().addNonFatalError(
+				NTriplesParserSettings.FAIL_ON_NTRIPLES_INVALID_LINES);
+
 	}
 
 }

@@ -9,11 +9,10 @@ import org.openrdf.rio.RDFHandlerException;
 import org.openrdf.rio.nquads.NQuadsWriter;
 
 public class EquiClassHandler extends AbstractHandler {
-	
-	
+
 	NQuadsWriter writer;
-	
-	public EquiClassHandler(int i){
+
+	public EquiClassHandler(int i) {
 		super(i);
 		try {
 			this.writer = new NQuadsWriter(new FileWriter("equiclasses"));
@@ -21,11 +20,13 @@ public class EquiClassHandler extends AbstractHandler {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Override
 	public void handleStatementInternal(Statement st) {
-		if(st.getPredicate().stringValue().equals("http://www.w3.org/2002/07/owl#equivalentClass")){
-			if(st.getSubject() instanceof BNode || st.getObject() instanceof BNode){
+		if (st.getPredicate().stringValue()
+				.equals("http://www.w3.org/2002/07/owl#equivalentClass")) {
+			if (st.getSubject() instanceof BNode
+					|| st.getObject() instanceof BNode) {
 				return;
 			}
 			try {
@@ -36,16 +37,16 @@ public class EquiClassHandler extends AbstractHandler {
 		}
 
 	}
-	
-	protected void parseStart(){
+
+	protected void parseStart() {
 		try {
 			writer.startRDF();
 		} catch (RDFHandlerException e) {
 			e.printStackTrace();
 		}
 	}
-	
-	protected void parseEnd(){
+
+	protected void parseEnd() {
 		try {
 			writer.endRDF();
 		} catch (RDFHandlerException e) {

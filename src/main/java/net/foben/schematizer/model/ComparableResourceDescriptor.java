@@ -9,16 +9,17 @@ import org.slf4j.LoggerFactory;
 import com.google.common.collect.Ordering;
 
 public abstract class ComparableResourceDescriptor implements
-		ResourceDescriptor, Comparable<ComparableResourceDescriptor>, Serializable {
-	
+		ResourceDescriptor, Comparable<ComparableResourceDescriptor>,
+		Serializable {
+
 	private static final long serialVersionUID = -2395220140518932603L;
 	protected final int total;
 	protected final int datasets;
 	protected final String uri;
 	protected final String localName;
 	protected final Logger _log;
-	
-	public ComparableResourceDescriptor(String uri, int total, int datasets){
+
+	public ComparableResourceDescriptor(String uri, int total, int datasets) {
 		this.uri = uri;
 		this.total = total;
 		this.datasets = datasets;
@@ -28,28 +29,38 @@ public abstract class ComparableResourceDescriptor implements
 
 	public int compareTo(ComparableResourceDescriptor o) {
 		int otot = o.getTotal();
-		if(o.getURI().equals(this.getURI())){
-			if(otot > total) return -1;
-			if(otot < total) return 1;
+		if (o.getURI().equals(this.getURI())) {
+			if (otot > total)
+				return -1;
+			if (otot < total)
+				return 1;
 			int odat = o.getDatasets();
-			if(odat > datasets) return -1;
-			if(odat < datasets) return 1;
+			if (odat > datasets)
+				return -1;
+			if (odat < datasets)
+				return 1;
 			return 0;
 		}
-		if(otot > total) return -1;
-		if(otot < total) return 1;
+		if (otot > total)
+			return -1;
+		if (otot < total)
+			return 1;
 		int odat = o.getDatasets();
-		if(odat > datasets) return -1;
-		if(odat < datasets) return 1;
+		if (odat > datasets)
+			return -1;
+		if (odat < datasets)
+			return 1;
 		return o.getURI().compareTo(uri);
 	}
-	
+
 	@Override
-	public boolean equals(Object o){
-		if(!(o instanceof ComparableResourceDescriptor)) return false;
-		return this.compareTo((ComparableResourceDescriptor) o) == 0 ? true : false;
+	public boolean equals(Object o) {
+		if (!(o instanceof ComparableResourceDescriptor))
+			return false;
+		return this.compareTo((ComparableResourceDescriptor) o) == 0 ? true
+				: false;
 	}
-	
+
 	public int getTotal() {
 		return total;
 	}
@@ -65,16 +76,17 @@ public abstract class ComparableResourceDescriptor implements
 	public String getLocalName() {
 		return localName;
 	}
-	
-	public static class ResDescriptorReverseOrdering extends Ordering<SimpleResourceDescriptor> implements Serializable{
+
+	public static class ResDescriptorReverseOrdering extends
+			Ordering<SimpleResourceDescriptor> implements Serializable {
 
 		private static final long serialVersionUID = 24L;
 
 		@Override
-		public int compare(SimpleResourceDescriptor left, SimpleResourceDescriptor right) {
+		public int compare(SimpleResourceDescriptor left,
+				SimpleResourceDescriptor right) {
 			return left.compareTo(right) * -1;
 		}
 	}
-	
 
 }

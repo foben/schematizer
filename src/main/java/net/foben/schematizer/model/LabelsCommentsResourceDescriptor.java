@@ -14,43 +14,56 @@ import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
 
 public class LabelsCommentsResourceDescriptor extends SimpleResourceDescriptor {
-	
+
 	private static final long serialVersionUID = 1337L;
 	private Set<Literal> comments;
 	private Set<Literal> labels;
 	private static String queryComments = "SELECT ?c WHERE {<%s> <http://www.w3.org/2000/01/rdf-schema#comment> ?c . }";
 	private static String queryLabels = "SELECT ?c WHERE {<%s> <http://www.w3.org/2000/01/rdf-schema#label> ?c . }";
-	
+
 	/**
-	 * Create Resource descriptor that extracts additional information from the supplied RepositoryConnection.
+	 * Create Resource descriptor that extracts additional information from the
+	 * supplied RepositoryConnection.
 	 */
-	public LabelsCommentsResourceDescriptor(String type, int total, int datasets, RepositoryConnection con) {
+	public LabelsCommentsResourceDescriptor(String type, int total,
+			int datasets, RepositoryConnection con) {
 		super(type, total, datasets);
 		this.comments = null;
 		this.labels = null;
 		try {
-			TupleQuery q = con.prepareTupleQuery(QueryLanguage.SPARQL, String.format(queryComments, type));
+			TupleQuery q = con.prepareTupleQuery(QueryLanguage.SPARQL,
+					String.format(queryComments, type));
 			TupleQueryResult res = q.evaluate();
-			while(res.hasNext()){
-				if(comments == null) comments = new HashSet<Literal>(1,1);
+			while (res.hasNext()) {
+				if (comments == null)
+					comments = new HashSet<Literal>(1, 1);
 				Value v = res.next().getBinding("c").getValue();
-				if(v instanceof Literal) comments.add((Literal) v);
-				else _log.warn("Literal expected. Received: " + v.toString());
+				if (v instanceof Literal)
+					comments.add((Literal) v);
+				else
+					_log.warn("Literal expected. Received: " + v.toString());
 			}
-			q = con.prepareTupleQuery(QueryLanguage.SPARQL, String.format(queryLabels, type));
+			q = con.prepareTupleQuery(QueryLanguage.SPARQL,
+					String.format(queryLabels, type));
 			res = q.evaluate();
-			while(res.hasNext()){
-				if(labels == null) labels = new HashSet<Literal>(1,1);
+			while (res.hasNext()) {
+				if (labels == null)
+					labels = new HashSet<Literal>(1, 1);
 				Value v = res.next().getBinding("c").getValue();
-				if(v instanceof Literal) labels.add((Literal) v);
-				else _log.warn("Literal expected. Received: " + v.toString());
+				if (v instanceof Literal)
+					labels.add((Literal) v);
+				else
+					_log.warn("Literal expected. Received: " + v.toString());
 			}
 			System.out.print("");
+		} catch (RepositoryException e) {
+			e.printStackTrace();
+		} catch (MalformedQueryException e) {
+			e.printStackTrace();
+		} catch (QueryEvaluationException e) {
+			e.printStackTrace();
 		}
-		catch (RepositoryException e) {e.printStackTrace();}
-		catch (MalformedQueryException e) {e.printStackTrace();}
-		catch (QueryEvaluationException e) {e.printStackTrace();}
-		
+
 	}
 
 	public Set<Literal> getComments() {

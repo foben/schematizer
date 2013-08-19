@@ -24,75 +24,84 @@ public class CassandraDAO implements DAO {
 	String CF_NAME = "lev";
 	Keyspace keyspace;
 	ColumnFamilyTemplate<String, Float> template;
-	
-	public CassandraDAO(String cfname){
+
+	public CassandraDAO(String cfname) {
 		this.CF_NAME = cfname;
 		init();
 	}
-	
-	public void init(){
-		cluster = HFactory.getOrCreateCluster("test-cluster","localhost:9160");
+
+	public void init() {
+		cluster = HFactory.getOrCreateCluster("test-cluster", "localhost:9160");
 		cluster.getConnectionManager().setCassandraHostRetryDelay(25);
-		KeyspaceDefinition keyspaceDef = cluster.describeKeyspace(KEYSPACE_NAME);
+		KeyspaceDefinition keyspaceDef = cluster
+				.describeKeyspace(KEYSPACE_NAME);
 		if (keyspaceDef == null) {
-		    createKSDef();
+			createKSDef();
 		}
 		keyspaceDef = cluster.describeKeyspace(KEYSPACE_NAME);
 		boolean cfExists = false;
-		for(ColumnFamilyDefinition cf : keyspaceDef.getCfDefs()){
-			if(CF_NAME.equals(cf.getName())) cfExists = true;
+		for (ColumnFamilyDefinition cf : keyspaceDef.getCfDefs()) {
+			if (CF_NAME.equals(cf.getName()))
+				cfExists = true;
 		}
-		if(!cfExists){
+		if (!cfExists) {
 			createCFDef();
 		}
-		
+
 		keyspace = HFactory.createKeyspace(KEYSPACE_NAME, cluster);
-		template = new ThriftColumnFamilyTemplate<String, Float>(keyspace, CF_NAME, StringSerializer.get(), FloatSerializer.get());
+		template = new ThriftColumnFamilyTemplate<String, Float>(keyspace,
+				CF_NAME, StringSerializer.get(), FloatSerializer.get());
 	}
-	
-	public void queue(ResourceDescriptor row, ResourceDescriptor column, double simil) {
-		ColumnFamilyUpdater<String, Float> upd = template.createUpdater(row.getURI() + " " + column.getURI());
-		upd.setString((float)simil, "");
+
+	public void queue(ResourceDescriptor row, ResourceDescriptor column,
+			double simil) {
+		ColumnFamilyUpdater<String, Float> upd = template.createUpdater(row
+				.getURI() + " " + column.getURI());
+		upd.setString((float) simil, "");
 		template.update(upd);
-	}	
-	
-	private void createKSDef(){
-		KeyspaceDefinition kspdef = HFactory.createKeyspaceDefinition(KEYSPACE_NAME);
+	}
+
+	private void createKSDef() {
+		KeyspaceDefinition kspdef = HFactory
+				.createKeyspaceDefinition(KEYSPACE_NAME);
 		cluster.addKeyspace(kspdef, true);
 	}
-	
-	private void createCFDef(){
-		ColumnFamilyDefinition cfdef = HFactory.createColumnFamilyDefinition(KEYSPACE_NAME, CF_NAME, ComparatorType.FLOATTYPE);
+
+	private void createCFDef() {
+		ColumnFamilyDefinition cfdef = HFactory.createColumnFamilyDefinition(
+				KEYSPACE_NAME, CF_NAME, ComparatorType.FLOATTYPE);
 		cfdef.setKeyValidationClass(ComparatorType.UTF8TYPE.getClassName());
 		cfdef.setDefaultValidationClass(ComparatorType.FLOATTYPE.getClassName());
 		cluster.addColumnFamily(cfdef, true);
-	}	
-	
-	public void terminate(){
-		cluster.getConnectionManager().shutdown();		
+	}
+
+	public void terminate() {
+		cluster.getConnectionManager().shutdown();
 	}
 
 	@Override
 	public void executeBatch() {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
-	public static void main(String[] args){
+
+	public static void main(String[] args) {
 		CassandraDAO dao = new CassandraDAO("LevenstheinNormTop1000Types");
 		dao.getData();
 	}
-	
-	public void getData(){
-		SliceQuery<String, Float, String> q =HFactory.createSliceQuery(keyspace, StringSerializer.get(), FloatSerializer.get(), StringSerializer.get());
+
+	public void getData() {
+		SliceQuery<String, Float, String> q = HFactory.createSliceQuery(
+				keyspace, StringSerializer.get(), FloatSerializer.get(),
+				StringSerializer.get());
 		q.setColumnFamily(CF_NAME);
 		q.setRange(0.8f, 0.9f, false, 0);
 		QueryResult<ColumnSlice<Float, String>> res = q.execute();
-		
+
 		ColumnSlice<Float, String> sl = res.get();
-		for( HColumn<Float, String> col : sl.getColumns()){
+		for (HColumn<Float, String> col : sl.getColumns()) {
 			System.out.println(col);
 		}
-		
+
 	}
 }

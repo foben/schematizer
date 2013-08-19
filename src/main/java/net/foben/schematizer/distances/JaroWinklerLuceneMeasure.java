@@ -5,14 +5,15 @@ import net.foben.schematizer.model.SimpleResourceDescriptor;
 
 import org.apache.lucene.search.spell.JaroWinklerDistance;
 
-public class JaroWinklerLuceneMeasure implements ISimmilarityMeasure<SimpleResourceDescriptor> {
-	
+public class JaroWinklerLuceneMeasure implements
+		ISimmilarityMeasure<SimpleResourceDescriptor> {
+
 	JaroWinklerDistance jwd;
-	
-	public JaroWinklerLuceneMeasure(){
+
+	public JaroWinklerLuceneMeasure() {
 		jwd = new JaroWinklerDistance();
 	}
-	
+
 	@Override
 	public double getSim(SimpleResourceDescriptor s, SimpleResourceDescriptor t) {
 		return jwd.getDistance(s.getLocalName(), t.getLocalName());
@@ -24,9 +25,12 @@ public class JaroWinklerLuceneMeasure implements ISimmilarityMeasure<SimpleResou
 	}
 
 	@Override
-	public double getSim(ComparableResourceDescriptor s, ComparableResourceDescriptor t) {
-		if(s instanceof SimpleResourceDescriptor && t instanceof SimpleResourceDescriptor){
-			return getSim((SimpleResourceDescriptor)s, (SimpleResourceDescriptor)t);
+	public double getSim(ComparableResourceDescriptor s,
+			ComparableResourceDescriptor t) {
+		if (s instanceof SimpleResourceDescriptor
+				&& t instanceof SimpleResourceDescriptor) {
+			return getSim((SimpleResourceDescriptor) s,
+					(SimpleResourceDescriptor) t);
 		}
 		throw new IllegalArgumentException("WAAAAAAAA");
 	}

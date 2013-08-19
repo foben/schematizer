@@ -12,7 +12,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.TreeSet;
 
-
 import org.openrdf.model.Resource;
 import org.openrdf.model.Statement;
 import org.openrdf.model.URI;
@@ -32,22 +31,22 @@ import org.slf4j.LoggerFactory;
 import static net.foben.schematizer.Environment.*;
 
 public class DatasetToGraphsMapper {
-	
+
 	private String graphsFile;
 	private HashMap<String, List<String>> mappings;
 	private boolean mappingSuccess = false;
 	private double runtime = -1;
-	private int datasets   = -1;
-	private int graphs     = -1;
+	private int datasets = -1;
+	private int graphs = -1;
 	private Logger _log;
-	
-	public DatasetToGraphsMapper(String graphsFile){
+
+	public DatasetToGraphsMapper(String graphsFile) {
 		_log = LoggerFactory.getLogger(DatasetToGraphsMapper.class);
 		this.graphsFile = graphsFile;
 		mappings = new HashMap<String, List<String>>();
 	}
-	
-	public boolean createMappings(IPLDReducer reducer){
+
+	public boolean createMappings(IPLDReducer reducer) {
 		long start = System.nanoTime();
 		boolean result = true;
 		BufferedReader br = null;
@@ -55,20 +54,20 @@ public class DatasetToGraphsMapper {
 		try {
 			br = new BufferedReader(new FileReader(graphsFile));
 			String line;
-				while ((line = br.readLine()) != null){
-					count++;
-					String graph = line;
-					String dataset = reducer.getPLD(line);
-					if(!mappings.containsKey(dataset)){
-						ArrayList<String> newL = new ArrayList<String>();
-						newL.add(graph);
-						mappings.put(dataset, newL);
-					}
-					else {
-						mappings.get(dataset).add(graph);
-					}
-					if(count%1000000 == 0) _log.info((count/1000000) + " million graphs parsed");
+			while ((line = br.readLine()) != null) {
+				count++;
+				String graph = line;
+				String dataset = reducer.getPLD(line);
+				if (!mappings.containsKey(dataset)) {
+					ArrayList<String> newL = new ArrayList<String>();
+					newL.add(graph);
+					mappings.put(dataset, newL);
+				} else {
+					mappings.get(dataset).add(graph);
 				}
+				if (count % 1000000 == 0)
+					_log.info((count / 1000000) + " million graphs parsed");
+			}
 		} catch (FileNotFoundException e) {
 			result = false;
 			e.printStackTrace();
@@ -81,15 +80,15 @@ public class DatasetToGraphsMapper {
 				result = false;
 			}
 		}
-		runtime = result ? (System.nanoTime()- start)/Math.pow(10, 9) : -1;
+		runtime = result ? (System.nanoTime() - start) / Math.pow(10, 9) : -1;
 		datasets = result ? mappings.keySet().size() : -1;
 		graphs = result ? count : -1;
 		mappingSuccess = result;
 		return result;
 	}
-	
-	public void printStats(){
-		if(!mappingSuccess){
+
+	public void printStats() {
+		if (!mappingSuccess) {
 			_log.warn("No successful mapping yet!");
 			return;
 		}
@@ -97,42 +96,45 @@ public class DatasetToGraphsMapper {
 		_log.info("Resulting Datasets: " + datasets);
 		_log.info("Runtime	          : " + runtime);
 	}
-	
+
 	public HashMap<String, List<String>> getMappings() {
 		return mappings;
 	}
-	
-	public void exportDatasets(String filename) throws IOException{
+
+	public void exportDatasets(String filename) throws IOException {
 		BufferedWriter br = new BufferedWriter(new FileWriter(filename));
 		TreeSet<String> ts = new TreeSet<String>(mappings.keySet());
-		for (String ds : ts){
+		for (String ds : ts) {
 			br.write(ds);
 			br.newLine();
 		}
 		br.close();
 	}
-	
-	public void exportMappingsInternal(String filename) throws RepositoryException, RDFHandlerException, FileNotFoundException {
-		if(!mappingSuccess){
+
+	public void exportMappingsInternal(String filename)
+			throws RepositoryException, RDFHandlerException,
+			FileNotFoundException {
+		if (!mappingSuccess) {
 			_log.warn("No successful mapping yet!");
 			return;
 		}
-		Repository repo = new SailRepository( new MemoryStore() );
+		Repository repo = new SailRepository(new MemoryStore());
 		repo.initialize();
 		List<Statement> statements = new ArrayList<Statement>();
 		URI pred = new URIImpl(URI_HASGRAPH);
 		URI a = new URIImpl(RDFTYPE);
 		URI ds = new URIImpl(URI_DATASET);
 		int count = 0;
-		for(String key : mappings.keySet()){
+		for (String key : mappings.keySet()) {
 			URI subj = new URIImpl(URI_IDS + key);
 			List<String> mappedURIs = mappings.get(key);
 			statements.add(new StatementImpl(subj, a, ds));
 			for (String mappedURI : mappedURIs) {
-				statements.add(new StatementImpl(subj, pred, new URIImpl(mappedURI)));
+				statements.add(new StatementImpl(subj, pred, new URIImpl(
+						mappedURI)));
 			}
 			System.out.println(++count);
-			if(count%50 == 0 || true){
+			if (count % 50 == 0 || true) {
 				RepositoryConnection con = repo.getConnection();
 				con.add(statements, (Resource) null);
 				con.commit();
@@ -143,8 +145,9 @@ public class DatasetToGraphsMapper {
 		RepositoryConnection con = repo.getConnection();
 		con.add(statements, (Resource) null);
 		con.commit();
-		RDFHandler rdfxmlWriter = new NTriplesWriter(new FileOutputStream(filename));
-		con.export(rdfxmlWriter, (Resource)null);
+		RDFHandler rdfxmlWriter = new NTriplesWriter(new FileOutputStream(
+				filename));
+		con.export(rdfxmlWriter, (Resource) null);
 		con.close();
 	}
 
