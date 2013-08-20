@@ -6,7 +6,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.sesameversion>2.7.4</project.sesameversion>
+        <project.sesameversion>2.7.5</project.sesameversion>
     </properties>
     <dependencies>
         <dependency>
@@ -69,11 +69,11 @@
             <artifactId>commons-lang3</artifactId>
             <version>3.1</version>
         </dependency>
-        <dependency>
-            <groupId>org.hectorclient</groupId>
-            <artifactId>hector-core</artifactId>
-            <version>1.1-4</version>
-        </dependency>
+<!--         <dependency> -->
+<!--             <groupId>org.hectorclient</groupId> -->
+<!--             <artifactId>hector-core</artifactId> -->
+<!--             <version>1.1-4</version> -->
+<!--         </dependency> -->
         <!-- Sesame -->
         <dependency>
             <groupId>org.openrdf.sesame</groupId>
@@ -100,11 +100,23 @@
             <artifactId>lucene-spellchecker</artifactId>
             <version>3.6.2</version>
         </dependency>
+<!--         <dependency> -->
+<!--             <groupId>com.github.ansell.semargl</groupId> -->
+<!--             <artifactId>semargl-sesame</artifactId> -->
+<!--             <version>0.5</version> -->
+<!--         </dependency> -->
         <dependency>
-            <groupId>com.github.ansell.semargl</groupId>
-            <artifactId>semargl-sesame</artifactId>
-            <version>0.5</version>
+            <groupId>org.semarglproject</groupId>
+            <artifactId>semargl-rdfa</artifactId>
+            <version>0.6-SNAPSHOT</version>
         </dependency>
+    <dependency>
+        <groupId>org.semarglproject</groupId>
+        <artifactId>semargl-sesame</artifactId>
+        <version>0.6-SNAPSHOT</version>
+    </dependency>
+    
+    
     </dependencies>
     <build>
         <resources>

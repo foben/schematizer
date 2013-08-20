@@ -6,3 +6,5 @@ temp
 unknown_graphs.log
 src/main/resources/vocabularies.nq
 src/main/resources/schemadata
+data-*
+src/main/java/net/foben/schematizer/app/Test.java

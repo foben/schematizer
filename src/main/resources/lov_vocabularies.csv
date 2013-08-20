@@ -1,0 +1,363 @@
+acco;http://purl.org/acco/ns#;Accomodation Ontology
+acl;http://www.w3.org/ns/auth/acl#;Basic Access Control ontology
+acm;http://acm.rkbexplorer.com/ontologies/acm#;ACM Classification Ontology
+ad;http://schemas.talis.com/2005/address/schema#;Address Schema
+adms;http://www.w3.org/ns/adms#;Asset Description Metadata Schema
+af;http://purl.org/ontology/af/;Audio Features Ontology
+agls;http://www.agls.gov.au/agls/terms/;AGLS Metadata Terms
+agrelon;http://d-nb.info/standards/elementset/agrelon.owl#;Agent Relationship Ontology
+aiiso;http://purl.org/vocab/aiiso/schema#;Academic Institution Internal Structure Ontology
+akt;http://www.aktors.org/ontology/portal#;AKT Reference Ontology
+akts;http://www.aktors.org/ontology/support#;AKT Support Ontology
+algo;http://securitytoolbox.appspot.com/securityAlgorithms#;Algorithms Ontology
+am;http://open-services.net/ns/asset#;OSLC Asset Management Vocabulary
+ao;http://purl.org/ontology/ao/core#;Association Ontology
+aos;http://rdf.muninn-project.org/ontologies/appearances#;Appearances Ontology Specification
+api;http://purl.org/linked-data/api/vocab#;Linked Data API Vocabulary
+arch;http://purl.org/archival/vocab/arch#;Archival collections ontology
+awol;http://bblfish.net/work/atom-owl/2006-06-06/#;Atom Syndication Ontology
+b2bo;http://purl.org/b2bo#;Business to Business Ontology
+being;http://purl.org/ontomedia/ext/common/being#;OntoMedia Being Representation
+bibo;http://purl.org/ontology/bibo/;The Bibliographic Ontology
+bibtex;http://purl.org/net/nknouf/ns/bibtex#;BibTeX ontology
+bio;http://purl.org/vocab/bio/0.1/;BIO: A vocabulary for biographical information
+biol;http://purl.org/NET/biol/ns#;Biological Taxonomy Vocabulary 0.2 (Core)
+biopax;http://www.biopax.org/release/biopax-level3.owl#;BioPAX Level 3 ontology
+biotop;http://purl.org/biotop/biotop.owl#;BioTop
+biro;http://purl.org/spar/biro/;The Bibliographic Reference Ontology
+botany;http://purl.org/NET/biol/botany#;Biological Taxonomy Vocabulary 0.2 (Botany)
+br;http://vocab.deri.ie/br#;Brainstorm Ontology
+c4n;http://vocab.deri.ie/c4n#;Call for Anything vocabulary
+c4o;http://purl.org/spar/c4o/;C4O, the Citation Counting and Context Characterization Ontology
+cal;http://www.w3.org/2002/12/cal/ical#;Internet Calendaring and Scheduling Core Object Specification
+cc;http://creativecommons.org/ns#;Creative Commons Rights Expression Language
+cco;http://purl.org/ontology/cco/core#;Cognitive Characteristics Ontology
+cdm;http://purl.org/twc/ontology/cdm.owl#;Conceptual Depth and Momentum
+cdtype;http://purl.org/cld/cdtype/;The Collection Description Type Namespace
+ceo;http://www.ebusiness-unibw.org/ontologies/consumerelectronics/v1#;Consumer Electronics Ontology
+cert;http://www.w3.org/ns/auth/cert#;The Cert Ontology
+cgov;http://reference.data.gov.uk/def/central-government/;Central Government Ontology
+chord;http://purl.org/ontology/chord/;The OMRAS2 Chord Ontology
+cito;http://purl.org/spar/cito/;CiTO, the Citation Typing Ontology
+citof;http://www.essepuntato.it/2013/03/cito-functions#;Functions of Citations
+cld;http://purl.org/cld/terms/;The Collection Description Terms
+cmo;http://purl.org/twc/ontologies/cmo.owl#;Conceptual Model Ontology
+cnt;http://www.w3.org/2011/content#;Representing Content in RDF
+co;http://purl.org/ontology/co/core#;Counter Ontology
+cogs;http://vocab.deri.ie/cogs#;COGS Vocabulary
+cold;http://purl.org/configurationontology#;Configuration ontology
+coll;http://purl.org/co/;Collections Ontology
+comm;http://vocab.resc.info/communication#;Vocabulary related to incident communication
+con;http://www.w3.org/2000/10/swap/pim/contact#;Contact
+conversion;http://purl.org/twc/vocab/conversion/;Conversion Ontology
+coo;http://purl.org/coo/ns#;Car Options Ontology
+coun;http://www.daml.org/2001/09/countries/iso-3166-ont#;ISO 3166 Country Codes
+cpa;http://www.ontologydesignpatterns.org/schemas/cpannotationschema.owl#;Content Pattern Annotations
+crm;http://purl.org/NET/cidoc-crm/core#;CIDOC Conceptual Reference Model in OWL
+crsw;http://courseware.rkbexplorer.com/ontologies/courseware#;ReSIST Courseware Ontology
+cs;http://purl.org/vocab/changeset/schema#;Changeset
+csp;http://vocab.deri.ie/csp#;Constraint Satisfaction Problems Vocabulary
+ct;http://www.tele.pw.edu.pl/~sims-onto/ConnectivityType.owl#;Connectivity types
+ctag;http://commontag.org/ns#;Common Tag Vocabulary
+ctorg;http://purl.org/ctic/infraestructuras/organizacion#;Vocabulario de la estructura de organismos públicos
+d2rq;http://www.wiwiss.fu-berlin.de/suhl/bizer/D2RQ/0.1#;D2RQ - Language Specification
+dady;http://purl.org/NET/dady#;Dataset Dynamics (dady) vocabulary
+daia;http://purl.org/ontology/daia/;Document Availability Information Ontology
+dcam;http://purl.org/dc/dcam/;DCMI Abstract Model
+dcat;http://www.w3.org/ns/dcat#;Data Catalog Vocabulary
+dce;http://purl.org/dc/elements/1.1/;Dublin Core Metadata Element Set
+dcite;http://purl.org/spar/datacite/;The DataCite Ontology
+dcndl;http://ndl.go.jp/dcndl/terms/;NDL Metadata Terms
+dcterms;http://purl.org/dc/terms/;DCMI Metadata Terms
+dctype;http://purl.org/dc/dcmitype/;DCMI Type Vocabulary
+deo;http://purl.org/spar/deo/;The Discourse Elements Ontology
+dicom;http://purl.org/healthcarevocab/v1#;Healthcare metadata - DICOM ontology
+dir;http://schemas.talis.com/2005/dir/schema#;Directory Schema
+disco;http://rdf-vocabulary.ddialliance.org/discovery#;DDI-RDF Discovery Vocabulary
+dl;http://ontology.ip.rm.cnr.it/ontologies/DOLCE-Lite#;The DOLCE and DnS ontologies in OWL
+doap;http://usefulinc.com/ns/doap#;Description of a Project vocabulary
+doc;http://www.w3.org/2000/10/swap/pim/doc#;Works, licences, derivatives and dependencies
+doco;http://purl.org/spar/doco/;DoCO, the Document Components Ontology
+dqm;http://purl.org/dqm-vocabulary/v1/dqm#;The Data Quality Management Vocabulary
+dr;http://purl.org/swan/2.0/discourse-relationships/;Discourse relationships vocabulary
+drm;http://vocab.data.gov/def/drm#;Data Reference Model
+ds;http://purl.org/ctic/dcat#;Dataset Catalog Vocabulary
+dso;http://inference-web.org/2.0/ds.owl#;Data Structure Ontology
+dtype;http://www.linkedmodel.org/schema/dtype#;Datatype Ontology
+dul;http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#;DOLCE+DnS Ultralite
+earl;http://www.w3.org/ns/earl#;Evaluation and Report Language
+ebucore;http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#;EBU Ontology
+edm;http://www.europeana.eu/schemas/edm/;Europeana Data Model vocabulary
+elec;http://purl.org/ctic/sector-publico/elecciones#;Vocabulario de Resultados Electorales
+emp;http://purl.org/ctic/empleo/oferta#;Vocabulario de Ofertas de Empleo
+ends;http://labs.mondeca.com/vocab/endpointStatus#;Vocabulary of endpoint status (availability, responseTime)
+ep;http://eprints.org/ontology/;EPrints Ontology
+event;http://purl.org/NET/c4dm/event.owl#;The Event Ontology
+ex;http://purl.org/net/ns/ex#;Example vocabulary
+exif;http://www.w3.org/2003/12/exif/ns#;Exif data description vocabulary
+fabio;http://purl.org/spar/fabio/;FRBR-aligned Bibliographic Ontology
+fea;http://vocab.data.gov/def/fea#;Federal Enterprise Architecture Vocabulary
+foaf;http://xmlns.com/foaf/0.1/;Friend of a Friend vocabulary
+food;http://data.lirmm.fr/ontologies/food#;Food Ontology
+fowl;http://www.w3.org/TR/2003/PR-owl-guide-20031209/food#;Food Ontology in OWL
+frapo;http://purl.org/cerif/frapo/;Funding, Research Administration and Projects Ontology
+frbr;http://purl.org/vocab/frbr/core#;Expression of Core FRBR Concepts in RDF
+frbre;http://purl.org/vocab/frbr/extended#;Extended FRBR
+fresnel;http://www.w3.org/2004/09/fresnel#;Fresnel Lens and Format Core Vocabulary
+g50k;http://data.ordnancesurvey.co.uk/ontology/50kGazetteer/;50K Gazetteer Vocabulary
+gastro;http://www.ebsemantics.net/gastro#;ebSemantics Gastro Ontology
+gc;http://www.oegov.org/core/owl/gc#;oeGOV Government Core Ontology
+gd;http://reference.data.gov/def/govdata/;Government Data Vocabulary
+gen;http://purl.org/gen/0.1#;Vocabulary for Linked Genealogical Data
+geo;http://www.w3.org/2003/01/geo/wgs84_pos#;WGS84 Geo Positioning
+geod;http://vocab.lenka.no/geo-deling#;Land classification in Norway
+geof;http://www.mindswap.org/2003/owl/geo/geoFeatures20040307.owl#;Geo Features
+geop;http://aims.fao.org/aos/geopolitical.owl#;FAO Geopolitical Ontology
+geos;http://www.telegraphis.net/ontology/geography/geography#;Geographis Ontology
+geosp;http://rdf.geospecies.org/ont/geospecies#;GeoSpecies Ontology
+gml;http://www.opengis.net/ont/gml#;OGC Geometry
+gn;http://www.geonames.org/ontology#;The Geonames Ontology
+gnd;http://d-nb.info/standards/elementset/gnd#;GND Ontology
+gold;http://purl.org/linguistics/gold/;General Ontology for Linguistic Description
+gr;http://purl.org/goodrelations/v1#;The GoodRelations Ontology for Semantic Web-based E-Commerce
+grddl;http://www.w3.org/2003/g/data-view#;Gleaning Resource Descriptions from Dialects of Languages Vocabulary
+gso;http://www.w3.org/2006/gen/ont#;Generic Specific Ontology
+gsp;http://www.opengis.net/ont/geosparql#;OGC GeoSPARQL
+hdo;http://www.samos.gr/ontologies/helpdeskOnto.owl#;HelpDesk support Ontology
+hr;http://iserve.kmi.open.ac.uk/ns/hrests#;hRESTS Ontology
+http;http://www.w3.org/2011/http#;HTTP in RDF
+idemo;http://rdf.insee.fr/def/demo#;Ontologie démographique de l'INSEE
+igeo;http://rdf.insee.fr/def/geo#;Ontologie géographique de l'INSEE
+infor;http://www.ontologydesignpatterns.org/cp/owl/informationrealization.owl#;Information Realization
+inno;http://purl.org/innovation/ns#;Ontology for Innovation
+interval;http://reference.data.gov.uk/def/intervals/;Intervals Ontology
+iol;http://www.ontologydesignpatterns.org/ont/dul/IOLite.owl#;Information Objects ontology
+irw;http://www.ontologydesignpatterns.org/ont/web/irw.owl#;The Identity of Resources on the Web ontology
+is;http://purl.org/ontology/is/core#;Info Service Ontology
+itsmo;http://ontology.it/itsmo/v1#;IT Service Management Ontology
+kdo;http://kdo.render-project.eu/kdo#;The Knowledge Diversity Ontology
+keys;http://purl.org/NET/c4dm/keys.owl#;Keys Ontology
+label;http://purl.org/net/vocab/2004/03/label#;label
+lcy;http://purl.org/vocab/lifecycle/schema#;Lifecycle Schema
+ldp;http://www.w3.org/ns/ldp#;Linked Data Platform
+lemon;http://www.monnet-project.eu/lemon#;LExicon Model for ONtologies
+lexinfo;http://www.lexinfo.net/ontology/2.0/lexinfo#;LexInfo Ontology
+lgdo;http://linkedgeodata.org/ontology/;LinkedGeoData ontology
+lib;http://purl.org/library/;Library extension of schema.org
+lingvo;http://www.lingvoj.org/ontology#;The Lingvoj Ontology
+lmf;http://www.lexinfo.net/lmf#;Lexical Markup Framework Ontology
+lmm1;http://www.ontologydesignpatterns.org/ont/lmm/LMM_L1.owl#;Lexical MetaModel Level 1
+lmm2;http://www.ontologydesignpatterns.org/ont/lmm/LMM_L2.owl#;Lexical MetaModel Level 2
+loc;http://purl.org/ctic/infraestructuras/localizacion#;Vocabulario de Localizaciones
+locah;http://data.archiveshub.ac.uk/def/;The LOCAH RDF Vocabulary
+lode;http://linkedevents.org/ontology/;Linking Open Descriptions of Events
+log;http://www.w3.org/2000/10/swap/log#;Logical Formula
+loted;http://www.loted.eu/ontology#;LOTED ontology
+lsc;http://linkedscience.org/lsc/ns#;Linked Science Core Vocabulary
+lv;http://purl.org/lobid/lv#;lobid vocab
+lvont;http://lexvo.org/ontology#;Lexvo.org Ontology
+ma-ont;http://www.w3.org/ns/ma-ont#;Ontology for Media Resources
+mads;http://www.loc.gov/mads/rdf/v1#;Metadata Authority Description Schema
+maso;http://securitytoolbox.appspot.com/MASO#;Sécurité Agents Mobiles
+meb;http://rdf.myexperiment.org/ontologies/base/;The myExperiment Base Ontology
+media;http://purl.org/media#;The Media RDF Vocabulary
+mil;http://rdf.muninn-project.org/ontologies/military#;Military Ontology Specification
+mo;http://purl.org/ontology/mo/;Music Ontology
+moac;http://observedchange.com/moac/ns#;Management of a Crisis Vocabulary
+moat;http://moat-project.org/ns#;Meaning of a Tag Ontology
+mrel;http://id.loc.gov/vocabulary/relators/;MARC Code List for Relators
+msm;http://iserve.kmi.open.ac.uk/ns/msm#;Minimal Service Model
+msr;http://www.telegraphis.net/ontology/measurement/measurement#;Measurement Ontology
+music;http://www.kanzaki.com/ns/music#;Music Vocabulary
+muto;http://purl.org/muto/core#;Modular Unified Tagging Ontology (MUTO)
+mvco;http://purl.oclc.org/NET/mvco.owl#;Media Value Chain Ontology
+nao;http://www.semanticdesktop.org/ontologies/2007/08/15/nao#;NEPOMUK Annotation Ontology
+ncal;http://www.semanticdesktop.org/ontologies/2007/04/02/ncal#;NEPOMUK Calendar Ontology
+nco;http://www.semanticdesktop.org/ontologies/2007/03/22/nco#;NEPOMUK Contact Ontology
+nfo;http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#;NEPOMUK File Ontology
+ngeo;http://geovocab.org/geometry#;NeoGeo Geometry Ontology
+nie;http://www.semanticdesktop.org/ontologies/2007/01/19/nie#;NEPOMUK Information Element Core Ontology
+npg;http://ns.nature.com/terms/;Nature Publishing Group Ontology Terms
+nrl;http://www.semanticdesktop.org/ontologies/2007/08/15/nrl#;NEPOMUK Representational Language
+ntag;http://ns.inria.fr/nicetag/2010/09/09/voc#;Nice Tag Ontology
+oa;http://www.w3.org/ns/oa#;Open Annotation Data Model
+oan;http://data.lirmm.fr/ontologies/oan/;Ontologie de l'Assemblée Nationale
+obsm;http://rdf.geospecies.org/methods/observationMethod#;Observation Method Ontology
+oc;http://contextus.net/ontology/ontomedia/core/expression#;OntoMedia Core
+ocd;http://dati.camera.it/ocd/;Ontologia Camera dei Deputati
+odapp;http://vocab.deri.ie/odapp#;Open Data Applications Vocabulary
+odpart;http://www.ontologydesignpatterns.org/cp/owl/participation.owl#;Ontology Design Pattern Participation
+odrs;http://schema.theodi.org/odrs#;Open Data Rights Statement Vocabulary
+odv;http://reference.data.gov.uk/def/organogram/;Organogram Data Vocabulary
+oecc;http://www.oegov.org/core/owl/cc#;Extended Creative Commons Ontology
+og;http://ogp.me/ns#;Open Graph Protocol Vocabulary
+olca;http://www.lingvoj.org/olca#;Ontology Loose Coupling Annotation
+olo;http://purl.org/ontology/olo/core#;Ordered List Ontology
+ont;http://purl.org/net/ns/ontology-annot#;Ontology annotation DLiser vocabulary
+ontopic;http://www.ontologydesignpatterns.org/ont/dul/ontopic.owl#;Ontopic Ontology
+ontosec;http://www.semanticweb.org/ontologies/2008/11/OntologySecurity.owl#;Ontology Security
+oo;http://purl.org/openorg/;Open Organisations
+opmo;http://openprovenance.org/model/opmo#;Open Provenance Model
+opmv;http://purl.org/net/opmv/ns#;Open Provenance Model Vocabulary
+opmw;http://www.opmw.org/ontology/;The OPMW Ontology
+opo;http://online-presence.net/opo/ns#;Online Presence Ontology
+opus;http://lsdis.cs.uga.edu/projects/semdis/opus#;SwetoDblp Ontology of Computer Science Publications
+ore;http://www.openarchives.org/ore/terms/;The OAI ORE terms vocabulary
+org;http://www.w3.org/ns/org#;Core organization ontology
+osadm;http://data.ordnancesurvey.co.uk/ontology/admingeo/;The administrative geography and civil voting area ontology
+oslc;http://open-services.net/ns/core#;OSLC Core Vocabulary
+osp;http://data.lirmm.fr/ontologies/osp#;Ontologie du Service Public
+osr;http://purl.org/ontomedia/core/space#;OntoMedia Space Representation
+osspr;http://data.ordnancesurvey.co.uk/ontology/spatialrelations/;Spatial Relations Ontology
+ostop;http://www.ordnancesurvey.co.uk/ontology/Topography/v0.1/Topography.owl#;Ordnance Survey Topography Ontology
+ov;http://open.vocab.org/terms/;OpenVocab
+p-plan;http://purl.org/net/p-plan#;The P-PLAN Ontology
+parl;http://reference.data.gov.uk/def/parliament/;Parliament Ontology
+part;http://purl.org/vocab/participation/schema#;Participation Schema
+passim;http://data.lirmm.fr/ontologies/passim#;PASSIM ontology
+pattern;http://www.essepuntato.it/2008/12/pattern#;The Pattern Ontology
+pav;http://purl.org/pav/;Provenance, Authoring and Versioning
+pay;http://reference.data.gov.uk/def/payment#;Payments ontology
+pbo;http://purl.org/ontology/pbo/core#;Play Back Ontology
+pc;http://purl.org/procurement/public-contracts#;Public Contracts Ontology
+pdo;http://ontologies.smile.deri.ie/pdo#;Project Documents Ontology
+pext;http://www.ontotext.com/proton/protonext#;PROTON Extent module
+pkm;http://www.ontotext.com/proton/protonkm#;PROTON Knowledge Management Ontology
+place;http://purl.org/ontology/places#;The Places Ontology
+pmlp;http://inference-web.org/2.0/pml-provenance.owl#;PML2 provenance ontology
+pna;http://data.press.net/ontology/asset/;Press.net Asset Ontology
+pnc;http://data.press.net/ontology/classification/;Press.net Classification Ontology
+pne;http://data.press.net/ontology/event/;Press.net Event Ontology
+pni;http://data.press.net/ontology/identifier/;SNaP Identifier Ontology
+pns;http://data.press.net/ontology/stuff/;Press.net Stuff Ontology
+pnt;http://data.press.net/ontology/tag/;Press.net Tag Ontology
+po;http://purl.org/ontology/po/;Programmes ontology
+poder;http://poderopedia.com/vocab/;Poder Vocabulary
+postcode;http://data.ordnancesurvey.co.uk/ontology/postcode/;Postcode Ontology
+poste;http://data.lirmm.fr/ontologies/poste#;Ontologie de la Poste
+ppo;http://vocab.deri.ie/ppo#;Privacy Preference Ontology
+pr;http://purl.org/ontology/prv/core#;Property Reification Vocabulary
+premis;http://www.loc.gov/premis/rdf/v1#;PREMIS Ontology
+prissma;http://ns.inria.fr/prissma/v1#;Presentation of Resources for Interoperable Semantic and Shareable Mobile Adaptability
+pro;http://purl.org/spar/pro/;The Publishing Roles Ontology
+prov;http://www.w3.org/ns/prov#;W3C PROVenance Interchange
+prv;http://purl.org/net/provenance/ns#;Provenance Vocabulary Core Ontology
+prvt;http://purl.org/net/provenance/types#;Provenance Vocabulary types
+pso;http://purl.org/spar/pso/;The Publishing Status Ontology
+psys;http://www.ontotext.com/proton/protonsys#;PROTON (Proto Ontology), System Module
+ptop;http://www.ontotext.com/proton/protontop#;PROTON (Proto Ontology), Top Module
+pwo;http://purl.org/spar/pwo/;The Publishing Workflow Ontology
+qb;http://purl.org/linked-data/cube#;The data cube vocabulary
+qudt;http://qudt.org/schema/qudt#;Quantities, Units, Dimensions and Types
+quty;http://www.telegraphis.net/ontology/measurement/quantity#;Measurement Ontology - Basic Quantities
+radion;http://www.w3.org/ns/radion#;Repository Asset Distribution
+raul;http://purl.org/NET/raul#;RAUL Vocabulary
+rdafrbr;http://rdvocab.info/uri/schema/FRBRentitiesRDA/;FRBR Entities for RDA
+rdag1;http://rdvocab.info/Elements/;RDA Group 1 Elements
+rdag2;http://rdvocab.info/ElementsGr2/;RDA Group 2 Elements
+rdag3;http://rdvocab.info/ElementsGr3/;RDA Group 3 Elements
+rdarel;http://rdvocab.info/RDARelationshipsWEMI/;RDA Relationships for Works, Expressions, Manifestations, Items
+rdarel2;http://metadataregistry.org/uri/schema/RDARelationshipsGR2/;RDA Relationships GR2
+rdarole;http://rdvocab.info/roles/;RDA Roles
+rdfg;http://www.w3.org/2004/03/trix/rdfg-1/;Graph
+rec;http://purl.org/ontology/rec/core#;Recommendation Ontology
+reegle;http://reegle.info/schema#;Renewable Energy and Energy Efficiency
+rel;http://purl.org/vocab/relationship/;Relationship
+rev;http://purl.org/stuff/rev#;Review Vocabulary
+rov;http://www.w3.org/ns/regorg#;Registered Organization Vocabulary
+rr;http://www.w3.org/ns/r2rml#;RDB to RDF Mapping Language Schema
+rss;http://purl.org/rss/1.0/;Vocabulary for Rich Site Summary (RSS) 1.0
+ru;http://purl.org/imbi/ru-meta.owl#;Representational Units Metadata Ontology
+s4ac;http://ns.inria.fr/s4ac/v2#;Social Semantic SPARQL Security For Access Control Ontology
+sao;http://salt.semanticauthoring.org/ontologies/sao#;SALT Annotation Ontology
+sbench;http://swat.cse.lehigh.edu/onto/univ-bench.owl#;An university ontology for benchmark tests
+schema;http://schema.org/;Schema.org vocabulary
+scip;http://lod.taxonconcept.org/ontology/sci_people.owl#;Scientific People Ontology
+scoro;http://purl.org/spar/scoro/;Scholarly Contributions and Roles Ontology
+scot;http://rdfs.org/scot/ns#;Social Semantic Cloud of Tags
+scovo;http://purl.org/NET/scovo#;The Statistical Core Vocabulary
+scsv;http://purl.org/NET/schema-org-csv#;Schema.org CSV
+sd;http://www.w3.org/ns/sparql-service-description#;SPARQL 1.1 Service Description
+sdmx;http://purl.org/linked-data/sdmx#;SDMX-RDF vocabulary
+sdmx-code;http://purl.org/linked-data/sdmx/2009/code#;SDMX Code
+sdmx-dimension;http://purl.org/linked-data/sdmx/2009/dimension#;SDMX Dimension
+sdo;http://salt.semanticauthoring.org/ontologies/sdo#;SALT Document Ontology
+search;http://sindice.com/vocab/search#;Sindice Search Vocabulary
+security;http://securitytoolbox.appspot.com/securityMain#;Security Ontology
+sem;http://semanticweb.cs.vu.nl/2009/11/sem/;The SEM Ontology
+semio;http://www.lingvoj.org/semio#;Semio, an ontology of signs
+seq;http://www.ontologydesignpatterns.org/cp/owl/sequence.owl#;Sequence Pattern
+sf;http://www.opengis.net/ont/sf#;Simplified Features Geometry
+sim;http://purl.org/ontology/similarity/;The Similarity Ontology
+sioc;http://rdfs.org/sioc/ns#;Semantically-Interlinked Online Communities
+situ;http://www.ontologydesignpatterns.org/cp/owl/situation.owl#;Situation Pattern
+skos;http://www.w3.org/2004/02/skos/core#;Simple Knowledge Organization System
+skosxl;http://www.w3.org/2008/05/skos-xl#;SKOS eXtension for Labels
+snarm;http://rdf.myexperiment.org/ontologies/snarm/;Simple Network Access Rights Management Ontology
+sp;http://spinrdf.org/sp#;SPIN SPARQL Syntax
+spatial;http://geovocab.org/spatial#;NeoGeo Spatial Ontology
+spin;http://spinrdf.org/spin#;SPIN Inferencing Vocabulary
+sport;http://purl.org/ontology/sport/;Sport Ontology
+spt;http://spitfire-project.eu/ontology/ns/;SPITFIRE Ontology
+sro;http://salt.semanticauthoring.org/ontologies/sro#;SALT Rhetorical Ontology
+ssn;http://purl.oclc.org/NET/ssnx/ssn#;Semantic Sensor Network Ontology
+stac;http://securitytoolbox.appspot.com/stac#;Security Toolbox : Attacks and Countermeasures
+stec;http://www.ida.liu.se/~almhe/Security.owl#;Security Technology Ontology
+stories;http://purl.org/ontology/stories/;Stories Ontology
+swc;http://data.semanticweb.org/ns/swc/ontology#;Semantic Web Conference Ontology
+swp;http://www.w3.org/2004/03/trix/swp-1/;Graph Authority
+swpo;http://sw-portal.deri.org/ontologies/swportal#;Semantic Web Portal Ontology
+swrc;http://swrc.ontoware.org/ontology#;Semantic Web for Research Communities
+swrl;http://www.w3.org/2003/11/swrl#;Semantic Web Rule Language
+tac;http://ns.bergnet.org/tac/0.1/triple-access-control#;TripleAccessControl Ontology
+tag;http://www.holygoat.co.uk/owl/redwood/0.1/tags/;Tag ontology
+tao;http://vocab.deri.ie/tao#;Trust Assertion Ontology (TAO)
+taxon;http://purl.org/biodiversity/taxon/;TaxonMap Ontology
+te;http://www.w3.org/2006/time-entry#;Time Entry
+teach;http://linkedscience.org/teach/ns#;Teaching Core Vocabulary Specification
+test;http://www.w3.org/2006/03/test-description#;Test Metadata
+theatre;http://purl.org/theatre#;Theatre Ontology
+ti;http://www.ontologydesignpatterns.org/cp/owl/timeinterval.owl#;The Time Interval Pattern
+time;http://www.w3.org/2006/time#;Time Ontology
+tio;http://purl.org/tio/ns#;The Tickets Ontology
+tis;http://www.ontologydesignpatterns.org/cp/owl/timeindexedsituation.owl;Time Indexed Situation
+tisc;http://observedchange.com/tisc/ns#;Open Time and Space Core Vocabulary
+tl;http://purl.org/NET/c4dm/timeline.owl#;The Timeline Ontology
+tmo;http://www.w3.org/2001/sw/hcls/ns/transmed/;Translational Medicine Ontology
+trait;http://contextus.net/ontology/ontomedia/ext/common/trait#;OntoMedia Trait Representation
+transit;http://vocab.org/transit/terms/;TRANSIT
+tsioc;http://rdfs.org/sioc/types#;SIOC Types Ontology Module
+turismo;http://idi.fundacionctic.org/cruzar/turismo#;Ontología de Turismo para el Ayuntamiento de Zaragoza
+tvc;http://www.essepuntato.it/2012/04/tvc/;The Time-indexed Value in Context
+txn;http://lod.taxonconcept.org/ontology/txn.owl#;TaxonConcept Ontology
+tzont;http://www.w3.org/2006/timezone#;Time Zone Ontology
+uco;http://purl.org/uco/ns#;Used Cars Ontology
+umbel;http://umbel.org/umbel#;Upper Mapping and Binding Exchange Layer
+uniprot;http://purl.uniprot.org/core/;Uniprot Core Ontology
+user;http://schemas.talis.com/2005/user/schema#;User Schema
+vaem;http://www.linkedmodel.org/schema/vaem#;Vocabulary for Attaching Essential Metadata
+vann;http://purl.org/vocab/vann/;VANN: A vocabulary for annotating vocabulary descriptions
+vcard;http://www.w3.org/2006/vcard/ns#;An Ontology for vCards
+vdpp;http://data.lirmm.fr/ontologies/vdpp#;Vocabulary for Dataset Publication Projects
+vin;http://www.w3.org/TR/2003/PR-owl-guide-20031209/wine#;Wine Ontology
+vivo;http://vivoweb.org/ontology/core#;VIVO Core Ontology
+voaf;http://purl.org/vocommons/voaf#;Vocabulary of a Friend
+voag;http://voag.linkedmodel.org/voag#;Vocabulary Of Attribution and Governance
+void;http://rdfs.org/ns/void#;Vocabulary of Interlinked Datasets
+vra;http://simile.mit.edu/2003/10/ontologies/vraCore3#;RDFS Ontology for VRA
+vrank;http://purl.org/voc/vrank#;Vocabulary for Ranking
+vs;http://www.w3.org/2003/06/sw-vocab-status/ns#;SemWeb Vocab Status ontology
+vso;http://purl.org/vso/ns#;Vehicle Sales Ontology
+vvo;http://purl.org/vvo/ns#;Volkswagen Vehicles Ontology
+wai;http://purl.org/wai#;Roles and Profiles Ontology
+wdrs;http://www.w3.org/2007/05/powder-s#;Protocol for Web Description Resources
+wf-invoc;http://purl.org/net/wf-invocation#;Workflow Invocation Ontology
+wfm;http://purl.org/net/wf-motifs#;The Workflow Motif Ontology
+whois;http://www.kanzaki.com/ns/whois#;Who's who description vocabulary
+wi;http://purl.org/ontology/wi/core#;The Weighted Interests Vocabulary
+wl;http://www.wsmo.org/ns/wsmo-lite#;WSMO-Lite Ontology
+wlo;http://purl.org/ontology/wo/;Wildlife Ontology
+wo;http://purl.org/ontology/wo/core#;Weighting Ontology
+wot;http://xmlns.com/wot/0.1/;Web Of Trust
+xkos;http://purl.org/linked-data/xkos#;XKOS
+zbwext;http://zbw.eu/namespaces/zbw-extensions/;Extensions to SKOS and other standard vocabularies
