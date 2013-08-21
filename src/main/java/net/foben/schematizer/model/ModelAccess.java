@@ -1,9 +1,6 @@
 package net.foben.schematizer.model;
 
-import static net.foben.schematizer.Environment.DataFiles.FILE_ALL_EQUIVALENCES;
-import static net.foben.schematizer.Environment.DataFiles.FILE_CLASSES;
-import static net.foben.schematizer.Environment.DataFiles.FILE_LOV_VOCABULARIES;
-import static net.foben.schematizer.Environment.DataFiles.FILE_SCHEMADATA_LDSPIDER;
+import static net.foben.schematizer.Environment.DataFiles.*;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -90,11 +87,15 @@ public class ModelAccess {
     }
 
     public static ComparableResourceDescriptor[] getCandidates(Class<?> expected, int top) {
+	return getCandidates(expected, top, false);
+    }
+
+    public static ComparableResourceDescriptor[] getCandidates(Class<?> expected, int top, boolean properties) {
 	if (expected.equals(SimpleResourceDescriptor.class)) {
 	    try {
 		TreeMultiset<SimpleResourceDescriptor> s = TreeMultiset
 			.create(new SimpleResourceDescriptor.ResDescriptorReverseOrdering());
-		BufferedReader in = new BufferedReader(new FileReader(FILE_CLASSES));
+		BufferedReader in = new BufferedReader(new FileReader(properties ? FILE_PROPERTIES : FILE_CLASSES));
 		String line;
 		int count = 0;
 		while ((line = in.readLine()) != null && ++count <= top) {
@@ -118,7 +119,8 @@ public class ModelAccess {
 	} else if (expected.equals(LabelsCommentsResourceDescriptor.class)) {
 	    try (
 
-	    WrappedRepo repo = new WrappedRepo(); BufferedReader in = new BufferedReader(new FileReader(FILE_CLASSES));) {
+	    WrappedRepo repo = new WrappedRepo();
+		    BufferedReader in = new BufferedReader(new FileReader(properties ? FILE_PROPERTIES : FILE_CLASSES));) {
 
 		repo.addFile(FILE_SCHEMADATA_LDSPIDER);
 		repo.addFile(FILE_ALL_EQUIVALENCES);
