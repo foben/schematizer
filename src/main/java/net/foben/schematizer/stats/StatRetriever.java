@@ -43,8 +43,8 @@ public class StatRetriever {
     public static void main(String[] args) throws RepositoryException, IOException {
 	_log = LoggerFactory.getLogger(StatRetriever.class);
 
-	boolean properties = false;
-	int top = 500;
+	boolean properties = true;
+	int top = 500000;
 
 	List<ComparableResourceDescriptor> resources = Arrays.asList(ModelAccess.getCandidates(
 		SimpleResourceDescriptor.class, top, properties));
@@ -80,11 +80,13 @@ public class StatRetriever {
 	    _log.info("finished {}", resURI);
 	}
 
-	serializeToCSV(data, statsMap.keySet());
+	String filename = properties ? "temp/StatsPropertiesTop" : "temp/StatsClassesTop";
+	filename += resources.size();
+	serializeToCSV(data, statsMap.keySet(), filename);
     }
 
     private static void serializeToCSV(LinkedHashMap<ComparableResourceDescriptor, Map<String, List<Value>>> data,
-	    Set<String> dataitems) {
+	    Set<String> dataitems, String filename) {
 	String d = CSVDELIM;
 	try (BufferedWriter br = new BufferedWriter(new FileWriter("temp/statsoutNewProps.csv"))) {
 	    br.write(d + "distinct PLDs");

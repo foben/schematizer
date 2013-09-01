@@ -3,6 +3,8 @@ package net.foben.schematizer.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import net.foben.schematizer.util.ThreeTuple;
+
 import org.openrdf.model.Literal;
 import org.openrdf.model.Value;
 import org.openrdf.query.MalformedQueryException;
@@ -20,6 +22,10 @@ public class LabelsCommentsResourceDescriptor extends SimpleResourceDescriptor {
     private Set<Literal> labels;
     private static String queryComments = "SELECT ?c WHERE {<%s> <http://www.w3.org/2000/01/rdf-schema#comment> ?c . }";
     private static String queryLabels = "SELECT ?c WHERE {<%s> <http://www.w3.org/2000/01/rdf-schema#label> ?c . }";
+
+    public LabelsCommentsResourceDescriptor(ThreeTuple<String, Integer, Integer> tuple, RepositoryConnection con) {
+	this(tuple.x, tuple.y, tuple.z, con);
+    }
 
     /**
      * Create Resource descriptor that extracts additional information from the
@@ -69,6 +75,10 @@ public class LabelsCommentsResourceDescriptor extends SimpleResourceDescriptor {
 
     public Set<Literal> getLabels() {
 	return labels;
+    }
+
+    public String toString() {
+	return String.format("%s  (%s, %s)", this.getURI(), this.getDatasets(), this.getTotal());
     }
 
 }

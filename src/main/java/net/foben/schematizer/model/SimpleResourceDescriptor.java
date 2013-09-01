@@ -1,5 +1,7 @@
 package net.foben.schematizer.model;
 
+import net.foben.schematizer.util.ThreeTuple;
+
 public class SimpleResourceDescriptor extends ComparableResourceDescriptor {
 
     /**
@@ -9,6 +11,10 @@ public class SimpleResourceDescriptor extends ComparableResourceDescriptor {
 
     public SimpleResourceDescriptor(String uri, int datasets, int total) {
 	super(uri, datasets, total);
+    }
+
+    public SimpleResourceDescriptor(ThreeTuple<String, Integer, Integer> tuple) {
+	super(tuple);
     }
 
 }

@@ -1,17 +1,23 @@
 package net.foben.schematizer;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.openrdf.model.Resource;
 import org.openrdf.model.URI;
 import org.openrdf.model.impl.URIImpl;
 import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.rio.RDFFormat;
 import org.openrdf.rio.helpers.BasicParserSettings;
 import org.openrdf.rio.helpers.NTriplesParserSettings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Environment {
+
+    private static Logger _log = LoggerFactory.getLogger(Environment.class);
 
     public static class DataFiles {
 
@@ -23,15 +29,14 @@ public class Environment {
 	// SCHEMA-DATA
 	public static final String FILE_SCHEMADATA_LDSPIDER = "src/main/resources/schemadata/schemadata_ldspider.nq";
 	public static final String FILE_SCHEMADATA_AGGREGATED_CRAWL = "src/main/resources/schemadata/aggregatedCrawl.n3";
-
 	public static final String FILE_SCHEMADATA_DBPEDIA_ONTOLOGY = "src/main/resources/schemadata/schemadata_dbpedia_3.8.owl";
+	public static final String FILE_SCHEMADATA_METALEX = "src/main/resources/schemadata/schemadata_metalex.owl";
+	public static final String FILE_SCHEMADATA_CREATIVECOMMONS = "src/main/resources/schemadata/schemadata_creaivecommons.rdf";
 	public static final String FILE_SCHEMADATA_LOV = "src/main/resources/schemadata/schemadata_lovs_final.nt";
 	public static final String FILE_SCHEMADATA_LD_TOP500CLASSES = "src/main/resources/schemadata/schemadata_ldspider_Top500classes.nq";
 	public static final String FILE_SCHEMADATA_LD_TOP500PROPERTIES = "src/main/resources/schemadata/schemadata_ldspider_Top500properties.nq";
 
-	public static final String[] ALL_SCHEMA_FILES = { FILE_SCHEMADATA_LDSPIDER, FILE_SCHEMADATA_AGGREGATED_CRAWL,
-		FILE_SCHEMADATA_DBPEDIA_ONTOLOGY, FILE_SCHEMADATA_LOV, FILE_SCHEMADATA_LD_TOP500CLASSES,
-		FILE_SCHEMADATA_LD_TOP500PROPERTIES };
+	public static final String FILE_SCHEMADATA_LD_TOP300MISSING = "src/main/resources/schemadata/schemadata_output_top300missing.nq";
 
 	public static final Map<String, RDFFormat> ALL_SCHEMA_MAP;
 
@@ -40,12 +45,30 @@ public class Environment {
 	    ALL_SCHEMA_MAP.put(FILE_SCHEMADATA_LDSPIDER, RDFFormat.NQUADS);
 	    ALL_SCHEMA_MAP.put(FILE_SCHEMADATA_AGGREGATED_CRAWL, RDFFormat.N3);
 	    ALL_SCHEMA_MAP.put(FILE_SCHEMADATA_DBPEDIA_ONTOLOGY, RDFFormat.RDFXML);
+	    ALL_SCHEMA_MAP.put(FILE_SCHEMADATA_METALEX, RDFFormat.RDFXML);
+	    ALL_SCHEMA_MAP.put(FILE_SCHEMADATA_CREATIVECOMMONS, RDFFormat.RDFXML);
 	    ALL_SCHEMA_MAP.put(FILE_SCHEMADATA_LOV, RDFFormat.NTRIPLES);
 	    ALL_SCHEMA_MAP.put(FILE_SCHEMADATA_LD_TOP500CLASSES, RDFFormat.NQUADS);
 	    ALL_SCHEMA_MAP.put(FILE_SCHEMADATA_LD_TOP500PROPERTIES, RDFFormat.NQUADS);
+	    ALL_SCHEMA_MAP.put(FILE_SCHEMADATA_LD_TOP300MISSING, RDFFormat.NQUADS);
 	}
 
 	public static final String FILE_LOV_VOCABULARIES = "src/main/resources/lov_vocabularies.csv";
+
+	public static void addAllSchemaFiles(RepositoryConnection con) {
+	    configureTolerantParser(con);
+	    _log.info("Adding all available schema files to repository");
+	    for (String file : ALL_SCHEMA_MAP.keySet()) {
+		try {
+		    con.add(new File(file), null, ALL_SCHEMA_MAP.get(file), (Resource) null);
+		    _log.info("{} added successfully!", file);
+		} catch (Exception e) {
+		    e.printStackTrace();
+		    _log.error("An excpetion occured while adding {} schema files: {}", file, e.getMessage());
+		}
+	    }
+	    _log.info("Data import complete");
+	}
 
     }
 
@@ -60,6 +83,9 @@ public class Environment {
     public static final String RDFSRANGE = "http://www.w3.org/2000/01/rdf-schema#range";
     public static final String RDFSSUBPROPERTY = "http://www.w3.org/2000/01/rdf-schema#subPropertyOf";
 
+    public static final String OWLEQUICLASS = "http://www.w3.org/2002/07/owl#equivalentClass";
+    public static final String OWLEQUIPROPERTY = "http://www.w3.org/2002/07/owl#equivalentProperty";
+
     public static URI URI_RDFTYPE = new URIImpl(RDFTYPE);
 
     public static URI URI_RDFSSUBCLASS = new URIImpl(RDFSSUBCLASS);
@@ -68,6 +94,7 @@ public class Environment {
     public static URI URI_RDFSDOMAIN = new URIImpl(RDFSDOMAIN);
     public static URI URI_RDFSRANGE = new URIImpl(RDFSRANGE);
     public static URI URI_RDFSSUBPROPERTY = new URIImpl(RDFSSUBPROPERTY);
+    public static URI URI_OWLEQUICLASS = new URIImpl(OWLEQUICLASS);
 
     public static final Map<String, URI> classStatistics = new LinkedHashMap<String, URI>();
     public static final Map<String, URI> propertyStatistics = new LinkedHashMap<String, URI>();
@@ -90,6 +117,7 @@ public class Environment {
     public static final String URI_HASGRAPH = "http://dws.informatik.uni-mannheim.de/lodschema/properties/hasGraph";
 
     public static void configureTolerantParser(RepositoryConnection con) {
+	_log.info("Configuring tolerant Parser");
 	con.getParserConfig().set(BasicParserSettings.VERIFY_DATATYPE_VALUES, false);
 	con.getParserConfig().set(BasicParserSettings.NORMALIZE_DATATYPE_VALUES, false);
 	con.getParserConfig().set(BasicParserSettings.FAIL_ON_UNKNOWN_DATATYPES, false);

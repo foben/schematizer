@@ -2,6 +2,8 @@ package net.foben.schematizer.model;
 
 import java.io.Serializable;
 
+import net.foben.schematizer.util.ThreeTuple;
+
 import org.openrdf.model.impl.URIImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +26,10 @@ public abstract class ComparableResourceDescriptor implements ResourceDescriptor
 	this.datasets = datasets;
 	this.localName = new URIImpl(uri).getLocalName();
 	this._log = LoggerFactory.getLogger(this.getClass());
+    }
+
+    public ComparableResourceDescriptor(ThreeTuple<String, Integer, Integer> tuple) {
+	this(tuple.x, tuple.y, tuple.z);
     }
 
     public int compareTo(ComparableResourceDescriptor o) {
