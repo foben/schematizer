@@ -37,7 +37,7 @@ public class CrossMappingProposer {
 	String inputFileName = args[2];
 	String inputFileLocalName = new File(inputFileName).getName();
 
-	int top = 3;
+	int top = 267;
 
 	LabelsCommentsResourceDescriptor[] candidates = (LabelsCommentsResourceDescriptor[]) ModelAccess.getCandidates(
 		LabelsCommentsResourceDescriptor.class, top, inputFileName);

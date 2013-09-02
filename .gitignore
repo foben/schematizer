@@ -3,8 +3,13 @@
 .classpath
 target
 temp
+continue.sh
 unknown_graphs.log
 src/main/resources/vocabularies.nq
 src/main/resources/schemadata
 data-*
 src/main/java/net/foben/schematizer/app/Test.java
+src/main/resources/resourcedata/classesGT*
+src/main/resources/resourcedata/classgroups/*
+src/main/resources/resourcedata/dbped*
+src/main/resources/resourcedata/classes_groups.ods
