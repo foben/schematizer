@@ -1,6 +1,7 @@
-package net.foben.schematizer.app;
+package net.foben.schematizer.goldstd;
 
 import static net.foben.schematizer.Environment.*;
+import static net.foben.schematizer.Environment.DataFiles.*;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -22,7 +23,7 @@ import org.openrdf.model.impl.URIImpl;
 import org.openrdf.rio.RDFHandlerException;
 import org.openrdf.rio.ntriples.NTriplesWriter;
 
-public class MappingProposer {
+public class CrossMappingProposer {
 
     public static void main(String[] args) throws IOException, RDFHandlerException {
 	if (args.length != 3 || !(new File(args[2]).exists())) {
@@ -32,6 +33,7 @@ public class MappingProposer {
 
 	int c1off = Integer.parseInt(args[0]);
 	int c2off = Integer.parseInt(args[1]);
+
 	String inputFileName = args[2];
 	String inputFileLocalName = new File(inputFileName).getName();
 
@@ -39,6 +41,9 @@ public class MappingProposer {
 
 	LabelsCommentsResourceDescriptor[] candidates = (LabelsCommentsResourceDescriptor[]) ModelAccess.getCandidates(
 		LabelsCommentsResourceDescriptor.class, top, inputFileName);
+
+	LabelsCommentsResourceDescriptor[] topclasses = (LabelsCommentsResourceDescriptor[]) ModelAccess.getCandidates(
+		LabelsCommentsResourceDescriptor.class, top, FILE_CLASSES);
 
 	BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 	int filecount = 0;
@@ -53,7 +58,7 @@ public class MappingProposer {
 	ntWriter.startRDF();
 
 	outerloop: for (int c1 = 0; c1 < candidates.length; c1++) {
-	    for (int c2 = c1; c2 < candidates.length; c2++) {
+	    for (int c2 = 0; c2 < topclasses.length; c2++) {
 		// "Clear" screen
 		for (int cl = 0; cl < 300; cl++) {
 		    System.out.println();
@@ -63,12 +68,12 @@ public class MappingProposer {
 		    c2 = c2off;
 		}
 		LabelsCommentsResourceDescriptor cand1 = candidates[c1];
-		LabelsCommentsResourceDescriptor cand2 = candidates[c2];
+		LabelsCommentsResourceDescriptor cand2 = topclasses[c2];
 
 		if (cand1.equals(cand2))
 		    continue;
 
-		display(cand1, cand2, c1, c2, candidates.length);
+		display(cand1, cand2, c1, c2, candidates.length, topclasses.length);
 
 		URI c1URI = new URIImpl(cand1.getURI());
 		URI c2URI = new URIImpl(cand2.getURI());
@@ -108,10 +113,10 @@ public class MappingProposer {
     }
 
     public static void display(LabelsCommentsResourceDescriptor cand1, LabelsCommentsResourceDescriptor cand2, int c1,
-	    int c2, int total) {
-	displayDescription(cand1, c1, total);
+	    int c2, int total1, int total2) {
+	displayDescription(cand1, c1, total1);
 	System.out.println("\n");
-	displayDescription(cand2, c2, total);
+	displayDescription(cand2, c2, total2);
     }
 
     private static void displayDescription(LabelsCommentsResourceDescriptor candidate, int c, int total) {
